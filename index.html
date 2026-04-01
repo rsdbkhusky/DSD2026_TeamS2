@@ -357,5 +357,111 @@
 </button>
 
 <script src="script.js"></script>
+
+<!-- ════ VISUAL FX: NEWS SIDE BANNER (decoupled — remove this block to disable) ════ -->
+<style>
+  .news-side-banner {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 800;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .news-side-banner a {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    text-decoration: none;
+  }
+  .news-side-tab {
+    background: #dc2626;
+    color: #fff;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 18px 10px;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    transition: background 0.2s ease, padding 0.2s ease;
+    white-space: nowrap;
+    box-shadow: 2px 0 12px rgba(220,38,38,0.35);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-left: none;
+  }
+  .news-side-banner a:hover .news-side-tab {
+    background: #b91c1c;
+    padding: 18px 14px;
+  }
+  .news-side-panel {
+    background: #1a0808;
+    border: 1px solid rgba(220,38,38,0.4);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.35s cubic-bezier(0.16,1,0.3,1), padding 0.35s ease, opacity 0.25s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .news-side-banner:hover .news-side-panel {
+    max-width: 240px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .news-side-panel-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: #f87171;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 6px;
+    white-space: nowrap;
+  }
+  .news-side-panel-title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+  .news-side-panel-hint {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: #f87171;
+    margin-top: 8px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .news-side-banner {
+      top: auto;
+      bottom: 80px;
+      transform: none;
+    }
+  }
+</style>
+
+<div class="news-side-banner">
+  <a href="news/srs-draft.html">
+    <div class="news-side-tab">New · SRS Draft</div>
+    <div class="news-side-panel">
+      <div class="news-side-panel-label">Latest News</div>
+      <div class="news-side-panel-title">SRS Draft Published —<br>Requirements Survey</div>
+      <div class="news-side-panel-hint">Click to read →</div>
+    </div>
+  </a>
+</div>
+<!-- ════ END NEWS SIDE BANNER ════ -->
+
 </body>
 </html>
