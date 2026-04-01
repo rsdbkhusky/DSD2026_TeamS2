@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Formed · News · DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge pending">Team</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">March 2026</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      Team S2 Formed — Five Members, Two Continents
+    </h1>
+    <p style="font-size:16px;color:var(--text-2);line-height:1.7;max-width:680px;">
+      All five positions in Team S2 are now filled. One member from UTAD in Portugal,
+      four from Jilin University in China — together responsible for the data pipeline
+      that the whole DSD2026 system runs on.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <p>
+      Team S2 has been constituted as part of the DSD 2025–2026 programme, the collaborative
+      distributed software development course running between the Universidade de Trás-os-Montes
+      e Alto Douro (UTAD) in Portugal and Jilin University (JLU) in China.
+    </p>
+
+    <h2>The Team</h2>
+    <p>
+      Five members have been confirmed across the standard DSD team structure —
+      one Project Manager, one Vice PM (Shadow PM), one System Architect, and two Programmers:
+    </p>
+    <ul>
+      <li><strong>Zhiqi Zhang</strong> (CN · JLU) — Project Manager</li>
+      <li><strong>João Neves</strong> (PT · UTAD) — Vice Project Manager</li>
+      <li><strong>Haobo Lin</strong> (CN · JLU) — System Architect</li>
+      <li><strong>Pengxu Chen</strong> (CN · JLU) — Programmer</li>
+      <li><strong>Tianze Wang</strong> (CN · JLU) — Programmer</li>
+    </ul>
+
+    <h2>S2's Place in the Project</h2>
+    <p>
+      Team S2 belongs to the Sensor layer, alongside Team S1. While S1 handles
+      sensor firmware and the wireless communication protocol, S2 is responsible for
+      the data acquisition pipeline that receives structured data from S1 and delivers it
+      to the Server layer.
+    </p>
+    <p>
+      S2's most critical early responsibility is the <strong>mock sensor data module</strong> —
+      a mandatory Sprint 1 deliverable. This module generates realistic, schema-compliant
+      data without requiring physical hardware, which immediately unblocks four other teams
+      (V1, V2, M1, M2) to begin their own development in parallel.
+    </p>
+
+    <h2>Working Across Timezones</h2>
+    <p>
+      Portugal and China operate roughly 7–8 hours apart depending on daylight saving. S2 has
+      adopted an async-first workflow to handle this gap: João Neves as Vice PM leads the
+      Portuguese side during the PM's off-hours, and posts a daily standup update to the
+      shared GitHub Wiki at the end of each PT working day. Real-time sync meetings are
+      handled via VooV (WeMeet) on an agreed rotating schedule.
+    </p>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 · DSD 2025–2026 · UTAD × Jilin University
+    </p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 · Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator · UTAD × Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

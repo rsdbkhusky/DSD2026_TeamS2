@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website Live · News · DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge active">Milestone</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">April 2026</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      Team S2 Website is Live on GitHub Pages
+    </h1>
+    <p style="font-size:16px;color:var(--text-2);line-height:1.7;max-width:680px;">
+      The new Team S2 site is now published at rsdbkhusky.github.io/DSD2026_TeamS2 —
+      a complete rebuild in pure HTML, CSS, and JavaScript, replacing the previous Vite-based deployment.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <p>
+      The Team S2 website has been rebuilt from scratch and is now live on GitHub Pages.
+      The previous site, built with Vite, has been replaced with a project that uses
+      no build tools and no frameworks — plain HTML, CSS, and JavaScript, deployable
+      directly from the repository's main branch without any CI pipeline.
+    </p>
+
+    <h2>Four Pages</h2>
+    <p>The site is structured around four dedicated pages, each serving a distinct purpose:</p>
+    <ul>
+      <li><strong>Home</strong> — project overview, system architecture, team responsibilities, and workflow</li>
+      <li><strong>Progress</strong> — sprint-by-sprint status, starting with Sprint 1 tasks</li>
+      <li><strong>News</strong> — team announcements and milestones, with individual article pages</li>
+      <li><strong>Member</strong> — individual profiles for all five S2 members, plus the role structure table</li>
+    </ul>
+
+    <h2>Technical Choices</h2>
+    <p>
+      The site intentionally avoids build complexity. Every page is a standalone HTML file that
+      shares one stylesheet (<code style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);">style.css</code>)
+      and one script (<code style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);">script.js</code>).
+      Adding a new page or modifying content requires no toolchain — just edit the file and push.
+    </p>
+    <p>
+      Visual effects — the cursor glow, scroll progress bar, card shimmer lines, and reveal animations —
+      are each implemented as self-contained, independently removable pieces. Deleting a single element
+      or class from the HTML disables any given effect without touching anything else.
+    </p>
+
+    <h2>What the Site Will Track</h2>
+    <p>
+      The Progress and News pages will be updated as Sprint 1 work advances.
+      The next entries will cover the formation of the team's working structure
+      and — once it begins — the IF1 contract definition process with Team V1.
+    </p>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 · DSD 2025–2026 · UTAD × Jilin University
+    </p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 · Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator · UTAD × Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

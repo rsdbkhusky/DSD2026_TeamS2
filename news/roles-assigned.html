@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roles Assigned · News · DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge info">Organisation</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">March 2026</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      Roles Assigned Across S2
+    </h1>
+    <p style="font-size:16px;color:var(--text-2);line-height:1.7;max-width:680px;">
+      Every seat in Team S2 has a named owner. This post explains what each role means
+      in practice — particularly how the Shadow PM and cross-testing model work across a distributed team.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <p>
+      Following the initial team formation, the five S2 roles have been formally assigned.
+      The DSD role structure is not purely nominal — each position carries specific responsibilities
+      that are designed for a team operating across two time zones, two institutions, and two languages.
+    </p>
+
+    <h2>Project Manager — Zhiqi Zhang</h2>
+    <p>
+      The PM owns the sprint cadence: planning, tracking, and reporting. Zhiqi represents S2
+      at All-Site Meetings (ASMs) — the three mandatory synchronous cross-project meetings held
+      via VooV (WeMeet). When a decision affects another team, the PM is the first contact.
+    </p>
+
+    <h2>Vice PM (Shadow PM) — João Neves</h2>
+    <p>
+      The Vice PM role in DSD is more than a deputy — it is a parallel leadership position.
+      João holds full authority on the Portuguese side of the team during the hours when the
+      PM (in China) is offline. At the end of each PT working day, João posts a concise standup
+      update to the GitHub Wiki in the format: <em>done / in progress / blockers</em>.
+      This eliminates the need for a synchronous daily meeting across the timezone gap.
+    </p>
+
+    <h2>System Architect — Haobo Lin</h2>
+    <p>
+      The System Architect's most important Sprint 1 task is co-authoring IF1 with V1's System Architect.
+      IF1 defines the exact contract between the Sensor and Server layers — the JSON data schema,
+      sampling rate, error codes, and MQTT topic structure. Once frozen at the end of Sprint 1,
+      IF1 becomes the immutable specification that all downstream teams build against.
+      No ad-hoc changes after the freeze date — any modification requires a formal joint agreement.
+    </p>
+
+    <h2>Programmers — Pengxu Chen &amp; Tianze Wang</h2>
+    <p>
+      S2 has two Programmers and no dedicated Tester. Quality control is enforced through
+      a formal cross-testing model: Pengxu formally reviews and tests Tianze's code, and
+      Tianze formally reviews and tests Pengxu's code. Every critical module ships with
+      independent verification from the other programmer before it is considered done.
+    </p>
+    <p>
+      Both programmers work on the same codebase, but the cross-testing constraint means that
+      no single programmer's output goes unreviewed. In a small team without a QA role,
+      this is the mechanism that catches integration errors before they reach other teams.
+    </p>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 · DSD 2025–2026 · UTAD × Jilin University
+    </p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 · Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator · UTAD × Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

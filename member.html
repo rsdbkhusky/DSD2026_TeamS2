@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Member · DSD2026 Team S2</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .member-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 26px;
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition-slow), box-shadow var(--transition-slow);
+    }
+    /* VISUAL FX: top shimmer line on member card hover (decoupled) */
+    .member-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .member-card:hover::before { opacity: 1; }
+    .member-card:hover {
+      border-color: rgba(59,130,246,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.35);
+    }
+
+    .member-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--surface-2);
+      border: 2px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      color: var(--accent);
+      transition: border-color var(--transition);
+    }
+    .member-card:hover .member-avatar { border-color: rgba(59,130,246,0.45); }
+
+    .member-nat {
+      position: absolute; top: 22px; right: 22px;
+      font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+      padding: 3px 7px; border-radius: 4px; letter-spacing: 0.08em;
+    }
+    .nat-pt { background: rgba(59,130,246,0.15); color: var(--accent-2); border: 1px solid rgba(59,130,246,0.25); }
+    .nat-cn { background: rgba(249,115,22,0.15); color: var(--orange); border: 1px solid rgba(249,115,22,0.25); }
+
+    .member-name {
+      font-family: var(--font-display); font-size: 19px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.02em; margin-bottom: 4px;
+    }
+    .member-role {
+      font-family: var(--font-mono); font-size: 10px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px;
+    }
+    .member-desc {
+      font-size: 13px; color: var(--text-2); line-height: 1.65; flex: 1; margin-bottom: 16px;
+    }
+    .member-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .member-tag {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+      background: var(--bg-2); border: 1px solid var(--border);
+      padding: 3px 8px; border-radius: 4px;
+    }
+
+    /* Recruit banner */
+    .recruit-banner {
+      background: var(--accent-dim);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; margin-top: 56px; flex-wrap: wrap;
+    }
+    .recruit-banner h3 {
+      font-family: var(--font-display); font-size: 20px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.02em; margin-bottom: 6px;
+    }
+    .recruit-banner p { font-size: 14px; color: var(--text-2); max-width: 460px; line-height: 1.6; }
+    .recruit-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff;
+      font-family: var(--font-display); font-size: 13px; font-weight: 700;
+      padding: 11px 22px; border-radius: var(--radius); white-space: nowrap;
+      transition: background var(--transition), transform var(--transition-slow);
+    }
+    .recruit-btn:hover { background: var(--accent-2); color: #fff; transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="index.html"    class="nav-link">Home</a>
+      <a href="progress.html" class="nav-link">Progress</a>
+      <a href="news.html"     class="nav-link">News</a>
+      <a href="member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <p class="eyebrow">The People Behind S2</p>
+    <h1>Team Members</h1>
+    <p>Five people. One Portuguese, four Chinese. One goal: ship the pipeline the whole project depends on.</p>
+  </div>
+</div>
+
+<!-- ════ MEMBER CARDS ════ -->
+<section class="section">
+  <div class="container">
+    <div class="member-grid">
+
+      <div class="member-card reveal reveal-d1">
+        <div class="member-avatar">ZZ</div>
+        <span class="member-nat nat-cn">CN</span>
+        <div class="member-name">Zhiqi Zhang</div>
+        <div class="member-role">Project Manager</div>
+        <div class="member-desc">
+          Leads overall team coordination and sprint planning. Represents S2 at All-Site Meetings
+          and is the primary point of contact with the Steering Committee. Responsible for ensuring
+          the Sprint 1 deliverables — the mock module and IF1 — are on track.
+        </div>
+        <div class="member-tags">
+          <span class="member-tag">Coordination</span>
+          <span class="member-tag">Sprint Planning</span>
+          <span class="member-tag">ASM Attendance</span>
+        </div>
+      </div>
+
+      <div class="member-card reveal reveal-d2">
+        <div class="member-avatar">JN</div>
+        <span class="member-nat nat-pt">PT</span>
+        <div class="member-name">João Neves</div>
+        <div class="member-role">Vice Project Manager</div>
+        <div class="member-desc">
+          The shadow PM — leads the Portuguese side of the team during the PM's off-hours,
+          covering the 7–8 hour timezone gap between Lisbon and Changchun. Publishes daily
+          async standup updates to the GitHub Wiki at end of the PT working day.
+        </div>
+        <div class="member-tags">
+          <span class="member-tag">Shadow PM</span>
+          <span class="member-tag">PT Side Lead</span>
+          <span class="member-tag">Daily Standups</span>
+        </div>
+      </div>
+
+      <div class="member-card reveal reveal-d3">
+        <div class="member-avatar">HL</div>
+        <span class="member-nat nat-cn">CN</span>
+        <div class="member-name">Haobo Lin</div>
+        <div class="member-role">System Architect</div>
+        <div class="member-desc">
+          Owns the IF1 interface contract — co-authoring it with V1's System Architect to define
+          the JSON schema, sampling rate, error codes, and MQTT structure that all downstream
+          teams depend on. Responsible for the overall technical architecture of S2's pipeline.
+        </div>
+        <div class="member-tags">
+          <span class="member-tag">IF1 Contract</span>
+          <span class="member-tag">Architecture</span>
+          <span class="member-tag">V1 Liaison</span>
+        </div>
+      </div>
+
+      <div class="member-card reveal reveal-d1">
+        <div class="member-avatar">PC</div>
+        <span class="member-nat nat-cn">CN</span>
+        <div class="member-name">Pengxu Chen</div>
+        <div class="member-role">Programmer</div>
+        <div class="member-desc">
+          Implements core pipeline and validation components. Formally cross-tests
+          Tianze Wang's code as S2's primary quality-control mechanism — independent
+          verification without a dedicated Tester role.
+        </div>
+        <div class="member-tags">
+          <span class="member-tag">Pipeline Dev</span>
+          <span class="member-tag">Cross-testing</span>
+          <span class="member-tag">Code Review</span>
+        </div>
+      </div>
+
+      <div class="member-card reveal reveal-d2">
+        <div class="member-avatar">TW</div>
+        <span class="member-nat nat-cn">CN</span>
+        <div class="member-name">Tianze Wang</div>
+        <div class="member-role">Programmer</div>
+        <div class="member-desc">
+          Implements core pipeline and validation components. Formally cross-tests
+          Pengxu Chen's code. The mutual review model between the two programmers
+          ensures every critical module has been independently verified before it ships.
+        </div>
+        <div class="member-tags">
+          <span class="member-tag">Pipeline Dev</span>
+          <span class="member-tag">Cross-testing</span>
+          <span class="member-tag">Code Review</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recruit banner -->
+    <div class="recruit-banner reveal">
+      <div>
+        <h3>Want to contribute to Team S2?</h3>
+        <p>
+          We're a distributed engineering team building the data backbone of a real rehabilitation system.
+          If you're interested in collaborating — reach out via GitHub or email.
+        </p>
+      </div>
+      <a href="https://github.com/rsdbkhusky/DSD2026_TeamS2" class="recruit-btn" target="_blank">View on GitHub →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ ROLE STRUCTURE ════ -->
+<section class="section alt">
+  <div class="container">
+    <p class="section-label reveal">Role Structure</p>
+    <h2 class="reveal">How Responsibility is Distributed</h2>
+    <p class="section-intro reveal">
+      Every role in S2 has a clear technical and organisational purpose.
+      The structure is designed for a distributed team that spans two timezones and two institutions.
+    </p>
+
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Member</th>
+            <th>Affiliation</th>
+            <th>Core Responsibility</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td><strong>Project Manager</strong></td>
+            <td>Zhiqi Zhang</td>
+            <td><span class="badge info">CN · JLU</span></td>
+            <td>Team coordination, sprint planning, Steering Committee reporting, ASM attendance.</td>
+          </tr>
+          <tr>
+            <td><strong>Vice PM (Shadow PM)</strong></td>
+            <td>João Neves</td>
+            <td><span class="badge done">PT · UTAD</span></td>
+            <td>Leads PT side during PM off-hours; daily async standup posts to GitHub Wiki.</td>
+          </tr>
+          <tr>
+            <td><strong>System Architect</strong></td>
+            <td>Haobo Lin</td>
+            <td><span class="badge info">CN · JLU</span></td>
+            <td>Defines IF1 (JSON schema, sampling rate, error handling); co-authored with V1 System Architect.</td>
+          </tr>
+          <tr>
+            <td><strong>Programmer</strong></td>
+            <td>Pengxu Chen</td>
+            <td><span class="badge info">CN · JLU</span></td>
+            <td>Pipeline and validation development; formally cross-tests Tianze Wang's code.</td>
+          </tr>
+          <tr>
+            <td><strong>Programmer</strong></td>
+            <td>Tianze Wang</td>
+            <td><span class="badge info">CN · JLU</span></td>
+            <td>Pipeline and validation development; formally cross-tests Pengxu Chen's code.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout reveal" style="margin-top:20px;">
+      <p>
+        <strong>Cross-testing model:</strong> There is no dedicated Tester role in S2.
+        Instead, the two Programmers formally review and test each other's work.
+        This provides independent verification on every critical module while keeping the team lean.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 · Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator · UTAD × Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="progress.html">Progress</a>
+      <a href="news.html">News</a>
+      <a href="member.html">Member</a>
+      <a href="https://github.com/rsdbkhusky/DSD2026_TeamS2" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="script.js"></script>
+</body>
+</html>
