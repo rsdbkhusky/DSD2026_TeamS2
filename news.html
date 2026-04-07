@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News · DSD2026 Team S2</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .news-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color var(--transition), transform var(--transition-slow), box-shadow var(--transition-slow);
+      text-decoration: none;
+      position: relative;
+    }
+    /* VISUAL FX: shimmer on news card hover (decoupled) */
+    .news-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 50%; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(96,165,250,0.6), transparent);
+      transition: left 0.55s ease;
+    }
+    .news-card:hover::after { left: 150%; }
+    .news-card:hover {
+      border-color: rgba(59,130,246,0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+    .news-card-top {
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 22px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .news-category {
+      font-family: var(--font-mono); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--accent); background: var(--accent-dim);
+      border: 1px solid rgba(59,130,246,0.2);
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .news-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); }
+    .news-card-body { padding: 20px 22px; flex: 1; display: flex; flex-direction: column; }
+    .news-card-title {
+      font-family: var(--font-display); font-size: 17px; font-weight: 700;
+      color: var(--text); line-height: 1.25; letter-spacing: -0.015em; margin-bottom: 10px;
+    }
+    .news-card-excerpt {
+      font-size: 13px; color: var(--text-2); line-height: 1.6; flex: 1; margin-bottom: 18px;
+    }
+    .news-read-more {
+      font-family: var(--font-mono); font-size: 10px; color: var(--accent-2);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 6px;
+      transition: gap var(--transition);
+    }
+    .news-card:hover .news-read-more { gap: 10px; }
+    .news-read-more::after { content: '→'; }
+
+    /* Featured card */
+    .news-card.featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      border-color: rgba(59,130,246,0.2);
+    }
+    .news-card.featured .news-card-top {
+      flex-direction: column; align-items: flex-start; justify-content: center;
+      gap: 10px; min-width: 180px; max-width: 200px;
+      border-bottom: none; border-right: 1px solid var(--border);
+    }
+    .news-card.featured .news-card-title { font-size: 21px; }
+    @media (max-width: 640px) {
+      .news-card.featured { flex-direction: column; }
+      .news-card.featured .news-card-top {
+        flex-direction: row; align-items: center;
+        max-width: none; border-right: none; border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="index.html"    class="nav-link">Home</a>
+      <a href="progress.html" class="nav-link">Progress</a>
+      <a href="news.html"     class="nav-link">News</a>
+      <a href="member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Team Updates</p>
+    <h1>News</h1>
+    <p>Announcements and milestones from Team S2 — Sprint 1 and beyond.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="news-grid">
+
+      <!-- Featured — SRS -->
+      <a href="news/srs-draft.html" class="news-card featured reveal">
+        <div class="news-card-top">
+          <span class="news-category" style="color:#f87171;background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.25);">SRS</span>
+          <span class="news-date">Apr 2026</span>
+          <span class="badge active" style="margin-top:6px;">Latest</span>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-title">Software Requirements Specification — Draft Published</div>
+          <div class="news-card-excerpt">
+            The first SRS draft for the Limb Motion Recognition &amp; Assistant system is now available.
+            Seven use cases covering user registration, sensor connection, live feedback, clinical review,
+            and exercise prescription — across both hospital and home settings.
+          </div>
+          <span class="news-read-more">Read More</span>
+        </div>
+      </a>
+
+      <!-- Website live -->
+      <a href="news/website-live.html" class="news-card reveal reveal-d1">
+        <div class="news-card-top">
+          <span class="news-category">Milestone</span>
+          <span class="news-date">Apr 2026</span>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-title">Team S2 Website is Live on GitHub Pages</div>
+          <div class="news-card-excerpt">
+            The Team S2 site is now published at rsdbkhusky.github.io/DSD2026_TeamS2.
+            Built in pure HTML, CSS, and JavaScript — no build tools, no framework, directly deployable.
+          </div>
+          <span class="news-read-more">Read More</span>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="news/team-formed.html" class="news-card reveal reveal-d1">
+        <div class="news-card-top">
+          <span class="news-category">Team</span>
+          <span class="news-date">Mar 2026</span>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-title">Team S2 Formed — Five Members, Two Continents</div>
+          <div class="news-card-excerpt">
+            All five S2 roles have been filled. One member from Portugal (UTAD) and four from
+            China (Jilin University) will together build the data foundation the whole project relies on.
+          </div>
+          <span class="news-read-more">Read More</span>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="news/roles-assigned.html" class="news-card reveal reveal-d2">
+        <div class="news-card-top">
+          <span class="news-category">Organisation</span>
+          <span class="news-date">Mar 2026</span>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-title">Roles Assigned Across S2</div>
+          <div class="news-card-excerpt">
+            PM, Vice PM, System Architect, and two Programmers — each role has a clear owner.
+            The cross-testing model that makes S2's quality process work is now in place.
+          </div>
+          <span class="news-read-more">Read More</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 · Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator · UTAD × Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="progress.html">Progress</a>
+      <a href="news.html">News</a>
+      <a href="member.html">Member</a>
+      <a href="https://github.com/rsdbkhusky/DSD2026_TeamS2" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="script.js"></script>
+</body>
+</html>

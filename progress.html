@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progress · DSD2026 Team S2</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Sprint timeline ── */
+    .timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 18px; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(to bottom, var(--accent) 0%, rgba(59,130,246,0.1) 80%, transparent 100%);
+    }
+    .sprint-item { display: grid; grid-template-columns: 40px 1fr; gap: 28px; padding-bottom: 44px; }
+    .sprint-item:last-child { padding-bottom: 0; }
+    .sprint-dot {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      flex-shrink: 0; position: relative; z-index: 1;
+    }
+    .sprint-dot.active  { background: var(--accent); color: #fff; box-shadow: 0 0 18px var(--accent-glow); }
+    .sprint-dot.done    { background: var(--surface-2); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    .sprint-dot.pending { background: var(--surface); color: var(--text-3); border: 1px solid var(--border); }
+    .sprint-body { padding-top: 4px; }
+    .sprint-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .sprint-title {
+      font-family: var(--font-display);
+      font-size: 18px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.02em;
+    }
+
+    /* ── Task rows (Sprint 1) ── */
+    .task-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .task-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 18px; gap: 16px;
+      transition: border-color var(--transition);
+    }
+    .task-row:hover { border-color: var(--border-2); }
+    .task-name { font-size: 13.5px; color: var(--text); font-weight: 500; }
+    .task-note { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+    .task-status { flex-shrink: 0; }
+
+    @media (max-width: 640px) {
+      .timeline::before { display: none; }
+      .sprint-item { grid-template-columns: 1fr; }
+      .sprint-dot { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="index.html"    class="nav-link">Home</a>
+      <a href="progress.html" class="nav-link">Progress</a>
+      <a href="news.html"     class="nav-link">News</a>
+      <a href="member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Sprint Status</p>
+    <h1>Team Progress</h1>
+    <p>A live view of where S2 stands — sprint by sprint, task by task.</p>
+  </div>
+</div>
+
+<!-- ════ SPRINT 1 ACTIVE ════ -->
+<section class="section">
+  <div class="container">
+    <p class="section-label reveal">Sprint 1</p>
+    <h2 class="reveal">Currently Active</h2>
+
+    <div class="timeline" style="margin-top:40px;">
+
+      <!-- Sprint 1 -->
+      <div class="sprint-item reveal">
+        <div class="sprint-dot active">S1</div>
+        <div class="sprint-body">
+          <div class="sprint-header">
+            <span class="sprint-title">Sprint 1 — Foundation &amp; Enablement</span>
+            <span class="badge active">Active</span>
+          </div>
+          <p style="font-size:13.5px;color:var(--text-2);max-width:660px;line-height:1.65;margin-bottom:20px;">
+            The focus of Sprint 1 is establishing the team, defining the data contract, and standing up
+            the infrastructure that the rest of the project depends on.
+          </p>
+
+          <div class="task-list">
+            <div class="task-row">
+              <div>
+                <div class="task-name">Team Recruitment</div>
+                <div class="task-note">All five roles filled across PT and CN sides</div>
+              </div>
+              <div class="task-status"><span class="badge done">100%</span></div>
+            </div>
+            <div class="task-row">
+              <div>
+                <div class="task-name">Team Role Assignment</div>
+                <div class="task-note">PM, Vice PM, System Architect, Programmer (PT), Programmer (CN)</div>
+              </div>
+              <div class="task-status"><span class="badge done">100%</span></div>
+            </div>
+            <div class="task-row">
+              <div>
+                <div class="task-name">Team Website</div>
+                <div class="task-note">Published on GitHub Pages — the page you are reading now</div>
+              </div>
+              <div class="task-status"><span class="badge done">100%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sprint 2 -->
+      <div class="sprint-item reveal">
+        <div class="sprint-dot pending">S2</div>
+        <div class="sprint-body">
+          <div class="sprint-header">
+            <span class="sprint-title">Sprint 2</span>
+            <span class="badge pending">Upcoming</span>
+          </div>
+          <p style="font-size:13.5px;color:var(--text-3);">Details to be defined at the start of Sprint 2.</p>
+        </div>
+      </div>
+
+      <!-- Sprint 3 -->
+      <div class="sprint-item reveal">
+        <div class="sprint-dot pending">S3</div>
+        <div class="sprint-body">
+          <div class="sprint-header">
+            <span class="sprint-title">Sprint 3</span>
+            <span class="badge pending">Upcoming</span>
+          </div>
+          <p style="font-size:13.5px;color:var(--text-3);">Details to be defined at the start of Sprint 3.</p>
+        </div>
+      </div>
+
+      <!-- Sprint 4 -->
+      <div class="sprint-item reveal">
+        <div class="sprint-dot pending">S4</div>
+        <div class="sprint-body">
+          <div class="sprint-header">
+            <span class="sprint-title">Sprint 4</span>
+            <span class="badge pending">Upcoming</span>
+          </div>
+          <p style="font-size:13.5px;color:var(--text-3);">Details to be defined at the start of Sprint 4.</p>
+        </div>
+      </div>
+
+      <!-- Sprint 5 -->
+      <div class="sprint-item reveal">
+        <div class="sprint-dot pending">S5</div>
+        <div class="sprint-body">
+          <div class="sprint-header">
+            <span class="sprint-title">Sprint 5</span>
+            <span class="badge pending">Upcoming</span>
+          </div>
+          <p style="font-size:13.5px;color:var(--text-3);">Details to be defined at the start of Sprint 5.</p>
+        </div>
+      </div>
+
+      <!-- Sprint 6 -->
+      <div class="sprint-item reveal">
+        <div class="sprint-dot pending">S6</div>
+        <div class="sprint-body">
+          <div class="sprint-header">
+            <span class="sprint-title">Sprint 6 — Final Demonstration</span>
+            <span class="badge pending">Upcoming</span>
+          </div>
+          <p style="font-size:13.5px;color:var(--text-3);">Cross-team integration, final documentation, and project demonstration.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════ SPRINT 1 KEY COMMITMENTS ════ -->
+<section class="section alt">
+  <div class="container">
+    <p class="section-label reveal">Sprint 1 Commitments</p>
+    <h2 class="reveal">What S2 Must Deliver Before Sprint 1 Closes</h2>
+    <p class="section-intro reveal">
+      Two deliverables from S2 are prerequisites for the rest of the project to move forward.
+      They are not optional and cannot slip.
+    </p>
+    <div class="grid two">
+      <div class="card accent-top reveal reveal-d1" style="border-color:rgba(249,115,22,0.2);">
+        <div class="card-top">
+          <h3>Mock Sensor Data Module</h3>
+          <span class="badge pending">In Sprint 1</span>
+        </div>
+        <p>A working software mock that generates IF1-compliant data streams. Required by V1, V2, M1, and M2 before they can begin their own Sprint 1 work.</p>
+      </div>
+      <div class="card accent-top reveal reveal-d2" style="border-color:rgba(249,115,22,0.2);">
+        <div class="card-top">
+          <h3>IF1 Contract — Frozen</h3>
+          <span class="badge pending">In Sprint 1</span>
+        </div>
+        <p>The Sensor → Server interface contract, co-authored with V1, must be agreed and frozen by end of Sprint 1. All S2 and V1 code is built against this fixed specification.</p>
+      </div>
+    </div>
+    <div class="callout reveal" style="margin-top:20px;">
+      <p>
+        <strong>Why the deadline is hard:</strong> The DSD project structure requires
+        parallel development across all six teams. Without a frozen IF1 and a working mock module
+        from S2, Teams V1, V2, M1, and M2 have no agreed data contract and no data to test against —
+        which means they cannot make meaningful progress. S2's Sprint 1 is the system's critical path.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 · Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator · UTAD × Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="progress.html">Progress</a>
+      <a href="news.html">News</a>
+      <a href="member.html">Member</a>
+      <a href="https://github.com/rsdbkhusky/DSD2026_TeamS2" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="script.js"></script>
+</body>
+</html>

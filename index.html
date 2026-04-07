@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSD2026 · Team S2</title>
+  <meta name="description" content="Team S2 – Data Acquisition & Mock Generator. DSD 2025–2026 UTAD × Jilin University." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- VISUAL FX: cursor glow layer — remove this div to disable -->
+<div id="cursor-glow"></div>
+
+<!-- VISUAL FX: scroll progress bar — remove this div to disable -->
+<div class="nav-progress-bar"></div>
+
+<!-- ════ NAVBAR ════ -->
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="index.html"    class="nav-link">Home</a>
+      <a href="progress.html" class="nav-link">Progress</a>
+      <a href="news.html"     class="nav-link">News</a>
+      <a href="member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="container hero-inner">
+    <div class="hero-universities">
+      UTAD <span class="utag pt">PT</span>
+      <span class="sep"> | </span>
+      Jilin University <span class="utag cn">CN</span>
+    </div>
+    <h1 class="hero-title">
+      Limb Motion<br>Recognition<br>&amp; <span class="accent">Assistant</span>
+    </h1>
+    <p class="hero-subtitle">S2 · Data Acquisition &amp; Mock Generator</p>
+    <p class="hero-tagline">
+      Without clean, structured sensor data, the entire system stalls.
+      <strong>S2 is the pipeline that makes everything else possible.</strong>
+    </p>
+    <div class="hero-cards">
+      <div class="hero-card">
+        <div class="hero-card-label">Layer</div>
+        <div class="hero-card-title">Sensor</div>
+        <div class="hero-card-desc">One of two teams in the physical data layer</div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-label">Critical Deliverable</div>
+        <div class="hero-card-title">Sprint 1 Mock Module</div>
+        <div class="hero-card-desc">Unblocks 4 of 6 teams from day one</div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-label">Interface</div>
+        <div class="hero-card-title">IF1 Co-author</div>
+        <div class="hero-card-desc">Sensor → Server contract, co-owned with V1</div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-label">Collaboration</div>
+        <div class="hero-card-title">PT &amp; CN</div>
+        <div class="hero-card-desc">UTAD × Jilin University distributed team</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- ════ ABOUT IMAGE ════ -->
+<section class="section" id="about">
+  <div class="container">
+    <p class="section-label reveal">S2 at a Glance</p>
+    <h2 class="reveal">The Critical Data Nexus</h2>
+    <p class="section-intro reveal">
+      S2 sits at the junction between raw physical sensors and the intelligent server layer.
+      Every byte of motion data that V1, V2, M1, and M2 depend on passes through our pipeline first.
+    </p>
+    <!-- VISUAL FX: about image — remove this div to disable -->
+    <div class="about-img-wrap reveal">
+      <img src="./img/about.png" alt="Team S2: The Critical Data Nexus — pipeline diagram" />
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span>· · ·</span></div>
+
+<!-- ════ SYSTEM ARCHITECTURE ════ -->
+<section class="section alt" id="architecture">
+  <div class="container">
+    <p class="section-label reveal">System Architecture</p>
+    <h2 class="reveal">Six Teams. Three Layers. Two Contracts.</h2>
+    <p class="section-intro reveal">
+      The system is divided into three functional layers — Sensor, Server, and Monitor —
+      following a balanced 2-2-2 distribution. Each layer develops independently, with
+      formally defined interface contracts enabling true parallel development across all six teams.
+    </p>
+
+    <!-- Flow diagram -->
+    <div class="flow-diagram reveal" style="margin-bottom:24px;">
+      <div class="flow-group">
+        <div class="flow-group-label">Sensor Layer</div>
+        <div class="flow-node sensor">S1 · Firmware</div>
+        <div class="flow-node sensor s2-node">S2 · Data Acq. ★</div>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-arrow-if">IF1</div>
+        <div class="flow-arrow-sym">→</div>
+      </div>
+      <div class="flow-group">
+        <div class="flow-group-label">Server Layer</div>
+        <div class="flow-node server">V1 · AI Engine</div>
+        <div class="flow-node server">V2 · API &amp; DB</div>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-arrow-if">IF2</div>
+        <div class="flow-arrow-sym">→</div>
+      </div>
+      <div class="flow-group">
+        <div class="flow-group-label">Monitor Layer</div>
+        <div class="flow-node monitor">M1 · Patient App</div>
+        <div class="flow-node monitor">M2 · Web Dashboard</div>
+      </div>
+    </div>
+
+    <!-- Team responsibility table -->
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Team</th>
+            <th>Lead</th>
+            <th>Main Responsibility</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sensor</td>
+            <td>S1 — Firmware &amp; Protocol</td>
+            <td>Zhihang Yu</td>
+            <td>Sensor firmware, wireless protocol, data packet format</td>
+          </tr>
+          <tr class="highlight">
+            <td>Sensor</td>
+            <td><strong>S2 — Data Acquisition &amp; Mock Generator ★</strong></td>
+            <td>Zhiqi Zhang</td>
+            <td>Data pipeline, validation &amp; cleansing, mock data module</td>
+          </tr>
+          <tr>
+            <td>Server</td>
+            <td>V1 — AI &amp; Motion Recognition</td>
+            <td>Diogo Borges</td>
+            <td>Deep learning model integration, motion analysis pipeline</td>
+          </tr>
+          <tr>
+            <td>Server</td>
+            <td>V2 — Backend API &amp; Storage</td>
+            <td>Sergio Moniz</td>
+            <td>REST/WebSocket API, database, recommendation engine</td>
+          </tr>
+          <tr>
+            <td>Monitor</td>
+            <td>M1 — Patient Mobile App</td>
+            <td>Diogo Pinhel</td>
+            <td>Real-time rehabilitation feedback mobile interface</td>
+          </tr>
+          <tr>
+            <td>Monitor</td>
+            <td>M2 — Clinical Web Dashboard</td>
+            <td>Yihang Li</td>
+            <td>Historical recovery dashboard, 3D limb reconstruction</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span>· · ·</span></div>
+
+<!-- ════ INTERFACE CONTRACTS ════ -->
+<section class="section" id="contracts">
+  <div class="container">
+    <p class="section-label reveal">Interface Contracts</p>
+    <h2 class="reveal">The Agreements That Bind the System</h2>
+    <p class="section-intro reveal">
+      Two interface contracts formally define how data flows between layers.
+      S2 co-owns IF1 — the earlier of the two — and its timely definition directly determines
+      when the rest of the project can begin real development.
+    </p>
+    <div class="grid two">
+      <div class="card accent-top reveal reveal-d1" style="border-color:rgba(249,115,22,0.25);">
+        <div class="card-top">
+          <h3 style="color:var(--orange);">IF1 — Sensor to Server</h3>
+          <span class="badge pending">Sprint 1</span>
+        </div>
+        <ul>
+          <li>JSON data schema, sampling rate, error codes</li>
+          <li>Co-owned by S2 and V1 System Architects</li>
+          <li>Frozen by end of Sprint 1</li>
+        </ul>
+      </div>
+      <div class="card reveal reveal-d2">
+        <div class="card-top">
+          <h3 style="color:var(--accent-2);">IF2 — Server to Monitor</h3>
+          <span class="badge pending">Sprint 2</span>
+        </div>
+        <ul>
+          <li>REST &amp; WebSocket API specification</li>
+          <li>Co-owned by V2 and M1 System Architects</li>
+          <li>Frozen by end of Sprint 2</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span>· · ·</span></div>
+
+<!-- ════ S2 RESPONSIBILITIES ════ -->
+<section class="section alt" id="responsibilities">
+  <div class="container">
+    <p class="section-label reveal">S2 Responsibilities</p>
+    <h2 class="reveal">Four Tasks. Zero Margin for Delay.</h2>
+    <p class="section-intro reveal">
+      S2's four core responsibilities are tightly sequenced — each one is a prerequisite for
+      the next, and the first two are mandatory Sprint 1 deliverables that the rest of the project waits on.
+    </p>
+    <div class="grid two">
+      <div class="card accent-top reveal reveal-d1">
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Sprint 1 · Mandatory</div>
+        <h3>Mock Sensor Data Module</h3>
+        <p>A software module that generates realistic, schema-compliant sensor data streams without any physical hardware. Once published, it immediately unblocks Teams V1, V2, M1, and M2 to begin their own development in parallel.</p>
+      </div>
+      <div class="card accent-top reveal reveal-d2">
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Sprint 1 · Mandatory</div>
+        <h3>IF1 Interface Contract</h3>
+        <p>Co-authored with V1's System Architect, IF1 defines the exact JSON schema, sampling rate, error codes, and MQTT structure for all Sensor → Server communication. Frozen by end of Sprint 1, it becomes the immutable contract both layers build against.</p>
+      </div>
+      <div class="card reveal reveal-d3">
+        <h3>Data Acquisition Pipeline</h3>
+        <p>The full production pipeline from physical IMU sensor hardware to the server entry point — including transmission handling, connection management, and forward-compatibility with the frozen IF1 contract.</p>
+      </div>
+      <div class="card reveal reveal-d4">
+        <h3>Data Validation &amp; Cleansing</h3>
+        <p>Incoming packets are checked against the IF1 schema, anomalies are filtered, and malformed data is handled gracefully before anything reaches V1 or V2. Downstream AI models are only as good as the data they receive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span>· · ·</span></div>
+
+<!-- ════ STATS ════ -->
+<section class="section" id="stats">
+  <div class="container">
+    <p class="section-label reveal">By the Numbers</p>
+    <h2 class="reveal">The Scale of What S2 Enables</h2>
+    <div class="grid four" style="margin-top:8px;">
+      <div class="card stat-card reveal reveal-d1">
+        <div class="stat-num" data-target="28">28</div>
+        <div class="stat-label">Students whose work depends on a shared data contract</div>
+      </div>
+      <div class="card stat-card reveal reveal-d2">
+        <div class="stat-num" data-target="4">4</div>
+        <div class="stat-label">Teams unblocked by the Sprint 1 mock module</div>
+      </div>
+      <div class="card stat-card reveal reveal-d3">
+        <div class="stat-num" data-target="2">2</div>
+        <div class="stat-label">Interface contracts that govern all cross-layer communication</div>
+      </div>
+      <div class="card stat-card reveal reveal-d4">
+        <div class="stat-num" data-target="1">1</div>
+        <div class="stat-label">Sprint to freeze IF1 and ship the mock module</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span>· · ·</span></div>
+
+<!-- ════ WORKFLOW ════ -->
+<section class="section alt" id="workflow">
+  <div class="container">
+    <p class="section-label reveal">How We Work</p>
+    <h2 class="reveal">Distributed by Design</h2>
+    <p class="section-intro reveal">
+      A 7–8 hour timezone gap between Lisbon and Changchun is not an obstacle — it is a constraint
+      we have built our workflow around. Async-first communication and a clear shadow-PM structure
+      mean the team never fully stops.
+    </p>
+    <div class="grid two">
+      <div class="card reveal reveal-d1">
+        <h3>Communication Stack</h3>
+        <ul>
+          <li>WeChat — primary daily async channel</li>
+          <li>Discord — shared coordination space</li>
+          <li>VooV (WeMeet) — formal cross-team meetings</li>
+          <li>GitHub Wiki — Vice PM daily standup posts</li>
+        </ul>
+      </div>
+      <div class="card reveal reveal-d2">
+        <h3>Development Practices</h3>
+        <ul>
+          <li>Feature-branch Git workflow, English commit messages</li>
+          <li>PT programmer formally cross-tests CN code, and vice versa</li>
+          <li>All documentation and issue titles in English</li>
+          <li>GitHub Projects for sprint task tracking</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout reveal" style="margin-top:20px;">
+      <p>
+        <strong>Cross-testing model:</strong>
+        There is no dedicated Tester role. Instead, the Portuguese and Chinese programmers
+        formally review and test each other's code. Independent verification across timezones
+        is the quality gate.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 · Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator · UTAD × Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="progress.html">Progress</a>
+      <a href="news.html">News</a>
+      <a href="member.html">Member</a>
+      <a href="https://github.com/rsdbkhusky/DSD2026_TeamS2" target="_blank">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+
+<script src="script.js"></script>
+
+<!-- ════ VISUAL FX: NEWS SIDE BANNER (decoupled — remove this block to disable) ════ -->
+<style>
+  .news-side-banner {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 800;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .news-side-banner a {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    text-decoration: none;
+  }
+  .news-side-tab {
+    background: #dc2626;
+    color: #fff;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 18px 10px;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    transition: background 0.2s ease, padding 0.2s ease;
+    white-space: nowrap;
+    box-shadow: 2px 0 12px rgba(220,38,38,0.35);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-left: none;
+  }
+  .news-side-banner a:hover .news-side-tab {
+    background: #b91c1c;
+    padding: 18px 14px;
+  }
+  .news-side-panel {
+    background: #1a0808;
+    border: 1px solid rgba(220,38,38,0.4);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.35s cubic-bezier(0.16,1,0.3,1), padding 0.35s ease, opacity 0.25s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .news-side-banner:hover .news-side-panel {
+    max-width: 240px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .news-side-panel-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: #f87171;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 6px;
+    white-space: nowrap;
+  }
+  .news-side-panel-title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+  .news-side-panel-hint {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: #f87171;
+    margin-top: 8px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .news-side-banner {
+      top: auto;
+      bottom: 80px;
+      transform: none;
+    }
+  }
+</style>
+
+<div class="news-side-banner">
+  <a href="news/srs-draft.html">
+    <div class="news-side-tab">New · SRS Draft</div>
+    <div class="news-side-panel">
+      <div class="news-side-panel-label">Latest News</div>
+      <div class="news-side-panel-title">SRS Draft Published —<br>Requirements Survey</div>
+      <div class="news-side-panel-hint">Click to read →</div>
+    </div>
+  </a>
+</div>
+<!-- ════ END NEWS SIDE BANNER ════ -->
+
+</body>
+</html>

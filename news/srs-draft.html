@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRS Draft · News · DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* ── Use case table ── */
+    .uc-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 20px 0; }
+    .uc-table { width: 100%; border-collapse: collapse; }
+    .uc-table th {
+      background: var(--surface-2);
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-3); text-transform: uppercase;
+      letter-spacing: 0.1em; padding: 10px 16px;
+      text-align: left; font-weight: 400;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .uc-table td {
+      padding: 11px 16px; font-size: 13px; color: var(--text-2);
+      border-bottom: 1px solid var(--border); vertical-align: top;
+      line-height: 1.55;
+    }
+    .uc-table tr:last-child td { border-bottom: none; }
+    .uc-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .uc-table td:first-child { color: var(--accent-2); font-weight: 600; white-space: nowrap; font-family: var(--font-mono); font-size: 12px; }
+
+    /* flow table */
+    .flow-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0; }
+    .flow-table { width: 100%; border-collapse: collapse; }
+    .flow-table th {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px;
+      text-align: left; font-weight: 400; border-bottom: 1px solid var(--border);
+      width: 50%;
+    }
+    .flow-table th.actor-col { background: rgba(249,115,22,0.08); border-right: 1px solid var(--border); }
+    .flow-table th.system-col { background: rgba(59,130,246,0.08); }
+    .flow-table td {
+      padding: 10px 16px; font-size: 12.5px; color: var(--text-2);
+      border-bottom: 1px solid var(--border); vertical-align: top;
+      line-height: 1.5; width: 50%;
+    }
+    .flow-table td.actor-col { border-right: 1px solid var(--border); color: var(--orange); }
+    .flow-table td.system-col { color: var(--accent-2); }
+    .flow-table tr:last-child td { border-bottom: none; }
+    .flow-table td:empty::after { content: '—'; color: var(--text-3); font-family: var(--font-mono); font-size: 11px; }
+
+    /* uc block */
+    .uc-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 30px;
+      margin: 32px 0;
+    }
+    .uc-block-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 16px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .uc-id {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.12em; margin-bottom: 6px;
+    }
+    .uc-title {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.015em;
+    }
+    .uc-section-title {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin: 20px 0 8px;
+    }
+
+    /* actors grid */
+    .actors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+    .actor-card {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px;
+    }
+    .actor-card-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .actor-card-desc { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+
+    /* revision history */
+    .rev-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0 32px; }
+    .rev-table { width: 100%; border-collapse: collapse; }
+    .rev-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .rev-table td { padding: 10px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+    .rev-table tr:last-child td { border-bottom: none; }
+
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em; }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge active">SRS</span>
+      <span class="badge info">Requirements</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">April 2026</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      Software Requirements Specification — Draft
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      The first draft of the SRS for the Limb Motion Recognition &amp; Assistant system.
+      This document identifies the key actors, use cases, and interaction flows
+      across all three system layers — Sensor, Server, and Monitor.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- Revision History -->
+    <div class="rev-table-wrap">
+      <table class="rev-table">
+        <thead><tr><th>Date</th><th>Author</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Apr 5, 2026</td><td>Zhiqi ZHANG (S2 PM)</td><td>Initial draft — background, actors, use cases UC-01 through UC-07</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 0. Background -->
+    <h2>0. Background</h2>
+    <p>
+      The <strong>Limb Motion Recognition &amp; Assistant</strong> system is a distributed rehabilitation platform
+      jointly developed by UTAD (Portugal) and Jilin University (China) under the DSD 2025–2026 programme.
+      The system captures joint motion data from wearable IMU sensors worn by rehabilitation patients,
+      processes that data through AI-based motion recognition on a central server, and delivers
+      real-time feedback to patients and historical analysis to medical professionals.
+    </p>
+    <p>
+      This Software Requirements Specification (SRS) defines the functional requirements of the complete system
+      through a set of use cases. It is intended to serve as the shared contract between all six development teams
+      (S1, S2, V1, V2, M1, M2) — ensuring that each team builds towards the same user-facing goals,
+      even when working independently on different layers.
+    </p>
+    <p>
+      The system must support two deployment contexts that impose different requirements on connectivity,
+      guidance, and data handling:
+    </p>
+    <ul>
+      <li><strong>Clinical setting (hospital/rehabilitation centre):</strong> Medical staff assist with sensor setup. Stable network environment. Sessions are supervised. Real-time data upload is assumed.</li>
+      <li><strong>Home setting:</strong> Patients operate independently. Network may be unstable (home WiFi or mobile data). The system must guide users through setup and tolerate intermittent connectivity with local data buffering.</li>
+    </ul>
+
+    <!-- 1. Actors -->
+    <h2>1. Actors</h2>
+    <p>Three primary actors interact with the system:</p>
+    <div class="actors-grid">
+      <div class="actor-card">
+        <div class="actor-card-name">Patient</div>
+        <div class="actor-card-desc">A rehabilitation patient wearing IMU sensors. Uses the mobile app (M1) to perform guided exercises and receive real-time posture feedback. May operate at home or in a clinical setting.</div>
+      </div>
+      <div class="actor-card">
+        <div class="actor-card-name">Medical Professional</div>
+        <div class="actor-card-desc">A doctor or physiotherapist who reviews recovery data, prescribes exercise plans, and monitors patient progress through the clinical web dashboard (M2).</div>
+      </div>
+      <div class="actor-card">
+        <div class="actor-card-name">System</div>
+        <div class="actor-card-desc">The automated backend — sensor data pipeline (S2), AI inference engine (V1), API gateway (V2) — that processes data and drives the user-facing interfaces.</div>
+      </div>
+    </div>
+
+    <!-- 2. Use Cases overview -->
+    <h2>2. Use Case Index</h2>
+    <div class="uc-table-wrap">
+      <table class="uc-table">
+        <thead>
+          <tr><th>ID</th><th>Use Case</th><th>Primary Actor</th><th>Layer</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>UC-01</td><td>User Registration</td><td>Patient / Medical Professional</td><td>V2 · M1 · M2</td></tr>
+          <tr><td>UC-02</td><td>User Login</td><td>Patient / Medical Professional</td><td>V2 · M1 · M2</td></tr>
+          <tr><td>UC-03</td><td>Sensor Connection</td><td>Patient</td><td>S1 · S2 · M1</td></tr>
+          <tr><td>UC-04</td><td>Start Rehabilitation Session</td><td>Patient</td><td>S2 · V1 · M1</td></tr>
+          <tr><td>UC-05</td><td>Receive Real-Time Motion Feedback</td><td>Patient</td><td>V1 · V2 · M1</td></tr>
+          <tr><td>UC-06</td><td>Review Patient Progress</td><td>Medical Professional</td><td>V2 · M2</td></tr>
+          <tr><td>UC-07</td><td>Prescribe Exercise Plan</td><td>Medical Professional</td><td>V2 · M2 · M1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- UC-01 -->
+    <h2>3. Use Case Specifications</h2>
+
+    <div class="uc-block">
+      <div class="uc-block-header">
+        <div>
+          <div class="uc-id">UC-01</div>
+          <div class="uc-title">User Registration</div>
+        </div>
+        <span class="badge info">Version 0.1</span>
+      </div>
+
+      <div class="uc-table-wrap">
+        <table class="uc-table">
+          <tbody>
+            <tr><td>Actors</td><td>Patient, Medical Professional</td></tr>
+            <tr><td>Goal</td><td>Allow a new user to create an account and join the system</td></tr>
+            <tr><td>Trigger</td><td>User opens the app or dashboard for the first time and selects "Register"</td></tr>
+            <tr><td>Precondition</td><td>The system is online and the registration service is available</td></tr>
+            <tr><td>Postcondition</td><td>A unique user account is created and stored; user is redirected to login</td></tr>
+            <tr><td>Frequency</td><td>Once per user, at initial setup</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Basic Flow</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">User selects role (Patient or Medical Professional) and enters name, email, and password</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Validates that the email address is not already registered</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Validates password meets complexity requirements (min 8 characters, at least one number)</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Creates user account and persists to database; assigns role-based permissions</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Sends confirmation email to the registered address</td></tr>
+            <tr><td class="actor-col">User receives confirmation and is directed to the login screen</td><td class="system-col"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Alternative Flow — Email Already Registered</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">User submits registration form</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Detects that the email is already associated with an existing account</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Returns error: "An account with this email already exists. Please log in or reset your password."</td></tr>
+            <tr><td class="actor-col">User is offered links to Login or Forgot Password</td><td class="system-col"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Alternative Flow — Invalid Password Format</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">User submits a password that does not meet complexity requirements</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Returns inline validation error highlighting the password field with specific requirement not met</td></tr>
+            <tr><td class="actor-col">User corrects the password and resubmits</td><td class="system-col"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- UC-02 -->
+    <div class="uc-block">
+      <div class="uc-block-header">
+        <div>
+          <div class="uc-id">UC-02</div>
+          <div class="uc-title">User Login</div>
+        </div>
+        <span class="badge info">Version 0.1</span>
+      </div>
+
+      <div class="uc-table-wrap">
+        <table class="uc-table">
+          <tbody>
+            <tr><td>Actors</td><td>Patient, Medical Professional</td></tr>
+            <tr><td>Goal</td><td>Authenticate an existing user and grant access to role-appropriate features</td></tr>
+            <tr><td>Trigger</td><td>User opens the app or dashboard and selects "Log In"</td></tr>
+            <tr><td>Precondition</td><td>User has a registered account; system is online</td></tr>
+            <tr><td>Postcondition</td><td>User is authenticated and redirected to their role-specific home screen</td></tr>
+            <tr><td>Frequency</td><td>Every session start</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Basic Flow</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">User enters registered email and password</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Verifies credentials against stored records</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Issues authentication token; records login timestamp</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Redirects Patient to M1 home screen; Medical Professional to M2 dashboard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Alternative Flow — Incorrect Credentials</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">User submits incorrect email or password</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Returns generic error: "Incorrect email or password" (without specifying which field is wrong, for security)</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">After 5 consecutive failed attempts, locks the account for 15 minutes and notifies the user</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- UC-03 -->
+    <div class="uc-block">
+      <div class="uc-block-header">
+        <div>
+          <div class="uc-id">UC-03</div>
+          <div class="uc-title">Sensor Connection</div>
+        </div>
+        <span class="badge info">Version 0.1</span>
+      </div>
+
+      <div class="uc-table-wrap">
+        <table class="uc-table">
+          <tbody>
+            <tr><td>Actors</td><td>Patient (with or without clinical staff assistance)</td></tr>
+            <tr><td>Goal</td><td>Establish a verified connection between the IMU sensor(s) and the system before a session begins</td></tr>
+            <tr><td>Trigger</td><td>Patient selects "Start Session" in the mobile app</td></tr>
+            <tr><td>Precondition</td><td>Patient is logged in; IMU sensor is powered on and within Bluetooth range</td></tr>
+            <tr><td>Postcondition</td><td>Sensor is paired, calibrated, and streaming valid data; session can begin</td></tr>
+            <tr><td>Frequency</td><td>Once per rehabilitation session</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Basic Flow — Clinical Setting (staff-assisted)</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Clinical staff attaches IMU sensor to patient's limb and powers it on</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col">Patient (or staff) taps "Connect Sensor" in the app</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Scans for available Bluetooth devices and identifies the sensor by device ID</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Establishes Bluetooth connection and begins receiving raw IMU data</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Runs calibration routine: prompts patient to hold limb still for 3 seconds to establish baseline orientation</td></tr>
+            <tr><td class="actor-col">Patient holds still while the calibration countdown runs</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Confirms calibration success; displays sensor status as "Connected &amp; Ready"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Basic Flow — Home Setting (patient self-setup)</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Patient opens app; app detects no sensor is connected</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Displays illustrated step-by-step guide for attaching the sensor to the correct limb position</td></tr>
+            <tr><td class="actor-col">Patient attaches sensor following the guide and powers it on</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col">Patient taps "Connect"</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Scans, pairs, calibrates (same as clinical flow)</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Confirms connection; if network is unavailable, enables local buffering mode and notifies patient that data will sync when connectivity is restored</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Alternative Flow — Sensor Not Found</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Patient taps "Connect Sensor"</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Scans for 10 seconds and finds no compatible device</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Displays troubleshooting guide: check power, check Bluetooth is enabled, bring sensor within 1 metre</td></tr>
+            <tr><td class="actor-col">Patient follows guide and retries</td><td class="system-col"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- UC-04 -->
+    <div class="uc-block">
+      <div class="uc-block-header">
+        <div>
+          <div class="uc-id">UC-04</div>
+          <div class="uc-title">Start Rehabilitation Session</div>
+        </div>
+        <span class="badge info">Version 0.1</span>
+      </div>
+
+      <div class="uc-table-wrap">
+        <table class="uc-table">
+          <tbody>
+            <tr><td>Actors</td><td>Patient, System</td></tr>
+            <tr><td>Goal</td><td>Begin a timed rehabilitation exercise session with live sensor data flowing to the server</td></tr>
+            <tr><td>Trigger</td><td>Sensor is connected (UC-03 complete); patient taps "Begin Exercise"</td></tr>
+            <tr><td>Precondition</td><td>Patient is logged in, sensor is connected and calibrated, an exercise plan has been prescribed (UC-07) or a default plan exists</td></tr>
+            <tr><td>Postcondition</td><td>Session is active; sensor data is streaming through S2 pipeline to V1 for inference; M1 is displaying real-time feedback</td></tr>
+            <tr><td>Frequency</td><td>Multiple times per day per patient</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Basic Flow</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Patient selects the prescribed exercise from their plan and taps "Begin"</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Displays a 3-second countdown and prompts patient to assume starting position</td></tr>
+            <tr><td class="actor-col">Patient assumes starting position</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Begins recording session; opens data stream from S2 pipeline to V1; creates session record in V2 database with timestamp and patient ID</td></tr>
+            <tr><td class="actor-col">Patient performs the exercise</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Continuously forwards sensor packets through S2 → V1 → V2 → M1 in real time</td></tr>
+            <tr><td class="actor-col">Patient completes the exercise set and taps "End Session"</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Closes the data stream; finalises session record; displays session summary (duration, rep count, average accuracy)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Alternative Flow — Connection Lost Mid-Session (Home Setting)</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Patient is mid-session when network connectivity drops</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Switches to local buffering mode silently; displays a small offline indicator but does not interrupt the session</td></tr>
+            <tr><td class="actor-col">Patient completes the session normally</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">When connectivity is restored, uploads buffered session data to V2 in the background</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- UC-05 -->
+    <div class="uc-block">
+      <div class="uc-block-header">
+        <div>
+          <div class="uc-id">UC-05</div>
+          <div class="uc-title">Receive Real-Time Motion Feedback</div>
+        </div>
+        <span class="badge info">Version 0.1</span>
+      </div>
+
+      <div class="uc-table-wrap">
+        <table class="uc-table">
+          <tbody>
+            <tr><td>Actors</td><td>Patient, System (V1 AI engine, M1 mobile app)</td></tr>
+            <tr><td>Goal</td><td>Provide the patient with immediate, actionable feedback on joint angle accuracy during exercise</td></tr>
+            <tr><td>Trigger</td><td>Active session (UC-04); V1 inference result is returned for each sensor packet</td></tr>
+            <tr><td>Precondition</td><td>Session is active; data pipeline S2 → V1 → V2 → M1 is operational</td></tr>
+            <tr><td>Postcondition</td><td>Patient has received visual and/or haptic feedback indicating correctness of movement</td></tr>
+            <tr><td>Frequency</td><td>Continuous during active session (driven by sensor sampling rate)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Basic Flow</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Patient performs a repetition of the prescribed movement</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">S2 acquires sensor packet and forwards it through the pipeline</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">V1 runs inference; compares detected joint angles against prescribed target angles for this exercise</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">V1 produces a result: angle deviation per joint, overall accuracy score, and any posture alert flags</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">M1 renders the result on screen: colour-coded joint overlay (green = within tolerance, red = deviation), text guidance (e.g. "Raise your knee 10° higher"), and optional haptic pulse</td></tr>
+            <tr><td class="actor-col">Patient reads feedback and adjusts their movement for the next repetition</td><td class="system-col"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Alternative Flow — Posture Alert (dangerous deviation)</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Patient performs a movement with joint angle deviation exceeding the safety threshold</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">V1 flags a posture alert; M1 interrupts the exercise with a full-screen warning, strong haptic feedback, and audio alert</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Session is paused automatically; patient is instructed to rest and return to starting position</td></tr>
+            <tr><td class="actor-col">Patient acknowledges the alert</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Alert event is logged to V2 and flagged for review by the assigned Medical Professional</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- UC-06 -->
+    <div class="uc-block">
+      <div class="uc-block-header">
+        <div>
+          <div class="uc-id">UC-06</div>
+          <div class="uc-title">Review Patient Progress</div>
+        </div>
+        <span class="badge info">Version 0.1</span>
+      </div>
+
+      <div class="uc-table-wrap">
+        <table class="uc-table">
+          <tbody>
+            <tr><td>Actors</td><td>Medical Professional</td></tr>
+            <tr><td>Goal</td><td>Review a patient's rehabilitation history, session accuracy trends, and flagged alerts via the clinical dashboard</td></tr>
+            <tr><td>Trigger</td><td>Medical Professional selects a patient from their patient list in M2</td></tr>
+            <tr><td>Precondition</td><td>Medical Professional is logged in; patient has at least one completed session</td></tr>
+            <tr><td>Postcondition</td><td>Medical Professional has viewed the patient's progress data and optionally added clinical notes</td></tr>
+            <tr><td>Frequency</td><td>At each clinical review appointment; may also be triggered by a posture alert notification</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Basic Flow</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Medical Professional logs into M2 dashboard and selects a patient</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Fetches patient's session history from V2 REST API; renders recovery trend charts (joint angle accuracy over time, session frequency, alert history)</td></tr>
+            <tr><td class="actor-col">Medical Professional reviews the charts and drills into a specific session</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Displays detailed session view: per-repetition accuracy, 3D limb reconstruction replay (M2), timeline of any alerts triggered during the session</td></tr>
+            <tr><td class="actor-col">Medical Professional adds a clinical note to the session record</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Saves the note to V2 and associates it with the patient record</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Alternative Flow — Alert Notification Triggered Review</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Medical Professional receives a push notification: "Patient [Name] triggered a posture alert during today's session"</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col">Medical Professional taps the notification</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Opens M2 directly to the flagged session with the alert moment highlighted in the timeline</td></tr>
+            <tr><td class="actor-col">Medical Professional reviews the event and contacts patient if necessary</td><td class="system-col"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- UC-07 -->
+    <div class="uc-block">
+      <div class="uc-block-header">
+        <div>
+          <div class="uc-id">UC-07</div>
+          <div class="uc-title">Prescribe Exercise Plan</div>
+        </div>
+        <span class="badge info">Version 0.1</span>
+      </div>
+
+      <div class="uc-table-wrap">
+        <table class="uc-table">
+          <tbody>
+            <tr><td>Actors</td><td>Medical Professional</td></tr>
+            <tr><td>Goal</td><td>Define and assign a personalised exercise plan to a patient, including exercise types, target angles, repetition counts, and schedule</td></tr>
+            <tr><td>Trigger</td><td>Medical Professional selects "New Plan" from a patient's profile in M2</td></tr>
+            <tr><td>Precondition</td><td>Medical Professional is logged in; patient account exists in the system</td></tr>
+            <tr><td>Postcondition</td><td>Exercise plan is saved and immediately visible to the patient in M1; future sessions will reference this plan for target angles and guidance</td></tr>
+            <tr><td>Frequency</td><td>At initial assessment and whenever the patient's recovery stage changes</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Basic Flow</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Medical Professional opens patient profile and selects "Create Exercise Plan"</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Presents plan builder: list of available exercises, target joint, target angle range, repetitions per set, sets per session, weekly frequency</td></tr>
+            <tr><td class="actor-col">Medical Professional configures the plan parameters for each prescribed exercise</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col">Medical Professional saves and publishes the plan</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Stores the plan in V2; pushes a notification to the patient's M1 app: "Your physiotherapist has updated your exercise plan"</td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">V1 inference engine loads the new target angle parameters for this patient's future sessions</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="uc-section-title">Alternative Flow — Plan Conflicts with Patient's Current Capability</div>
+      <div class="flow-table-wrap">
+        <table class="flow-table">
+          <thead><tr><th class="actor-col">Actor</th><th class="system-col">System</th></tr></thead>
+          <tbody>
+            <tr><td class="actor-col">Medical Professional sets a target angle range that exceeds the patient's recorded maximum range of motion from previous sessions</td><td class="system-col"></td></tr>
+            <tr><td class="actor-col"></td><td class="system-col">Displays a warning: "Target angle (95°) exceeds patient's recorded maximum (72°) from the last 7 days. Confirm or adjust."</td></tr>
+            <tr><td class="actor-col">Medical Professional reviews the warning and either adjusts the target or confirms the override with a clinical justification note</td><td class="system-col"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      SRS Draft v0.1 · Team S2 System Architect — Haobo Lin · DSD 2025–2026 · UTAD × Jilin University<br>
+      This document is a living draft. Use cases will be revised as interface contracts are finalised and team feedback is incorporated.
+    </p>
+
+  </div><!-- end article-body -->
+</div><!-- end container -->
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 · Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator · UTAD × Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>
