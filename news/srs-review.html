@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRS Error Review · News · DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em;
+    }
+    .article-body h4 {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--text); margin: 22px 0 8px;
+    }
+
+    /* fact card */
+    .fact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px 26px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition);
+    }
+    .fact-card:hover { border-color: var(--border-2); }
+    .fact-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .fact-card:hover::before { opacity: 1; }
+    .fact-num {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.12em; margin-bottom: 8px;
+    }
+    .fact-title {
+      font-family: var(--font-display); font-size: 17px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.015em; margin-bottom: 12px;
+    }
+    .fact-card p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin-bottom: 12px; }
+    .fact-card p:last-child { margin-bottom: 0; }
+
+    /* data tables inside fact cards */
+    .fact-table-wrap {
+      overflow-x: auto; border-radius: var(--radius);
+      border: 1px solid var(--border); margin: 14px 0;
+    }
+    .fact-table { width: 100%; border-collapse: collapse; }
+    .fact-table th {
+      background: var(--surface-2);
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-3); text-transform: uppercase;
+      letter-spacing: 0.1em; padding: 10px 16px;
+      text-align: left; font-weight: 400;
+      border-bottom: 1px solid var(--border);
+    }
+    .fact-table td {
+      padding: 10px 16px; font-size: 13px; color: var(--text-2);
+      border-bottom: 1px solid var(--border); vertical-align: top;
+    }
+    .fact-table tr:last-child td { border-bottom: none; }
+    .fact-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* review section */
+    .review-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 30px;
+      margin: 28px 0;
+    }
+    .review-block-header {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 16px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .reviewer-name {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.015em;
+    }
+    .reviewer-role {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .issue-item {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin: 12px 0;
+    }
+    .issue-item p { font-size: 13.5px; color: var(--text-2); line-height: 1.65; margin: 0; }
+    .issue-item p + p { margin-top: 8px; }
+    .issue-label {
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--orange); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 6px;
+    }
+
+    /* placeholder for empty reviews */
+    .review-placeholder {
+      background: var(--surface);
+      border: 1px dashed var(--border-2);
+      border-radius: var(--radius-lg);
+      padding: 28px 30px;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .review-placeholder p {
+      font-size: 14px; color: var(--text-3); font-style: italic;
+    }
+
+    /* summary placeholder */
+    .summary-placeholder {
+      background: var(--accent-dim);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .summary-placeholder p {
+      font-size: 14px; color: var(--text-3); font-style: italic; margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025–2026</span>
+      <span class="brand-title">S2 · <span>Data Acquisition</span></span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge active">Review</span>
+      <span class="badge info">Requirements</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">6 Apr 2026 · 19:00 UTC+8</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      SRS Error Review — Requirements Phase Inspection
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      A structured error review of the SRS Draft (v0.1), grounded in software engineering principles
+      on the cost of late-discovered defects. Each team member independently inspects the SRS and
+      proposes corrections before the document moves to the next revision.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- ═══════════════════════════════════════════════════
+         PART 1 — SOFTWARE ERROR FACTS
+         ═══════════════════════════════════════════════════ -->
+    <h2>1. Why Review Requirements Now — Five Facts About Software Errors</h2>
+
+    <p>
+      Before presenting the team's findings, it is worth establishing <strong>why</strong>
+      a formal requirements-phase review is not optional but critical. The following five
+      empirical facts, drawn from decades of software engineering research, make the case.
+    </p>
+
+    <!-- Fact 1 -->
+    <div class="fact-card">
+      <div class="fact-num">Fact 1</div>
+      <div class="fact-title">The later a defect is found, the more expensive it is to fix</div>
+      <p>
+        The cost of correcting a software error grows dramatically as the project advances
+        through its lifecycle. A defect that costs 0.1&ndash;0.2 units to fix during
+        requirements can cost 20 units if it survives to the maintenance phase &mdash; a
+        factor of 100&times; or more.
+      </p>
+      <div class="fact-table-wrap">
+        <table class="fact-table">
+          <thead>
+            <tr><th>Phase</th><th>Relative Cost of Repair</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Requirements</td><td>0.1 &ndash; 0.2</td></tr>
+            <tr><td>Design</td><td>0.5</td></tr>
+            <tr><td>Coding</td><td>1</td></tr>
+            <tr><td>Unit Testing</td><td>2</td></tr>
+            <tr><td>Acceptance Testing</td><td>5</td></tr>
+            <tr><td>Maintenance</td><td>20</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Fact 2 -->
+    <div class="fact-card">
+      <div class="fact-num">Fact 2</div>
+      <div class="fact-title">Many errors remain latent long after they are introduced</div>
+      <p>
+        Boehm's analysis of TRW projects found that <strong>54% of all detected errors</strong>
+        were not discovered until after the coding and unit testing phases. Worse, the vast
+        majority of these late-discovered errors (45% of all errors) actually originated in
+        the requirements and design phases, while coding-phase errors accounted for only 9%.
+      </p>
+      <p>
+        This means the most dangerous errors &mdash; those introduced earliest and caught latest
+        &mdash; are precisely the ones a requirements review is designed to intercept.
+      </p>
+    </div>
+
+    <!-- Fact 3 -->
+    <div class="fact-card">
+      <div class="fact-num">Fact 3</div>
+      <div class="fact-title">The requirements phase produces a disproportionate share of errors</div>
+      <p>
+        DeMarco's research report indicated that <strong>56% of all detected errors</strong>
+        can be traced back to the requirements phase. A separate investigation by AIRMICS
+        found over 500 errors in a single U.S. military management information system's
+        requirements specification document &mdash; and that was from just one project
+        in one audit.
+      </p>
+    </div>
+
+    <!-- Fact 4 -->
+    <div class="fact-card">
+      <div class="fact-num">Fact 4</div>
+      <div class="fact-title">Requirements errors are characterised by omission, inconsistency, and ambiguity</div>
+      <p>
+        The U.S. Naval Research Laboratory's field study on the A-7E flight operations
+        software found that <strong>77% of requirements errors</strong> were attributable to
+        vagueness &mdash; specifically omission, inconsistency, and ambiguity. The breakdown:
+      </p>
+      <div class="fact-table-wrap">
+        <table class="fact-table">
+          <thead>
+            <tr><th>Error Type</th><th>Proportion</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Incorrect facts</td><td>49%</td></tr>
+            <tr><td>Omissions</td><td>31%</td></tr>
+            <tr><td>Inconsistencies</td><td>13%</td></tr>
+            <tr><td>Ambiguities</td><td>5%</td></tr>
+            <tr><td>Misplaced information</td><td>2%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Fact 5 -->
+    <div class="fact-card">
+      <div class="fact-num">Fact 5</div>
+      <div class="fact-title">Requirements errors can be caught &mdash; inspection is the most effective method</div>
+      <p>
+        Not only are requirements errors detectable, but formal inspection is the single
+        most effective technique for finding them:
+      </p>
+      <div class="fact-table-wrap">
+        <table class="fact-table">
+          <thead>
+            <tr><th>Detection Method</th><th>Errors Found (%)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Inspection</td><td>65</td></tr>
+            <tr><td>Unit Testing</td><td>10</td></tr>
+            <tr><td>Integration Testing</td><td>5</td></tr>
+            <tr><td>Prototyping</td><td>6</td></tr>
+            <tr><td>Other</td><td>14</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Basili and Weiss's data confirmed that 33% of requirements errors in the A-7E
+        software definition documents were found through manual inspection. Celko further
+        argued that automated analysis tools could detect a significant additional proportion
+        of errors from the SRS.
+      </p>
+    </div>
+
+    <!-- Summary of Part 1 -->
+    <h3>The Case for Requirements-Phase Inspection</h3>
+    <p>
+      Taken together, these five facts establish an unambiguous conclusion:
+      <strong>the requirements phase is where most errors originate, where they are cheapest to fix,
+      and where inspection is the most effective detection method</strong>. Deferring review to
+      later phases does not save effort &mdash; it multiplies it.
+    </p>
+    <p>
+      For our SRS, this means each team member should independently review the document before
+      it advances to the next version. The review should target the four dominant error types
+      identified by the A-7E study: incorrect facts, omissions, inconsistencies, and ambiguities.
+    </p>
+    <p>
+      Effective requirements-phase review practices include:
+    </p>
+    <ul>
+      <li><strong>Formal inspection (Fagan inspection):</strong> A structured walkthrough where each reviewer independently reads the SRS, records defects, then the team meets to consolidate findings. The most reliable method for catching omissions and inconsistencies.</li>
+      <li><strong>Cross-referencing against system constraints:</strong> Checking every use case against known interface contracts (IF1, IF2), deployment contexts (clinical vs. home), and actor definitions to ensure nothing is contradicted or left undefined.</li>
+      <li><strong>Traceability checking:</strong> Verifying that every requirement can be traced to a stakeholder need, and that every stakeholder need has at least one requirement covering it. Missing traceability signals omissions.</li>
+      <li><strong>Consistency matrix:</strong> Building a matrix of all actors, terms, and interfaces mentioned across use cases to check that the same concept is never referred to by two different names (or two concepts by the same name).</li>
+      <li><strong>Automated static analysis:</strong> Where tooling is available, running the SRS through consistency checkers or natural language analysis to flag ambiguous phrasing, undefined terms, or passive-voice requirements that obscure responsibility.</li>
+    </ul>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══════════════════════════════════════════════════
+         PART 2 — MEMBER REVIEWS
+         ═══════════════════════════════════════════════════ -->
+    <h2>2. Member Reviews</h2>
+
+    <p>
+      Each team member independently inspects the SRS Draft (v0.1) and documents their findings
+      below. Reviews are structured by reviewer, with each issue categorised by type
+      (omission, inconsistency, ambiguity, or incorrect fact).
+    </p>
+
+    <!-- Member reviews rendered from Markdown by inline script below -->
+    <div id="member-reviews"></div>
+
+    <!-- ═══ MEMBER REVIEW DATA ═══
+         Each review is loaded from a separate .md file in srs-review/.
+         Syntax guide for team members:
+         - Write standard Markdown (headings, bold, italic, lists, links, tables, blockquotes)
+         - For issue cards, use fenced blocks:
+
+             ::: Omission · A-1
+             **Issue title.**
+             Description text...
+
+             **Recommendation:** Fix suggestion...
+             :::
+
+         - The text after ::: becomes the issue label (orange tag)
+         - Everything between ::: and the closing ::: is rendered as Markdown inside a styled card
+         - Leave the .md file empty if not yet submitted (shows placeholder)
+    ═══════════════════════════════════════ -->
+    <div id="review-manifest" style="display:none;"
+      data-reviews='[
+        {"file":"srs-review/zhiqi-zhang.md","name":"Zhiqi Zhang","role":"Project Manager"},
+        {"file":"srs-review/joao-neves.md","name":"João Neves","role":"Vice Project Manager"},
+        {"file":"srs-review/haobo-lin.md","name":"Haobo Lin","role":"System Architect"},
+        {"file":"srs-review/pengxu-chen.md","name":"Pengxu Chen","role":"Programmer"},
+        {"file":"srs-review/tianze-wang.md","name":"Tianze Wang","role":"Programmer"}
+      ]'></div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══════════════════════════════════════════════════
+         PART 3 — CONSOLIDATED SUMMARY
+         ═══════════════════════════════════════════════════ -->
+    <h2>3. Consolidated Summary</h2>
+
+    <div class="summary-placeholder">
+      <p>
+        The consolidated summary will be compiled once all five team members have submitted their
+        individual reviews. It will categorise all findings by error type (omission, inconsistency,
+        ambiguity, incorrect fact), prioritise them by severity, and propose a revision roadmap
+        for SRS v0.2.
+      </p>
+    </div>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 · DSD 2025&ndash;2026 · UTAD &times; Jilin University
+    </p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 &middot; Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator &middot; UTAD &times; Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../progress.html">Progress</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+
+<!-- ═══ MARKDOWN REVIEW RENDERER ═══
+     Fetches .md files from srs-review/ folder and renders them
+     into #member-reviews with the same card-based styling.
+     Only used on this page. Not a general-purpose library. ═══ -->
+<script>
+(function() {
+  var container = document.getElementById('member-reviews');
+  var manifest = document.getElementById('review-manifest');
+  if (!container || !manifest) return;
+
+  var reviews = JSON.parse(manifest.getAttribute('data-reviews'));
+
+  Promise.all(reviews.map(function(r) {
+    return fetch(r.file).then(function(res) {
+      if (!res.ok) return '';
+      return res.text();
+    }).catch(function() { return ''; });
+  })).then(function(texts) {
+    var html = '';
+    reviews.forEach(function(r, idx) {
+      var content = texts[idx].replace(/^\s+|\s+$/g, '');
+      if (!content) {
+        html += '<div class="review-placeholder"><p>Review by <strong>' +
+          escH(r.name) + '</strong> (' + escH(r.role) + ') \u2014 pending submission.</p></div>';
+        return;
+      }
+      html += '<div class="review-block">' +
+        '<div class="review-block-header"><div>' +
+        '<div class="reviewer-role">' + escH(r.role) + '</div>' +
+        '<div class="reviewer-name">' + escH(r.name) + '</div>' +
+        '</div><span class="badge active">Submitted</span></div>' +
+        renderMd(content) +
+        '</div>';
+    });
+    container.innerHTML = html;
+  });
+
+  /* ── Markdown parser ── */
+  function renderMd(src) {
+    // Normalise line endings
+    src = src.replace(/\r\n/g, '\n');
+
+    // Split into blocks by ::: fences first, then parse each part
+    var parts = [];
+    var lines = src.split('\n');
+    var i = 0;
+    while (i < lines.length) {
+      var line = lines[i];
+      var fenceMatch = line.match(/^:::\s*(.+)/);
+      if (fenceMatch) {
+        // Collect until closing :::
+        var label = fenceMatch[1].trim();
+        var inner = [];
+        i++;
+        while (i < lines.length && lines[i].replace(/\s+$/, '') !== ':::') {
+          inner.push(lines[i]);
+          i++;
+        }
+        i++; // skip closing :::
+        parts.push({ type: 'issue', label: label, content: inner.join('\n') });
+      } else {
+        // Collect normal lines until next ::: or end
+        var normal = [];
+        while (i < lines.length) {
+          if (lines[i].match(/^:::\s*.+/)) break;
+          normal.push(lines[i]);
+          i++;
+        }
+        parts.push({ type: 'normal', content: normal.join('\n') });
+      }
+    }
+
+    var out = '';
+    parts.forEach(function(part) {
+      if (part.type === 'issue') {
+        out += '<div class="issue-item"><div class="issue-label">' +
+          escH(part.label) + '</div>' + parseBlocks(part.content) + '</div>';
+      } else {
+        out += parseBlocks(part.content);
+      }
+    });
+    return out;
+  }
+
+  /* Parse block-level markdown elements */
+  function parseBlocks(src) {
+    src = src.replace(/^\n+|\n+$/g, '');
+    if (!src) return '';
+
+    var out = '';
+    var lines = src.split('\n');
+    var i = 0;
+
+    while (i < lines.length) {
+      var line = lines[i];
+
+      // Blank line — skip
+      if (line.match(/^\s*$/)) { i++; continue; }
+
+      // Heading #### h4
+      var h4 = line.match(/^####\s+(.*)/);
+      if (h4) { out += '<h4>' + inline(h4[1]) + '</h4>'; i++; continue; }
+
+      // Heading ### h3
+      var h3 = line.match(/^###\s+(.*)/);
+      if (h3) { out += '<h3>' + inline(h3[1]) + '</h3>'; i++; continue; }
+
+      // Heading ## h2
+      var h2 = line.match(/^##\s+(.*)/);
+      if (h2) { out += '<h2>' + inline(h2[1]) + '</h2>'; i++; continue; }
+
+      // Blockquote
+      if (line.match(/^>\s?/)) {
+        var bq = [];
+        while (i < lines.length && lines[i].match(/^>\s?/)) {
+          bq.push(lines[i].replace(/^>\s?/, ''));
+          i++;
+        }
+        out += '<div class="callout"><p>' + inline(bq.join(' ')) + '</p></div>';
+        continue;
+      }
+
+      // Table
+      if (line.indexOf('|') !== -1 && i + 1 < lines.length && lines[i + 1].match(/^\|[\s\-:|]+\|/)) {
+        out += parseTable(lines, i);
+        // Skip past table
+        i++; // header
+        i++; // separator
+        while (i < lines.length && lines[i].match(/^\|/)) i++;
+        continue;
+      }
+
+      // Unordered list
+      if (line.match(/^[\-\*]\s+/)) {
+        var items = [];
+        while (i < lines.length && lines[i].match(/^[\-\*]\s+/)) {
+          items.push(lines[i].replace(/^[\-\*]\s+/, ''));
+          i++;
+        }
+        out += '<ul>' + items.map(function(t) { return '<li>' + inline(t) + '</li>'; }).join('') + '</ul>';
+        continue;
+      }
+
+      // Ordered list
+      if (line.match(/^\d+\.\s+/)) {
+        var oitems = [];
+        while (i < lines.length && lines[i].match(/^\d+\.\s+/)) {
+          oitems.push(lines[i].replace(/^\d+\.\s+/, ''));
+          i++;
+        }
+        out += '<ol>' + oitems.map(function(t) { return '<li>' + inline(t) + '</li>'; }).join('') + '</ol>';
+        continue;
+      }
+
+      // Horizontal rule
+      if (line.match(/^[\-\*_]{3,}\s*$/)) { out += '<hr class="article-divider"/>'; i++; continue; }
+
+      // Paragraph — collect consecutive non-blank, non-special lines
+      var para = [];
+      while (i < lines.length && !lines[i].match(/^\s*$/) &&
+             !lines[i].match(/^#{2,4}\s/) && !lines[i].match(/^[\-\*]\s+/) &&
+             !lines[i].match(/^\d+\.\s+/) && !lines[i].match(/^>\s?/) &&
+             !lines[i].match(/^[\-\*_]{3,}\s*$/) &&
+             !(lines[i].indexOf('|') !== -1 && i + 1 < lines.length && lines[i + 1] && lines[i + 1].match(/^\|[\s\-:|]+\|/))) {
+        para.push(lines[i]);
+        i++;
+      }
+      if (para.length) out += '<p>' + inline(para.join('\n')) + '</p>';
+    }
+    return out;
+  }
+
+  /* Parse inline markdown */
+  function inline(s) {
+    s = escH(s);
+    // Code (before bold/italic to avoid conflicts)
+    s = s.replace(/`([^`]+)`/g, '<code style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);">$1</code>');
+    // Bold + italic
+    s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+    // Bold
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Italic
+    s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // Links
+    s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:var(--accent-2);text-decoration:underline;">$1</a>');
+    // Line breaks within paragraph
+    s = s.replace(/\n/g, ' ');
+    // Arrows
+    s = s.replace(/---&gt;/g, '\u2192');
+    s = s.replace(/--&gt;/g, '\u2192');
+    s = s.replace(/-&gt;/g, '\u2192');
+    s = s.replace(/&lt;-/g, '\u2190');
+    // Dashes
+    s = s.replace(/---/g, '\u2014');
+    s = s.replace(/--/g, '\u2013');
+    return s;
+  }
+
+  /* Parse a markdown table starting at line i */
+  function parseTable(lines, start) {
+    var header = lines[start].replace(/^\||\|$/g, '').split('|').map(function(c) { return c.trim(); });
+    // skip separator line
+    var rows = [];
+    var j = start + 2;
+    while (j < lines.length && lines[j].match(/^\|/)) {
+      rows.push(lines[j].replace(/^\||\|$/g, '').split('|').map(function(c) { return c.trim(); }));
+      j++;
+    }
+    var t = '<div class="fact-table-wrap"><table class="fact-table"><thead><tr>';
+    header.forEach(function(h) { t += '<th>' + inline(h) + '</th>'; });
+    t += '</tr></thead><tbody>';
+    rows.forEach(function(r) {
+      t += '<tr>';
+      r.forEach(function(c) { t += '<td>' + inline(c) + '</td>'; });
+      t += '</tr>';
+    });
+    t += '</tbody></table></div>';
+    return t;
+  }
+
+  /* Escape HTML */
+  function escH(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+})();
+</script>
+</body>
+</html>
