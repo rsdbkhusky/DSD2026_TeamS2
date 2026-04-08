@@ -37,7 +37,6 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 24px 26px;
       margin: 24px 0;
       position: relative;
       overflow: hidden;
@@ -54,11 +53,36 @@
       transition: opacity var(--transition);
     }
     .fact-card:hover::before { opacity: 1; }
+    .fact-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 22px;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .fact-summary::-webkit-details-marker { display: none; }
+    .fact-summary::after {
+      content: '+';
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+      transition: transform var(--transition), color var(--transition);
+    }
+    .fact-card[open] .fact-summary::after {
+      content: '\2212';
+      color: var(--accent-2);
+    }
     .fact-num {
       font-family: var(--font-mono); font-size: 10px;
       color: var(--accent); text-transform: uppercase;
-      letter-spacing: 0.12em; margin-bottom: 8px;
+      letter-spacing: 0.12em;
     }
+    .fact-content { padding: 2px 26px 24px; }
     .fact-title {
       font-family: var(--font-display); font-size: 17px; font-weight: 700;
       color: var(--text); letter-spacing: -0.015em; margin-bottom: 12px;
@@ -92,14 +116,39 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 28px 30px;
       margin: 28px 0;
+      overflow: hidden;
+    }
+    .review-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .review-summary::-webkit-details-marker { display: none; }
+    .review-summary::after {
+      content: '+';
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+      transition: transform var(--transition), color var(--transition);
+    }
+    .review-block[open] .review-summary::after {
+      content: '\2212';
+      color: var(--accent-2);
     }
     .review-block-header {
       display: flex; align-items: center;
-      justify-content: space-between; gap: 16px;
-      margin-bottom: 20px; flex-wrap: wrap;
+      gap: 16px;
+      flex-wrap: wrap;
     }
+    .review-content { padding: 2px 30px 28px; }
     .reviewer-name {
       font-family: var(--font-display); font-size: 18px; font-weight: 700;
       color: var(--text); letter-spacing: -0.015em;
@@ -220,115 +269,125 @@
     </p>
 
     <!-- Fact 1 -->
-    <div class="fact-card">
-      <div class="fact-num">Fact 1</div>
-      <div class="fact-title">The later a defect is found, the more expensive it is to fix</div>
-      <p>
-        The cost of correcting a software error grows dramatically as the project advances
-        through its lifecycle. A defect that costs 0.1&ndash;0.2 units to fix during
-        requirements can cost 20 units if it survives to the maintenance phase &mdash; a
-        factor of 100&times; or more.
-      </p>
-      <div class="fact-table-wrap">
-        <table class="fact-table">
-          <thead>
-            <tr><th>Phase</th><th>Relative Cost of Repair</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Requirements</td><td>0.1 &ndash; 0.2</td></tr>
-            <tr><td>Design</td><td>0.5</td></tr>
-            <tr><td>Coding</td><td>1</td></tr>
-            <tr><td>Unit Testing</td><td>2</td></tr>
-            <tr><td>Acceptance Testing</td><td>5</td></tr>
-            <tr><td>Maintenance</td><td>20</td></tr>
-          </tbody>
-        </table>
+    <details class="fact-card">
+      <summary class="fact-summary"><span class="fact-num">Fact 1</span></summary>
+      <div class="fact-content">
+        <div class="fact-title">The later a defect is found, the more expensive it is to fix</div>
+        <p>
+          The cost of correcting a software error grows dramatically as the project advances
+          through its lifecycle. A defect that costs 0.1&ndash;0.2 units to fix during
+          requirements can cost 20 units if it survives to the maintenance phase &mdash; a
+          factor of 100&times; or more.
+        </p>
+        <div class="fact-table-wrap">
+          <table class="fact-table">
+            <thead>
+              <tr><th>Phase</th><th>Relative Cost of Repair</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Requirements</td><td>0.1 &ndash; 0.2</td></tr>
+              <tr><td>Design</td><td>0.5</td></tr>
+              <tr><td>Coding</td><td>1</td></tr>
+              <tr><td>Unit Testing</td><td>2</td></tr>
+              <tr><td>Acceptance Testing</td><td>5</td></tr>
+              <tr><td>Maintenance</td><td>20</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </details>
 
     <!-- Fact 2 -->
-    <div class="fact-card">
-      <div class="fact-num">Fact 2</div>
-      <div class="fact-title">Many errors remain latent long after they are introduced</div>
-      <p>
-        Boehm's analysis of TRW projects found that <strong>54% of all detected errors</strong>
-        were not discovered until after the coding and unit testing phases. Worse, the vast
-        majority of these late-discovered errors (45% of all errors) actually originated in
-        the requirements and design phases, while coding-phase errors accounted for only 9%.
-      </p>
-      <p>
-        This means the most dangerous errors &mdash; those introduced earliest and caught latest
-        &mdash; are precisely the ones a requirements review is designed to intercept.
-      </p>
-    </div>
+    <details class="fact-card">
+      <summary class="fact-summary"><span class="fact-num">Fact 2</span></summary>
+      <div class="fact-content">
+        <div class="fact-title">Many errors remain latent long after they are introduced</div>
+        <p>
+          Boehm's analysis of TRW projects found that <strong>54% of all detected errors</strong>
+          were not discovered until after the coding and unit testing phases. Worse, the vast
+          majority of these late-discovered errors (45% of all errors) actually originated in
+          the requirements and design phases, while coding-phase errors accounted for only 9%.
+        </p>
+        <p>
+          This means the most dangerous errors &mdash; those introduced earliest and caught latest
+          &mdash; are precisely the ones a requirements review is designed to intercept.
+        </p>
+      </div>
+    </details>
 
     <!-- Fact 3 -->
-    <div class="fact-card">
-      <div class="fact-num">Fact 3</div>
-      <div class="fact-title">The requirements phase produces a disproportionate share of errors</div>
-      <p>
-        DeMarco's research report indicated that <strong>56% of all detected errors</strong>
-        can be traced back to the requirements phase. A separate investigation by AIRMICS
-        found over 500 errors in a single U.S. military management information system's
-        requirements specification document &mdash; and that was from just one project
-        in one audit.
-      </p>
-    </div>
+    <details class="fact-card">
+      <summary class="fact-summary"><span class="fact-num">Fact 3</span></summary>
+      <div class="fact-content">
+        <div class="fact-title">The requirements phase produces a disproportionate share of errors</div>
+        <p>
+          DeMarco's research report indicated that <strong>56% of all detected errors</strong>
+          can be traced back to the requirements phase. A separate investigation by AIRMICS
+          found over 500 errors in a single U.S. military management information system's
+          requirements specification document &mdash; and that was from just one project
+          in one audit.
+        </p>
+      </div>
+    </details>
 
     <!-- Fact 4 -->
-    <div class="fact-card">
-      <div class="fact-num">Fact 4</div>
-      <div class="fact-title">Requirements errors are characterised by omission, inconsistency, and ambiguity</div>
-      <p>
-        The U.S. Naval Research Laboratory's field study on the A-7E flight operations
-        software found that <strong>77% of requirements errors</strong> were attributable to
-        vagueness &mdash; specifically omission, inconsistency, and ambiguity. The breakdown:
-      </p>
-      <div class="fact-table-wrap">
-        <table class="fact-table">
-          <thead>
-            <tr><th>Error Type</th><th>Proportion</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Incorrect facts</td><td>49%</td></tr>
-            <tr><td>Omissions</td><td>31%</td></tr>
-            <tr><td>Inconsistencies</td><td>13%</td></tr>
-            <tr><td>Ambiguities</td><td>5%</td></tr>
-            <tr><td>Misplaced information</td><td>2%</td></tr>
-          </tbody>
-        </table>
+    <details class="fact-card">
+      <summary class="fact-summary"><span class="fact-num">Fact 4</span></summary>
+      <div class="fact-content">
+        <div class="fact-title">Requirements errors are characterised by omission, inconsistency, and ambiguity</div>
+        <p>
+          The U.S. Naval Research Laboratory's field study on the A-7E flight operations
+          software found that <strong>77% of requirements errors</strong> were attributable to
+          vagueness &mdash; specifically omission, inconsistency, and ambiguity. The breakdown:
+        </p>
+        <div class="fact-table-wrap">
+          <table class="fact-table">
+            <thead>
+              <tr><th>Error Type</th><th>Proportion</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Incorrect facts</td><td>49%</td></tr>
+              <tr><td>Omissions</td><td>31%</td></tr>
+              <tr><td>Inconsistencies</td><td>13%</td></tr>
+              <tr><td>Ambiguities</td><td>5%</td></tr>
+              <tr><td>Misplaced information</td><td>2%</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </details>
 
     <!-- Fact 5 -->
-    <div class="fact-card">
-      <div class="fact-num">Fact 5</div>
-      <div class="fact-title">Requirements errors can be caught &mdash; inspection is the most effective method</div>
-      <p>
-        Not only are requirements errors detectable, but formal inspection is the single
-        most effective technique for finding them:
-      </p>
-      <div class="fact-table-wrap">
-        <table class="fact-table">
-          <thead>
-            <tr><th>Detection Method</th><th>Errors Found (%)</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Inspection</td><td>65</td></tr>
-            <tr><td>Unit Testing</td><td>10</td></tr>
-            <tr><td>Integration Testing</td><td>5</td></tr>
-            <tr><td>Prototyping</td><td>6</td></tr>
-            <tr><td>Other</td><td>14</td></tr>
-          </tbody>
-        </table>
+    <details class="fact-card">
+      <summary class="fact-summary"><span class="fact-num">Fact 5</span></summary>
+      <div class="fact-content">
+        <div class="fact-title">Requirements errors can be caught &mdash; inspection is the most effective method</div>
+        <p>
+          Not only are requirements errors detectable, but formal inspection is the single
+          most effective technique for finding them:
+        </p>
+        <div class="fact-table-wrap">
+          <table class="fact-table">
+            <thead>
+              <tr><th>Detection Method</th><th>Errors Found (%)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Inspection</td><td>65</td></tr>
+              <tr><td>Unit Testing</td><td>10</td></tr>
+              <tr><td>Integration Testing</td><td>5</td></tr>
+              <tr><td>Prototyping</td><td>6</td></tr>
+              <tr><td>Other</td><td>14</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Basili and Weiss's data confirmed that 33% of requirements errors in the A-7E
+          software definition documents were found through manual inspection. Celko further
+          argued that automated analysis tools could detect a significant additional proportion
+          of errors from the SRS.
+        </p>
       </div>
-      <p>
-        Basili and Weiss's data confirmed that 33% of requirements errors in the A-7E
-        software definition documents were found through manual inspection. Celko further
-        argued that automated analysis tools could detect a significant additional proportion
-        of errors from the SRS.
-      </p>
-    </div>
+    </details>
 
     <!-- Summary of Part 1 -->
     <h3>The Case for Requirements-Phase Inspection</h3>
@@ -470,13 +529,15 @@
           escH(r.name) + '</strong> (' + escH(r.role) + ') \u2014 pending submission.</p></div>';
         return;
       }
-      html += '<div class="review-block">' +
+      html += '<details class="review-block">' +
+        '<summary class="review-summary">' +
         '<div class="review-block-header"><div>' +
         '<div class="reviewer-role">' + escH(r.role) + '</div>' +
-        '<div class="reviewer-name">' + escH(r.name) + '</div>' +
+        '<div class="reviewer-name">' + escH(r.name) + '\'s Review</div>' +
         '</div><span class="badge active">Submitted</span></div>' +
-        renderMd(content) +
-        '</div>';
+        '</summary>' +
+        '<div class="review-content">' + renderMd(content) + '</div>' +
+        '</details>';
     });
     container.innerHTML = html;
   });
