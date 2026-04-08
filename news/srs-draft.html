@@ -69,13 +69,35 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 28px 30px;
       margin: 32px 0;
+      overflow: hidden;
     }
+    .uc-summary {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 18px 22px;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .uc-summary::-webkit-details-marker { display: none; }
+    .uc-summary::after {
+      content: '+';
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      line-height: 1;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .uc-block[open] .uc-summary::after { content: '\2212'; }
+    .uc-content { padding: 2px 30px 28px; }
     .uc-block-header {
       display: flex; align-items: flex-start;
+      flex: 1;
       justify-content: space-between; gap: 16px;
-      margin-bottom: 20px; flex-wrap: wrap;
+      margin-bottom: 0; flex-wrap: wrap;
     }
     .uc-id {
       font-family: var(--font-mono); font-size: 10px;
@@ -230,14 +252,15 @@
     <!-- UC-01 -->
     <h2>3. Use Case Specifications</h2>
 
-    <div class="uc-block">
-      <div class="uc-block-header">
+    <details class="uc-block">
+      <summary class="uc-summary"><div class="uc-block-header">
         <div>
           <div class="uc-id">UC-01</div>
           <div class="uc-title">User Registration</div>
         </div>
         <span class="badge info">Version 0.1</span>
-      </div>
+      </div></summary>
+      <div class="uc-content">
 
       <div class="uc-table-wrap">
         <table class="uc-table">
@@ -293,17 +316,18 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
     <!-- UC-02 -->
-    <div class="uc-block">
-      <div class="uc-block-header">
+    <details class="uc-block">
+      <summary class="uc-summary"><div class="uc-block-header">
         <div>
           <div class="uc-id">UC-02</div>
           <div class="uc-title">User Login</div>
         </div>
         <span class="badge info">Version 0.1</span>
-      </div>
+      </div></summary>
+      <div class="uc-content">
 
       <div class="uc-table-wrap">
         <table class="uc-table">
@@ -344,17 +368,18 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
     <!-- UC-03 -->
-    <div class="uc-block">
-      <div class="uc-block-header">
+    <details class="uc-block">
+      <summary class="uc-summary"><div class="uc-block-header">
         <div>
           <div class="uc-id">UC-03</div>
           <div class="uc-title">Sensor Connection</div>
         </div>
         <span class="badge info">Version 0.1</span>
-      </div>
+      </div></summary>
+      <div class="uc-content">
 
       <div class="uc-table-wrap">
         <table class="uc-table">
@@ -414,17 +439,18 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
     <!-- UC-04 -->
-    <div class="uc-block">
-      <div class="uc-block-header">
+    <details class="uc-block">
+      <summary class="uc-summary"><div class="uc-block-header">
         <div>
           <div class="uc-id">UC-04</div>
           <div class="uc-title">Start Rehabilitation Session</div>
         </div>
         <span class="badge info">Version 0.1</span>
-      </div>
+      </div></summary>
+      <div class="uc-content">
 
       <div class="uc-table-wrap">
         <table class="uc-table">
@@ -470,17 +496,18 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
     <!-- UC-05 -->
-    <div class="uc-block">
-      <div class="uc-block-header">
+    <details class="uc-block">
+      <summary class="uc-summary"><div class="uc-block-header">
         <div>
           <div class="uc-id">UC-05</div>
           <div class="uc-title">Receive Real-Time Motion Feedback</div>
         </div>
         <span class="badge info">Version 0.1</span>
-      </div>
+      </div></summary>
+      <div class="uc-content">
 
       <div class="uc-table-wrap">
         <table class="uc-table">
@@ -525,17 +552,18 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
     <!-- UC-06 -->
-    <div class="uc-block">
-      <div class="uc-block-header">
+    <details class="uc-block">
+      <summary class="uc-summary"><div class="uc-block-header">
         <div>
           <div class="uc-id">UC-06</div>
           <div class="uc-title">Review Patient Progress</div>
         </div>
         <span class="badge info">Version 0.1</span>
-      </div>
+      </div></summary>
+      <div class="uc-content">
 
       <div class="uc-table-wrap">
         <table class="uc-table">
@@ -579,17 +607,18 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
     <!-- UC-07 -->
-    <div class="uc-block">
-      <div class="uc-block-header">
+    <details class="uc-block">
+      <summary class="uc-summary"><div class="uc-block-header">
         <div>
           <div class="uc-id">UC-07</div>
           <div class="uc-title">Prescribe Exercise Plan</div>
         </div>
         <span class="badge info">Version 0.1</span>
-      </div>
+      </div></summary>
+      <div class="uc-content">
 
       <div class="uc-table-wrap">
         <table class="uc-table">
@@ -632,7 +661,7 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
     <hr class="article-divider"/>
     <p style="font-size:13px;color:var(--text-3);">
