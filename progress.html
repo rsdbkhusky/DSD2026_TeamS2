@@ -46,12 +46,32 @@
 
     .timeline { display:flex; flex-direction:column; gap:0; position:relative; }
     .timeline::before { content:''; position:absolute; left:18px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,var(--accent) 0%,rgba(139,92,246,0.1) 80%,transparent 100%); }
-    .sprint-item { display:grid; grid-template-columns:40px 1fr; gap:28px; padding-bottom:44px; }
+    .sprint-item { display:block; padding-bottom:20px; }
     .sprint-item:last-child { padding-bottom:0; }
+    .sprint-summary {
+      display:grid;
+      grid-template-columns:40px 1fr auto;
+      align-items:center;
+      gap:28px;
+      cursor:pointer;
+      list-style:none;
+      user-select:none;
+    }
+    .sprint-summary::-webkit-details-marker { display:none; }
+    .sprint-summary::after {
+      content:'+';
+      font-family:var(--font-mono);
+      font-size:16px;
+      color:var(--accent);
+      line-height:1;
+      opacity:0.9;
+    }
+    .sprint-item[open] .sprint-summary::after { content:'\2212'; }
+    .sprint-summary-main { min-width:0; }
     .sprint-dot { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:11px; font-weight:700; flex-shrink:0; position:relative; z-index:1; }
     .sprint-dot.active { background:var(--accent); color:#fff; box-shadow:0 0 18px var(--accent-glow); }
     .sprint-dot.pending { background:var(--surface); color:var(--text-3); border:1px solid var(--border); }
-    .sprint-body { padding-top:4px; }
+    .sprint-body { margin-left:68px; padding-top:10px; }
     .sprint-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
     .sprint-title { font-family:var(--font-display); font-size:18px; font-weight:700; color:var(--text); letter-spacing:-0.02em; }
     .task-list { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
@@ -91,8 +111,9 @@
 
     @media (max-width:640px) {
       .timeline::before { display:none; }
-      .sprint-item { grid-template-columns:1fr; }
+      .sprint-summary { grid-template-columns:1fr auto; gap:10px; }
       .sprint-dot { display:none; }
+      .sprint-body { margin-left:0; }
     }
   </style>
 </head>
@@ -148,13 +169,17 @@
     <div class="timeline" style="margin-top:40px;">
 
       <!-- Sprint 1: Foundation -->
-      <div class="sprint-item reveal" id="sprint-foundation">
-        <div class="sprint-dot" style="background:var(--surface-2);color:var(--green);border:1px solid rgba(34,197,94,0.3);">S1</div>
-        <div class="sprint-body">
-          <div class="sprint-header">
-            <span class="sprint-title">Sprint 1: Foundation</span>
-            <span class="badge done">Done</span>
+      <details class="sprint-item reveal" id="sprint-foundation">
+        <summary class="sprint-summary">
+          <div class="sprint-dot" style="background:var(--surface-2);color:var(--green);border:1px solid rgba(34,197,94,0.3);">S1</div>
+          <div class="sprint-summary-main">
+            <div class="sprint-header" style="margin-bottom:0;">
+              <span class="sprint-title">Sprint 1: Foundation</span>
+              <span class="badge done">Done</span>
+            </div>
           </div>
+        </summary>
+        <div class="sprint-body">
           <p style="font-size:13.5px;color:var(--text-2);max-width:660px;line-height:1.65;margin-bottom:20px;">
             Establishing the team, assigning roles, and building the project website.
           </p>
@@ -165,16 +190,20 @@
           </div>
           <div id="gantt-s1" class="gantt-wrap"></div>
         </div>
-      </div>
+      </details>
 
       <!-- Sprint 2: Requirement Analysis -->
-      <div class="sprint-item reveal" id="sprint-req-analysis">
-        <div class="sprint-dot" style="background:var(--surface-2);color:var(--green);border:1px solid rgba(34,197,94,0.3);">S2</div>
-        <div class="sprint-body">
-          <div class="sprint-header">
-            <span class="sprint-title">Sprint 2: Requirement Analysis</span>
-            <span class="badge done">Done</span>
+      <details class="sprint-item reveal" id="sprint-req-analysis">
+        <summary class="sprint-summary">
+          <div class="sprint-dot" style="background:var(--surface-2);color:var(--green);border:1px solid rgba(34,197,94,0.3);">S2</div>
+          <div class="sprint-summary-main">
+            <div class="sprint-header" style="margin-bottom:0;">
+              <span class="sprint-title">Sprint 2: Requirement Analysis</span>
+              <span class="badge done">Done</span>
+            </div>
           </div>
+        </summary>
+        <div class="sprint-body">
           <p style="font-size:13.5px;color:var(--text-2);max-width:660px;line-height:1.65;margin-bottom:20px;">
             Drafting the SRS, cross-team review and merging, publishing the final requirements specification.
           </p>
@@ -185,16 +214,20 @@
           </div>
           <div id="gantt-s2" class="gantt-wrap"></div>
         </div>
-      </div>
+      </details>
 
       <!-- Sprint 3: System Design -->
-      <div class="sprint-item reveal" id="sprint-sys-design">
-        <div class="sprint-dot active">S3</div>
-        <div class="sprint-body">
-          <div class="sprint-header">
-            <span class="sprint-title">Sprint 3: System Design</span>
-            <span class="badge active">Active</span>
+      <details class="sprint-item reveal" id="sprint-sys-design" open>
+        <summary class="sprint-summary">
+          <div class="sprint-dot active">S3</div>
+          <div class="sprint-summary-main">
+            <div class="sprint-header" style="margin-bottom:0;">
+              <span class="sprint-title">Sprint 3: System Design</span>
+              <span class="badge active">Active</span>
+            </div>
           </div>
+        </summary>
+        <div class="sprint-body">
           <p style="font-size:13.5px;color:var(--text-2);max-width:660px;line-height:1.65;margin-bottom:20px;">
             System architecture design led by the System Architect, with PM assisting
             and cross-review by the remaining team members.
@@ -205,43 +238,55 @@
           </div>
           <div id="gantt-s3" class="gantt-wrap"></div>
         </div>
-      </div>
+      </details>
 
       <!-- Sprint 4 -->
-      <div class="sprint-item reveal" id="sprint-impl">
-        <div class="sprint-dot pending">S4</div>
-        <div class="sprint-body">
-          <div class="sprint-header">
-            <span class="sprint-title">Sprint 4: Implementation + Unit Testing</span>
-            <span class="badge pending">Upcoming</span>
+      <details class="sprint-item reveal" id="sprint-impl">
+        <summary class="sprint-summary">
+          <div class="sprint-dot pending">S4</div>
+          <div class="sprint-summary-main">
+            <div class="sprint-header" style="margin-bottom:0;">
+              <span class="sprint-title">Sprint 4: Implementation + Unit Testing</span>
+              <span class="badge pending">Upcoming</span>
+            </div>
           </div>
+        </summary>
+        <div class="sprint-body">
           <p style="font-size:13.5px;color:var(--text-3);">Apr 13 ~ Apr 20. Details to be defined.</p>
         </div>
-      </div>
+      </details>
 
       <!-- Sprint 5 -->
-      <div class="sprint-item reveal" id="sprint-deploy">
-        <div class="sprint-dot pending">S5</div>
-        <div class="sprint-body">
-          <div class="sprint-header">
-            <span class="sprint-title">Sprint 5: Deployment + Integration Testing</span>
-            <span class="badge pending">Upcoming</span>
+      <details class="sprint-item reveal" id="sprint-deploy">
+        <summary class="sprint-summary">
+          <div class="sprint-dot pending">S5</div>
+          <div class="sprint-summary-main">
+            <div class="sprint-header" style="margin-bottom:0;">
+              <span class="sprint-title">Sprint 5: Deployment + Integration Testing</span>
+              <span class="badge pending">Upcoming</span>
+            </div>
           </div>
+        </summary>
+        <div class="sprint-body">
           <p style="font-size:13.5px;color:var(--text-3);">Apr 20 ~ Apr 27. Details to be defined.</p>
         </div>
-      </div>
+      </details>
 
       <!-- Iteration 2 -->
-      <div class="sprint-item reveal">
-        <div class="sprint-dot pending">S6</div>
-        <div class="sprint-body">
-          <div class="sprint-header">
-            <span class="sprint-title">Sprints 6 ~ 9: Iteration 2</span>
-            <span class="badge pending">Upcoming</span>
+      <details class="sprint-item reveal">
+        <summary class="sprint-summary">
+          <div class="sprint-dot pending">S6</div>
+          <div class="sprint-summary-main">
+            <div class="sprint-header" style="margin-bottom:0;">
+              <span class="sprint-title">Sprints 6 ~ 9: Iteration 2</span>
+              <span class="badge pending">Upcoming</span>
+            </div>
           </div>
+        </summary>
+        <div class="sprint-body">
           <p style="font-size:13.5px;color:var(--text-3);">Apr 27 ~ May 25. Second iteration of the waterfall cycle.</p>
         </div>
-      </div>
+      </details>
 
     </div>
   </div>
