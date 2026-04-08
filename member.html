@@ -63,6 +63,11 @@
       color: var(--accent);
       transition: border-color var(--transition);
     }
+    .member-avatar img {
+      width: 100%; height: 100%; border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
     .member-card:hover .member-avatar { border-color: rgba(139,92,246,0.45); }
 
     .member-nat {
@@ -153,7 +158,7 @@
     <div class="member-grid">
 
       <div class="member-card reveal reveal-d1">
-        <div class="member-avatar">ZZ</div>
+        <div class="member-avatar">🧑‍💻</div>
         <span class="member-nat nat-cn">CN</span>
         <div class="member-name">Zhiqi ZHANG</div>
         <div class="member-role">Project Manager</div>
@@ -180,7 +185,9 @@
       </div>
 
       <div class="member-card reveal reveal-d3">
-        <div class="member-avatar">HL</div>
+        <div class="member-avatar">HL
+          <img src="./img/LinTANG_v1.01.png" alt="HL" loading="lazy" />
+        </div>
         <span class="member-nat nat-cn">CN</span>
         <div class="member-name">Haobo LIN</div>
         <div class="member-role">System Architect</div>
@@ -193,7 +200,7 @@
       </div>
 
       <div class="member-card reveal reveal-d1">
-        <div class="member-avatar">PC</div>
+        <div class="member-avatar">🤔</div>
         <span class="member-nat nat-cn">CN</span>
         <div class="member-name">Pengxu CHEN</div>
         <div class="member-role">Programmer</div>
@@ -206,7 +213,7 @@
       </div>
 
       <div class="member-card reveal reveal-d2">
-        <div class="member-avatar">TW</div>
+        <div class="member-avatar">🤷</div>
         <span class="member-nat nat-cn">CN</span>
         <div class="member-name">Tianze WANG</div>
         <div class="member-role">Programmer</div>
