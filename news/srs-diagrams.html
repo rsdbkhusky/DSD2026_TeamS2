@@ -2,6 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
+  <script src="../theme-init.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SRS Diagrams · News · DSD2026 Team S2</title>
   <link rel="stylesheet" href="../style.css" />
@@ -20,6 +36,13 @@
       overflow-x: auto;
     }
     .diagram-wrap svg { display: block; margin: 0 auto; }
+    .diagram-wrap svg .lifeline { stroke: var(--border-2); }
+    .diagram-wrap svg .pkg-border { stroke: var(--border-2); }
+    .diagram-wrap svg .legend-border { stroke: var(--border); }
+    .diagram-wrap svg .assoc-line { stroke: var(--border-2); }
+    .diagram-wrap svg .t1 { fill: var(--text); }
+    .diagram-wrap svg .t2 { fill: var(--text-2); }
+    .diagram-wrap svg .t3 { fill: var(--text-3); }
     .correction-list { margin: 16px 0 24px; }
     .correction-list li {
       font-size: 14px; color: var(--text-2); line-height: 1.7;
@@ -42,13 +65,16 @@
       <span class="brand-tag">DSD 2025&ndash;2026</span>
       <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
     </div>
-    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
     <nav id="mainNav" class="nav-links">
       <a href="../index.html"    class="nav-link">Home</a>
       <a href="../progress.html" class="nav-link">Progress</a>
       <a href="../news.html"     class="nav-link">News</a>
       <a href="../member.html"   class="nav-link">Member</a>
     </nav>
+    <div class="nav-triggers">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="切换到浅色" title="浅色 / 深色">☼</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+    </div>
   </div>
 </header>
 
@@ -158,48 +184,48 @@
         <!-- ════════════════════════════════════════
              PACKAGE: SYSTEM-LEVEL (UC-01 to UC-07)
              ════════════════════════════════════════ -->
-        <rect x="195" y="50" width="400" height="400" rx="10" fill="rgba(139,92,246,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+        <rect x="195" y="50" width="400" height="400" rx="10" fill="rgba(139,92,246,0.03)" stroke="currentColor" class="pkg-border" stroke-width="1"/>
         <text x="210" y="68" fill="rgba(139,92,246,0.6)" font-size="10" font-family="'Space Mono',monospace" letter-spacing="0.08em">SYSTEM-LEVEL (CROSS-TEAM)</text>
 
         <!-- UC-01 -->
         <ellipse cx="395" cy="105" rx="120" ry="26" fill="rgba(139,92,246,0.07)" stroke="rgba(139,92,246,0.4)" stroke-width="1.3"/>
         <text x="395" y="100" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="'Space Mono',monospace" letter-spacing="0.05em">UC-01</text>
-        <text x="395" y="114" text-anchor="middle" fill="#e8edf2" font-size="11" font-weight="600">User Registration</text>
+        <text x="395" y="114" text-anchor="middle" fill="currentColor" class="t1" font-size="11" font-weight="600">User Registration</text>
         <text x="395" y="126" text-anchor="middle" fill="rgba(139,92,246,0.4)" font-size="7" font-family="'Space Mono',monospace">V2 &middot; M1 &middot; M2</text>
 
         <!-- UC-02 -->
         <ellipse cx="395" cy="168" rx="100" ry="26" fill="rgba(139,92,246,0.07)" stroke="rgba(139,92,246,0.4)" stroke-width="1.3"/>
         <text x="395" y="163" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="'Space Mono',monospace">UC-02</text>
-        <text x="395" y="177" text-anchor="middle" fill="#e8edf2" font-size="11" font-weight="600">User Login</text>
+        <text x="395" y="177" text-anchor="middle" fill="currentColor" class="t1" font-size="11" font-weight="600">User Login</text>
         <text x="395" y="189" text-anchor="middle" fill="rgba(139,92,246,0.4)" font-size="7" font-family="'Space Mono',monospace">V2 &middot; M1 &middot; M2</text>
 
         <!-- UC-03 -->
         <ellipse cx="395" cy="236" rx="115" ry="26" fill="rgba(249,115,22,0.07)" stroke="rgba(249,115,22,0.4)" stroke-width="1.3"/>
         <text x="395" y="231" text-anchor="middle" fill="#f97316" font-size="9" font-family="'Space Mono',monospace">UC-03</text>
-        <text x="395" y="245" text-anchor="middle" fill="#e8edf2" font-size="11" font-weight="600">Sensor Connection</text>
+        <text x="395" y="245" text-anchor="middle" fill="currentColor" class="t1" font-size="11" font-weight="600">Sensor Connection</text>
         <text x="395" y="257" text-anchor="middle" fill="rgba(249,115,22,0.4)" font-size="7" font-family="'Space Mono',monospace">S1 &middot; S2 &middot; M1</text>
 
         <!-- UC-04 -->
         <ellipse cx="395" cy="304" rx="130" ry="26" fill="rgba(249,115,22,0.07)" stroke="rgba(249,115,22,0.4)" stroke-width="1.3"/>
         <text x="395" y="299" text-anchor="middle" fill="#f97316" font-size="9" font-family="'Space Mono',monospace">UC-04</text>
-        <text x="395" y="313" text-anchor="middle" fill="#e8edf2" font-size="11" font-weight="600">Start Rehabilitation Session</text>
+        <text x="395" y="313" text-anchor="middle" fill="currentColor" class="t1" font-size="11" font-weight="600">Start Rehabilitation Session</text>
         <text x="395" y="325" text-anchor="middle" fill="rgba(249,115,22,0.4)" font-size="7" font-family="'Space Mono',monospace">S2 &middot; V1 &middot; V2 &middot; M1</text>
 
         <!-- UC-05 -->
         <ellipse cx="395" cy="372" rx="140" ry="26" fill="rgba(34,197,94,0.07)" stroke="rgba(34,197,94,0.4)" stroke-width="1.3"/>
         <text x="395" y="367" text-anchor="middle" fill="#22c55e" font-size="9" font-family="'Space Mono',monospace">UC-05</text>
-        <text x="395" y="381" text-anchor="middle" fill="#e8edf2" font-size="11" font-weight="600">Real-Time Motion Feedback</text>
+        <text x="395" y="381" text-anchor="middle" fill="currentColor" class="t1" font-size="11" font-weight="600">Real-Time Motion Feedback</text>
         <text x="395" y="393" text-anchor="middle" fill="rgba(34,197,94,0.4)" font-size="7" font-family="'Space Mono',monospace">V1 &middot; V2 &middot; M1</text>
 
         <!-- UC-06 -->
         <ellipse cx="350" cy="418" rx="120" ry="22" fill="rgba(34,197,94,0.07)" stroke="rgba(34,197,94,0.4)" stroke-width="1.3"/>
         <text x="350" y="414" text-anchor="middle" fill="#22c55e" font-size="9" font-family="'Space Mono',monospace">UC-06</text>
-        <text x="350" y="426" text-anchor="middle" fill="#e8edf2" font-size="10" font-weight="600">Review Patient Progress</text>
+        <text x="350" y="426" text-anchor="middle" fill="currentColor" class="t1" font-size="10" font-weight="600">Review Patient Progress</text>
 
         <!-- UC-07 -->
         <ellipse cx="440" cy="440" rx="110" ry="22" fill="rgba(34,197,94,0.07)" stroke="rgba(34,197,94,0.4)" stroke-width="1.3"/>
         <text x="440" y="436" text-anchor="middle" fill="#22c55e" font-size="9" font-family="'Space Mono',monospace">UC-07</text>
-        <text x="440" y="448" text-anchor="middle" fill="#e8edf2" font-size="10" font-weight="600">Prescribe Exercise Plan</text>
+        <text x="440" y="448" text-anchor="middle" fill="currentColor" class="t1" font-size="10" font-weight="600">Prescribe Exercise Plan</text>
 
         <!-- ═══ include: UC-04 includes UC-03 ═══ -->
         <line x1="395" y1="278" x2="395" y2="262" stroke="rgba(167,139,250,0.5)" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#inc-arrow)"/>
@@ -212,32 +238,32 @@
         <!-- ════════════════════════════════════════
              PACKAGE: PATIENT INTERFACE (M1)
              ════════════════════════════════════════ -->
-        <rect x="195" y="475" width="400" height="195" rx="10" fill="rgba(249,115,22,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+        <rect x="195" y="475" width="400" height="195" rx="10" fill="rgba(249,115,22,0.02)" stroke="currentColor" class="pkg-border" stroke-width="1"/>
         <text x="210" y="493" fill="rgba(249,115,22,0.5)" font-size="10" font-family="'Space Mono',monospace" letter-spacing="0.08em">PATIENT INTERFACE (M1)</text>
 
         <ellipse cx="300" cy="525" rx="95" ry="20" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
         <text x="300" y="521" text-anchor="middle" fill="#f97316" font-size="8" font-family="'Space Mono',monospace">UC-P01</text>
-        <text x="300" y="533" text-anchor="middle" fill="#e8edf2" font-size="10">View Rehab Plan</text>
+        <text x="300" y="533" text-anchor="middle" fill="currentColor" class="t1" font-size="10">View Rehab Plan</text>
 
         <ellipse cx="490" cy="525" rx="95" ry="20" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
         <text x="490" y="521" text-anchor="middle" fill="#f97316" font-size="8" font-family="'Space Mono',monospace">UC-P02</text>
-        <text x="490" y="533" text-anchor="middle" fill="#e8edf2" font-size="10">Execute Motion</text>
+        <text x="490" y="533" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Execute Motion</text>
 
         <ellipse cx="300" cy="572" rx="95" ry="20" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
         <text x="300" y="568" text-anchor="middle" fill="#f97316" font-size="8" font-family="'Space Mono',monospace">UC-P03</text>
-        <text x="300" y="580" text-anchor="middle" fill="#e8edf2" font-size="10">View Records</text>
+        <text x="300" y="580" text-anchor="middle" fill="currentColor" class="t1" font-size="10">View Records</text>
 
         <ellipse cx="490" cy="572" rx="80" ry="20" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
         <text x="490" y="568" text-anchor="middle" fill="#f97316" font-size="8" font-family="'Space Mono',monospace">UC-P04</text>
-        <text x="490" y="580" text-anchor="middle" fill="#e8edf2" font-size="10">Set Goals</text>
+        <text x="490" y="580" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Set Goals</text>
 
         <ellipse cx="300" cy="618" rx="95" ry="20" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
         <text x="300" y="614" text-anchor="middle" fill="#f97316" font-size="8" font-family="'Space Mono',monospace">UC-P05</text>
-        <text x="300" y="626" text-anchor="middle" fill="#e8edf2" font-size="10">Achievements</text>
+        <text x="300" y="626" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Achievements</text>
 
         <ellipse cx="490" cy="618" rx="90" ry="20" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
         <text x="490" y="614" text-anchor="middle" fill="#f97316" font-size="8" font-family="'Space Mono',monospace">UC-P06</text>
-        <text x="490" y="626" text-anchor="middle" fill="#e8edf2" font-size="10">Notifications</text>
+        <text x="490" y="626" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Notifications</text>
 
         <!-- ═══ include: UC-P02 includes UC-04 ═══ -->
         <line x1="490" y1="505" x2="440" y2="330" stroke="rgba(167,139,250,0.4)" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#inc-arrow)"/>
@@ -246,36 +272,36 @@
         <!-- ════════════════════════════════════════
              PACKAGE: DOCTOR INTERFACE (M2)
              ════════════════════════════════════════ -->
-        <rect x="620" y="50" width="390" height="340" rx="10" fill="rgba(34,197,94,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+        <rect x="620" y="50" width="390" height="340" rx="10" fill="rgba(34,197,94,0.02)" stroke="currentColor" class="pkg-border" stroke-width="1"/>
         <text x="635" y="68" fill="rgba(34,197,94,0.5)" font-size="10" font-family="'Space Mono',monospace" letter-spacing="0.08em">DOCTOR INTERFACE (M2)</text>
 
         <ellipse cx="815" cy="105" rx="110" ry="22" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
         <text x="815" y="101" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-D01</text>
-        <text x="815" y="113" text-anchor="middle" fill="#e8edf2" font-size="10">Patient Management</text>
+        <text x="815" y="113" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Patient Management</text>
 
         <ellipse cx="815" cy="152" rx="110" ry="22" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
         <text x="815" y="148" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-D02</text>
-        <text x="815" y="160" text-anchor="middle" fill="#e8edf2" font-size="10">Data Visualization</text>
+        <text x="815" y="160" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Data Visualization</text>
 
         <ellipse cx="815" cy="196" rx="105" ry="22" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
         <text x="815" y="192" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-D03</text>
-        <text x="815" y="204" text-anchor="middle" fill="#e8edf2" font-size="10">Motion Playback</text>
+        <text x="815" y="204" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Motion Playback</text>
 
         <ellipse cx="815" cy="240" rx="95" ry="22" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
         <text x="815" y="236" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-D04</text>
-        <text x="815" y="248" text-anchor="middle" fill="#e8edf2" font-size="10">Smart Report</text>
+        <text x="815" y="248" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Smart Report</text>
 
         <ellipse cx="815" cy="284" rx="110" ry="22" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
         <text x="815" y="280" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-D05</text>
-        <text x="815" y="292" text-anchor="middle" fill="#e8edf2" font-size="10">Anomaly Alerts</text>
+        <text x="815" y="292" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Anomaly Alerts</text>
 
         <ellipse cx="815" cy="328" rx="100" ry="22" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
         <text x="815" y="324" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-D06</text>
-        <text x="815" y="336" text-anchor="middle" fill="#e8edf2" font-size="10">Adjust Treatment</text>
+        <text x="815" y="336" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Adjust Treatment</text>
 
         <ellipse cx="815" cy="368" rx="100" ry="22" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
         <text x="815" y="364" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-D07</text>
-        <text x="815" y="376" text-anchor="middle" fill="#e8edf2" font-size="10">Collaboration</text>
+        <text x="815" y="376" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Collaboration</text>
 
         <!-- ═══ extend: UC-D05 extends UC-D01 ═══ -->
         <line x1="760" y1="268" x2="750" y2="122" stroke="rgba(249,115,22,0.4)" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#ext-arrow)"/>
@@ -284,50 +310,50 @@
         <!-- ════════════════════════════════════════
              PACKAGE: ADMINISTRATOR (M2)
              ════════════════════════════════════════ -->
-        <rect x="620" y="410" width="390" height="195" rx="10" fill="rgba(139,92,246,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+        <rect x="620" y="410" width="390" height="195" rx="10" fill="rgba(139,92,246,0.02)" stroke="currentColor" class="pkg-border" stroke-width="1"/>
         <text x="635" y="428" fill="rgba(139,92,246,0.5)" font-size="10" font-family="'Space Mono',monospace" letter-spacing="0.08em">ADMINISTRATOR (M2 ADMIN)</text>
 
         <ellipse cx="730" cy="462" rx="100" ry="20" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
         <text x="730" y="458" text-anchor="middle" fill="#a78bfa" font-size="8" font-family="'Space Mono',monospace">UC-A01</text>
-        <text x="730" y="470" text-anchor="middle" fill="#e8edf2" font-size="10">Manage Interfaces</text>
+        <text x="730" y="470" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Manage Interfaces</text>
 
         <ellipse cx="910" cy="462" rx="90" ry="20" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
         <text x="910" y="458" text-anchor="middle" fill="#a78bfa" font-size="8" font-family="'Space Mono',monospace">UC-A02</text>
-        <text x="910" y="470" text-anchor="middle" fill="#e8edf2" font-size="10">Manage Devices</text>
+        <text x="910" y="470" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Manage Devices</text>
 
         <ellipse cx="730" cy="508" rx="95" ry="20" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
         <text x="730" y="504" text-anchor="middle" fill="#a78bfa" font-size="8" font-family="'Space Mono',monospace">UC-A03</text>
-        <text x="730" y="516" text-anchor="middle" fill="#e8edf2" font-size="10">Manage AI Models</text>
+        <text x="730" y="516" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Manage AI Models</text>
 
         <ellipse cx="910" cy="508" rx="80" ry="20" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
         <text x="910" y="504" text-anchor="middle" fill="#a78bfa" font-size="8" font-family="'Space Mono',monospace">UC-A04</text>
-        <text x="910" y="516" text-anchor="middle" fill="#e8edf2" font-size="10">View Logs</text>
+        <text x="910" y="516" text-anchor="middle" fill="currentColor" class="t1" font-size="10">View Logs</text>
 
         <ellipse cx="730" cy="554" rx="100" ry="20" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
         <text x="730" y="550" text-anchor="middle" fill="#a78bfa" font-size="8" font-family="'Space Mono',monospace">UC-A05</text>
-        <text x="730" y="562" text-anchor="middle" fill="#e8edf2" font-size="10">Manage Permissions</text>
+        <text x="730" y="562" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Manage Permissions</text>
 
         <ellipse cx="910" cy="554" rx="85" ry="20" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
         <text x="910" y="550" text-anchor="middle" fill="#a78bfa" font-size="8" font-family="'Space Mono',monospace">UC-A06</text>
-        <text x="910" y="562" text-anchor="middle" fill="#e8edf2" font-size="10">Data Export</text>
+        <text x="910" y="562" text-anchor="middle" fill="currentColor" class="t1" font-size="10">Data Export</text>
 
         <!-- ════════════════════════════════════════
              PACKAGE: V1 INTERNAL
              ════════════════════════════════════════ -->
-        <rect x="195" y="700" width="815" height="110" rx="10" fill="rgba(34,197,94,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+        <rect x="195" y="700" width="815" height="110" rx="10" fill="rgba(34,197,94,0.02)" stroke="currentColor" class="pkg-border" stroke-width="1"/>
         <text x="210" y="718" fill="rgba(34,197,94,0.5)" font-size="10" font-family="'Space Mono',monospace" letter-spacing="0.08em">V1 INTERNAL (SERVER PIPELINE)</text>
 
         <ellipse cx="355" cy="758" rx="130" ry="24" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.35)" stroke-width="1.2"/>
         <text x="355" y="754" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-V1-01</text>
-        <text x="355" y="766" text-anchor="middle" fill="#e8edf2" font-size="10" font-weight="500">Process Sensor Session</text>
+        <text x="355" y="766" text-anchor="middle" fill="currentColor" class="t1" font-size="10" font-weight="500">Process Sensor Session</text>
 
         <ellipse cx="610" cy="758" rx="120" ry="24" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.35)" stroke-width="1.2"/>
         <text x="610" y="754" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-V1-02</text>
-        <text x="610" y="766" text-anchor="middle" fill="#e8edf2" font-size="10" font-weight="500">Compare Joint Angles</text>
+        <text x="610" y="766" text-anchor="middle" fill="currentColor" class="t1" font-size="10" font-weight="500">Compare Joint Angles</text>
 
         <ellipse cx="855" cy="758" rx="120" ry="24" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.35)" stroke-width="1.2"/>
         <text x="855" y="754" text-anchor="middle" fill="#22c55e" font-size="8" font-family="'Space Mono',monospace">UC-V1-03</text>
-        <text x="855" y="766" text-anchor="middle" fill="#e8edf2" font-size="10" font-weight="500">Provide Results to V2</text>
+        <text x="855" y="766" text-anchor="middle" fill="currentColor" class="t1" font-size="10" font-weight="500">Provide Results to V2</text>
 
         <!-- include: UC-V1-01 includes UC-V1-02 -->
         <line x1="485" y1="755" x2="490" y2="755" stroke="rgba(167,139,250,0.5)" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#inc-arrow)"/>
@@ -426,7 +452,7 @@
         <!-- ════════════════════════════════════════
              LEGEND
              ════════════════════════════════════════ -->
-        <rect x="195" y="840" width="815" height="110" rx="10" fill="rgba(139,92,246,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <rect x="195" y="840" width="815" height="110" rx="10" fill="rgba(139,92,246,0.03)" stroke="currentColor" class="legend-border" stroke-width="1"/>
         <text x="215" y="860" fill="rgba(139,92,246,0.5)" font-size="9" font-family="'Space Mono',monospace" letter-spacing="0.1em">LEGEND</text>
 
         <!-- Actor icons mini -->
@@ -440,7 +466,7 @@
         <text x="545" y="889" fill="#a78bfa" font-size="10">Administrator</text>
 
         <!-- Relationship types -->
-        <line x1="220" y1="915" x2="270" y2="915" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+        <line x1="220" y1="915" x2="270" y2="915" stroke="currentColor" class="assoc-line" stroke-width="1.2"/>
         <text x="280" y="919" fill="var(--text-3)" font-size="10">Association (actor participates)</text>
 
         <line x1="530" y1="915" x2="580" y2="915" stroke="rgba(167,139,250,0.5)" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#inc-arrow)"/>
@@ -452,7 +478,7 @@
         <ellipse cx="555" cy="938" rx="25" ry="9" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.35)" stroke-width="1"/>
         <text x="590" y="942" fill="var(--text-3)" font-size="10">Use Case</text>
 
-        <rect x="700" y="930" width="40" height="16" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+        <rect x="700" y="930" width="40" height="16" rx="4" fill="var(--surface)" stroke="currentColor" class="pkg-border" stroke-width="1"/>
         <text x="750" y="942" fill="var(--text-3)" font-size="10">Package (subsystem)</text>
       </svg>
     </div>
@@ -501,13 +527,13 @@
         <text x="900" y="29" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">M2 Dash</text>
 
         <!-- Lifelines -->
-        <line x1="60" y1="40" x2="60" y2="720" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="180" y1="40" x2="180" y2="720" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="320" y1="40" x2="320" y2="720" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="460" y1="40" x2="460" y2="720" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="610" y1="40" x2="610" y2="720" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="760" y1="40" x2="760" y2="720" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="900" y1="40" x2="900" y2="720" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="60" y1="40" x2="60" y2="720" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="180" y1="40" x2="180" y2="720" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="320" y1="40" x2="320" y2="720" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="460" y1="40" x2="460" y2="720" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="610" y1="40" x2="610" y2="720" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="760" y1="40" x2="760" y2="720" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="900" y1="40" x2="900" y2="720" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
 
         <!-- UC-03 SENSOR CONNECTION PHASE -->
         <rect x="10" y="55" width="940" height="150" rx="6" fill="none" stroke="rgba(249,115,22,0.15)" stroke-width="1"/>
@@ -515,22 +541,22 @@
         <text x="70" y="67" text-anchor="middle" fill="#f97316" font-size="9" font-weight="700">UC-03 Connect</text>
 
         <line x1="60" y1="80" x2="180" y2="80" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="120" y="75" text-anchor="middle" fill="#8a9ab0" font-size="9">1. Tap "Connect Sensor"</text>
+        <text x="120" y="75" text-anchor="middle" fill="currentColor" class="t2" font-size="9">1. Tap "Connect Sensor"</text>
 
         <line x1="180" y1="100" x2="320" y2="100" stroke="#a78bfa" stroke-width="1" marker-end="url(#ap)"/>
-        <text x="250" y="95" text-anchor="middle" fill="#8a9ab0" font-size="9">2. Bluetooth scan + pair</text>
+        <text x="250" y="95" text-anchor="middle" fill="currentColor" class="t2" font-size="9">2. Bluetooth scan + pair</text>
 
         <line x1="320" y1="120" x2="180" y2="120" stroke="#f97316" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ao)"/>
-        <text x="250" y="115" text-anchor="middle" fill="#8a9ab0" font-size="9">3. Connection confirmed</text>
+        <text x="250" y="115" text-anchor="middle" fill="currentColor" class="t2" font-size="9">3. Connection confirmed</text>
 
         <line x1="320" y1="140" x2="460" y2="140" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="390" y="135" text-anchor="middle" fill="#8a9ab0" font-size="9">4. Calibration data (3s)</text>
+        <text x="390" y="135" text-anchor="middle" fill="currentColor" class="t2" font-size="9">4. Calibration data (3s)</text>
 
         <line x1="460" y1="160" x2="180" y2="160" stroke="#f97316" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ao)"/>
-        <text x="320" y="155" text-anchor="middle" fill="#8a9ab0" font-size="9">5. Calibration OK</text>
+        <text x="320" y="155" text-anchor="middle" fill="currentColor" class="t2" font-size="9">5. Calibration OK</text>
 
         <line x1="180" y1="185" x2="60" y2="185" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ap)"/>
-        <text x="120" y="180" text-anchor="middle" fill="#8a9ab0" font-size="9">6. "Connected &amp; Ready"</text>
+        <text x="120" y="180" text-anchor="middle" fill="currentColor" class="t2" font-size="9">6. "Connected &amp; Ready"</text>
 
         <!-- UC-04 SESSION START PHASE -->
         <rect x="10" y="215" width="940" height="120" rx="6" fill="none" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
@@ -538,49 +564,49 @@
         <text x="70" y="227" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">UC-04 Start</text>
 
         <line x1="60" y1="245" x2="180" y2="245" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="120" y="240" text-anchor="middle" fill="#8a9ab0" font-size="9">7. Tap "Begin Exercise"</text>
+        <text x="120" y="240" text-anchor="middle" fill="currentColor" class="t2" font-size="9">7. Tap "Begin Exercise"</text>
 
         <line x1="180" y1="265" x2="460" y2="265" stroke="#a78bfa" stroke-width="1" marker-end="url(#ap)"/>
-        <text x="320" y="260" text-anchor="middle" fill="#8a9ab0" font-size="9">8. Start session request</text>
+        <text x="320" y="260" text-anchor="middle" fill="currentColor" class="t2" font-size="9">8. Start session request</text>
 
         <line x1="460" y1="285" x2="760" y2="285" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="610" y="280" text-anchor="middle" fill="#8a9ab0" font-size="9">9. Create session record (patient ID, timestamp)</text>
+        <text x="610" y="280" text-anchor="middle" fill="currentColor" class="t2" font-size="9">9. Create session record (patient ID, timestamp)</text>
 
         <line x1="760" y1="305" x2="460" y2="305" stroke="#22c55e" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ag)"/>
-        <text x="610" y="300" text-anchor="middle" fill="#8a9ab0" font-size="9">10. Session ID confirmed</text>
+        <text x="610" y="300" text-anchor="middle" fill="currentColor" class="t2" font-size="9">10. Session ID confirmed</text>
 
         <line x1="180" y1="320" x2="60" y2="320" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ap)"/>
-        <text x="120" y="315" text-anchor="middle" fill="#8a9ab0" font-size="9">11. 3s countdown</text>
+        <text x="120" y="315" text-anchor="middle" fill="currentColor" class="t2" font-size="9">11. 3s countdown</text>
 
         <!-- UC-05 LOOP: REAL-TIME FEEDBACK -->
         <rect x="10" y="345" width="940" height="270" rx="6" fill="none" stroke="rgba(34,197,94,0.2)" stroke-width="1"/>
         <rect x="10" y="345" width="170" height="18" rx="3" fill="rgba(34,197,94,0.1)"/>
         <text x="95" y="357" text-anchor="middle" fill="#22c55e" font-size="9" font-weight="700">LOOP [each repetition]</text>
-        <text x="190" y="357" fill="#5a6a80" font-size="8">UC-05 Real-Time Feedback</text>
+        <text x="190" y="357" fill="currentColor" class="t3" font-size="8">UC-05 Real-Time Feedback</text>
 
         <text x="60" y="378" text-anchor="middle" fill="#f97316" font-size="9" font-style="italic">performs rep</text>
 
         <line x1="320" y1="390" x2="460" y2="390" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="390" y="385" text-anchor="middle" fill="#8a9ab0" font-size="9">12. Raw IMU packet (IF1)</text>
+        <text x="390" y="385" text-anchor="middle" fill="currentColor" class="t2" font-size="9">12. Raw IMU packet (IF1)</text>
 
         <line x1="460" y1="410" x2="610" y2="410" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="535" y="405" text-anchor="middle" fill="#8a9ab0" font-size="9">13. Validated data (IF1)</text>
+        <text x="535" y="405" text-anchor="middle" fill="currentColor" class="t2" font-size="9">13. Validated data (IF1)</text>
 
         <!-- V1 self-call: inference -->
         <rect x="598" y="425" width="24" height="28" fill="rgba(34,197,94,0.08)" stroke="rgba(34,197,94,0.25)" stroke-width="1" rx="3"/>
         <text x="640" y="443" fill="#22c55e" font-size="8">14. Inference + angle compare (UC-V1-01, V1-02)</text>
 
         <line x1="610" y1="465" x2="760" y2="465" stroke="#22c55e" stroke-width="1" marker-end="url(#ag)"/>
-        <text x="685" y="460" text-anchor="middle" fill="#8a9ab0" font-size="9">15. Recognition result (V1-V2 contract)</text>
+        <text x="685" y="460" text-anchor="middle" fill="currentColor" class="t2" font-size="9">15. Recognition result (V1-V2 contract)</text>
 
         <line x1="760" y1="485" x2="760" y2="485" stroke="none"/>
         <text x="760" y="490" text-anchor="middle" fill="#22c55e" font-size="8">16. Store + forward</text>
 
         <line x1="760" y1="505" x2="180" y2="505" stroke="#22c55e" stroke-width="1" marker-end="url(#ag)"/>
-        <text x="470" y="500" text-anchor="middle" fill="#8a9ab0" font-size="9">17. Feedback data (IF2, WebSocket)</text>
+        <text x="470" y="500" text-anchor="middle" fill="currentColor" class="t2" font-size="9">17. Feedback data (IF2, WebSocket)</text>
 
         <line x1="180" y1="525" x2="60" y2="525" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ap)"/>
-        <text x="120" y="520" text-anchor="middle" fill="#8a9ab0" font-size="9">18. Visual + haptic feedback</text>
+        <text x="120" y="520" text-anchor="middle" fill="currentColor" class="t2" font-size="9">18. Visual + haptic feedback</text>
 
         <!-- ALT: posture alert -->
         <rect x="25" y="545" width="910" height="55" rx="4" fill="none" stroke="rgba(239,68,68,0.2)" stroke-width="1" stroke-dasharray="4 2"/>
@@ -591,20 +617,20 @@
         <text x="120" y="565" text-anchor="middle" fill="#ef4444" font-size="8">Full-screen warning, session paused</text>
 
         <line x1="760" y1="585" x2="900" y2="585" stroke="#22c55e" stroke-width="1" marker-end="url(#ag)"/>
-        <text x="830" y="580" text-anchor="middle" fill="#8a9ab0" font-size="8">Alert logged for doctor review</text>
+        <text x="830" y="580" text-anchor="middle" fill="currentColor" class="t2" font-size="8">Alert logged for doctor review</text>
 
         <!-- END SESSION -->
         <line x1="60" y1="635" x2="180" y2="635" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="120" y="630" text-anchor="middle" fill="#8a9ab0" font-size="9">19. Tap "End Session"</text>
+        <text x="120" y="630" text-anchor="middle" fill="currentColor" class="t2" font-size="9">19. Tap "End Session"</text>
 
         <line x1="180" y1="655" x2="460" y2="655" stroke="#a78bfa" stroke-width="1" marker-end="url(#ap)"/>
-        <text x="320" y="650" text-anchor="middle" fill="#8a9ab0" font-size="9">20. Close data stream</text>
+        <text x="320" y="650" text-anchor="middle" fill="currentColor" class="t2" font-size="9">20. Close data stream</text>
 
         <line x1="460" y1="675" x2="760" y2="675" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="610" y="670" text-anchor="middle" fill="#8a9ab0" font-size="9">21. Finalize session record</text>
+        <text x="610" y="670" text-anchor="middle" fill="currentColor" class="t2" font-size="9">21. Finalize session record</text>
 
         <line x1="180" y1="695" x2="60" y2="695" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ap)"/>
-        <text x="120" y="690" text-anchor="middle" fill="#8a9ab0" font-size="9">22. Session summary</text>
+        <text x="120" y="690" text-anchor="middle" fill="currentColor" class="t2" font-size="9">22. Session summary</text>
       </svg>
     </div>
 
@@ -633,10 +659,10 @@
         <rect x="500" y="8" width="80" height="32" rx="6" fill="rgba(139,92,246,0.12)" stroke="rgba(139,92,246,0.4)" stroke-width="1"/>
         <text x="540" y="28" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">M1 App</text>
 
-        <line x1="70" y1="40" x2="70" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="250" y1="40" x2="250" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="420" y1="40" x2="420" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="540" y1="40" x2="540" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="70" y1="40" x2="70" y2="400" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="250" y1="40" x2="250" y2="400" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="420" y1="40" x2="420" y2="400" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="540" y1="40" x2="540" y2="400" stroke="currentColor" class="lifeline" stroke-width="1" stroke-dasharray="4 3"/>
 
         <!-- UC-06 -->
         <rect x="10" y="55" width="575" height="150" rx="6" fill="none" stroke="rgba(34,197,94,0.15)" stroke-width="1"/>
@@ -644,22 +670,22 @@
         <text x="50" y="66" text-anchor="middle" fill="#22c55e" font-size="8" font-weight="700">UC-06</text>
 
         <line x1="70" y1="80" x2="250" y2="80" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="160" y="75" text-anchor="middle" fill="#8a9ab0" font-size="9">1. Select patient</text>
+        <text x="160" y="75" text-anchor="middle" fill="currentColor" class="t2" font-size="9">1. Select patient</text>
 
         <line x1="250" y1="100" x2="420" y2="100" stroke="#a78bfa" stroke-width="1" marker-end="url(#cp)"/>
-        <text x="335" y="95" text-anchor="middle" fill="#8a9ab0" font-size="9">2. GET /patients/{id}/sessions</text>
+        <text x="335" y="95" text-anchor="middle" fill="currentColor" class="t2" font-size="9">2. GET /patients/{id}/sessions</text>
 
         <line x1="420" y1="120" x2="250" y2="120" stroke="#22c55e" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#co)"/>
-        <text x="335" y="115" text-anchor="middle" fill="#8a9ab0" font-size="9">3. Session history + trends</text>
+        <text x="335" y="115" text-anchor="middle" fill="currentColor" class="t2" font-size="9">3. Session history + trends</text>
 
         <line x1="250" y1="140" x2="70" y2="140" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#cp)"/>
-        <text x="160" y="135" text-anchor="middle" fill="#8a9ab0" font-size="9">4. Charts, accuracy trends, alerts</text>
+        <text x="160" y="135" text-anchor="middle" fill="currentColor" class="t2" font-size="9">4. Charts, accuracy trends, alerts</text>
 
         <line x1="70" y1="160" x2="250" y2="160" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="160" y="155" text-anchor="middle" fill="#8a9ab0" font-size="9">5. Drill into session detail</text>
+        <text x="160" y="155" text-anchor="middle" fill="currentColor" class="t2" font-size="9">5. Drill into session detail</text>
 
         <line x1="250" y1="180" x2="70" y2="180" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#cp)"/>
-        <text x="160" y="175" text-anchor="middle" fill="#8a9ab0" font-size="9">6. Per-rep accuracy, angle graphs</text>
+        <text x="160" y="175" text-anchor="middle" fill="currentColor" class="t2" font-size="9">6. Per-rep accuracy, angle graphs</text>
 
         <!-- UC-07 -->
         <rect x="10" y="215" width="575" height="170" rx="6" fill="none" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
@@ -667,28 +693,28 @@
         <text x="50" y="226" text-anchor="middle" fill="#a78bfa" font-size="8" font-weight="700">UC-07</text>
 
         <line x1="70" y1="245" x2="250" y2="245" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="160" y="240" text-anchor="middle" fill="#8a9ab0" font-size="9">7. Click "Edit Treatment Plan"</text>
+        <text x="160" y="240" text-anchor="middle" fill="currentColor" class="t2" font-size="9">7. Click "Edit Treatment Plan"</text>
 
         <line x1="250" y1="265" x2="420" y2="265" stroke="#a78bfa" stroke-width="1" marker-end="url(#cp)"/>
-        <text x="335" y="260" text-anchor="middle" fill="#8a9ab0" font-size="9">8. GET /patients/{id}/plan</text>
+        <text x="335" y="260" text-anchor="middle" fill="currentColor" class="t2" font-size="9">8. GET /patients/{id}/plan</text>
 
         <line x1="420" y1="285" x2="250" y2="285" stroke="#22c55e" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#co)"/>
-        <text x="335" y="280" text-anchor="middle" fill="#8a9ab0" font-size="9">9. Current plan (or blank)</text>
+        <text x="335" y="280" text-anchor="middle" fill="currentColor" class="t2" font-size="9">9. Current plan (or blank)</text>
 
         <line x1="70" y1="305" x2="250" y2="305" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="160" y="300" text-anchor="middle" fill="#8a9ab0" font-size="9">10. Configure exercises, save</text>
+        <text x="160" y="300" text-anchor="middle" fill="currentColor" class="t2" font-size="9">10. Configure exercises, save</text>
 
         <line x1="250" y1="325" x2="420" y2="325" stroke="#a78bfa" stroke-width="1" marker-end="url(#cp)"/>
-        <text x="335" y="320" text-anchor="middle" fill="#8a9ab0" font-size="9">11. PUT /patients/{id}/plan</text>
+        <text x="335" y="320" text-anchor="middle" fill="currentColor" class="t2" font-size="9">11. PUT /patients/{id}/plan</text>
 
         <line x1="420" y1="345" x2="250" y2="345" stroke="#22c55e" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#co)"/>
-        <text x="335" y="340" text-anchor="middle" fill="#8a9ab0" font-size="9">12. Plan saved, version assigned</text>
+        <text x="335" y="340" text-anchor="middle" fill="currentColor" class="t2" font-size="9">12. Plan saved, version assigned</text>
 
         <line x1="420" y1="365" x2="540" y2="365" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="480" y="360" text-anchor="middle" fill="#8a9ab0" font-size="9">13. Push notification (IF2)</text>
+        <text x="480" y="360" text-anchor="middle" fill="currentColor" class="t2" font-size="9">13. Push notification (IF2)</text>
 
         <line x1="250" y1="385" x2="70" y2="385" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#cp)"/>
-        <text x="160" y="380" text-anchor="middle" fill="#8a9ab0" font-size="9">14. "Plan published" confirmation</text>
+        <text x="160" y="380" text-anchor="middle" fill="currentColor" class="t2" font-size="9">14. "Plan published" confirmation</text>
       </svg>
     </div>
 

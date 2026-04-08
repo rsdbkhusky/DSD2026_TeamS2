@@ -22,6 +22,28 @@
   <title>Progress · DSD2026 Team S2</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    /* ── Gantt/Waterfall color tokens ── */
+    :root {
+      --bar-done-bg: rgba(124,58,237,0.35);
+      --bar-done-border: rgba(139,92,246,0.6);
+      --bar-future-bg: rgba(255,255,255,0.04);
+      --bar-future-border: rgba(255,255,255,0.1);
+      --bar-text: rgba(255,255,255,0.85);
+      --bar-text-future: rgba(255,255,255,0.35);
+      --grid-line: rgba(255,255,255,0.025);
+      --row-border: rgba(255,255,255,0.03);
+    }
+    [data-theme="light"] {
+      --bar-done-bg: rgba(124,58,237,0.2);
+      --bar-done-border: rgba(124,58,237,0.45);
+      --bar-future-bg: rgba(0,0,0,0.04);
+      --bar-future-border: rgba(0,0,0,0.12);
+      --bar-text: rgba(0,0,0,0.75);
+      --bar-text-future: rgba(0,0,0,0.4);
+      --grid-line: rgba(0,0,0,0.06);
+      --row-border: rgba(0,0,0,0.05);
+    }
+
     .timeline { display:flex; flex-direction:column; gap:0; position:relative; }
     .timeline::before { content:''; position:absolute; left:18px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,var(--accent) 0%,rgba(139,92,246,0.1) 80%,transparent 100%); }
     .sprint-item { display:grid; grid-template-columns:40px 1fr; gap:28px; padding-bottom:44px; }
@@ -46,22 +68,22 @@
     .gantt-name-hdr { flex-shrink:0; font-family:var(--font-mono); font-size:10px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; line-height:1; padding-bottom:2px; }
     .gantt-days-hdr { display:flex; flex:1; }
     .gantt-day-hdr { text-align:center; font-family:var(--font-mono); font-size:10px; color:var(--text-3); line-height:1; padding-bottom:2px; flex:1; }
-    .gantt-member { display:flex; border-bottom:1px solid rgba(255,255,255,0.03); }
+    .gantt-member { display:flex; border-bottom:1px solid var(--row-border); }
     .gantt-member-info { flex-shrink:0; display:flex; flex-direction:column; justify-content:center; padding-right:8px; }
     .gantt-member-name { font-size:12px; color:var(--text); font-weight:600; white-space:nowrap; }
     .gantt-member-role { font-size:9px; color:var(--accent); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.06em; margin-top:1px; }
     .gantt-member-grid { position:relative; display:flex; flex:1; }
-    .gantt-col { flex:1; border-left:1px solid rgba(255,255,255,0.025); }
+    .gantt-col { flex:1; border-left:1px solid var(--grid-line); }
     /* Bar: two layers. Back layers for color, front layer for text spanning full width */
     .gantt-bar-wrap { position:absolute; display:flex; z-index:2; pointer-events:none; }
-    .gantt-bar-done { border-radius:4px; background:rgba(124,58,237,0.35); border:1px solid rgba(139,92,246,0.6); box-sizing:border-box; }
-    .gantt-bar-future { border-radius:4px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); box-sizing:border-box; }
+    .gantt-bar-done { border-radius:4px; background:var(--bar-done-bg); border:1px solid var(--bar-done-border); box-sizing:border-box; }
+    .gantt-bar-future { border-radius:4px; background:var(--bar-future-bg); border:1px solid var(--bar-future-border); box-sizing:border-box; }
     .gantt-bar-done.left-half { border-radius:4px 0 0 4px; border-right:none; }
     .gantt-bar-future.right-half { border-radius:0 4px 4px 0; border-left:none; }
     .gantt-bar-label {
       position:absolute; top:0; left:0; width:100%; height:100%;
       display:flex; align-items:center; justify-content:center;
-      font-family:var(--font-mono); font-size:10px; font-weight:700; color:rgba(255,255,255,0.85);
+      font-family:var(--font-mono); font-size:10px; font-weight:700; color:var(--bar-text);
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding:0 4px;
     }
     .gantt-today { position:absolute; top:0; bottom:0; width:2px; background:rgba(139,92,246,0.75); z-index:5; pointer-events:none; }
@@ -84,7 +106,6 @@
     <div class="brand">
       <span class="brand-tag">DSD 2025&ndash;2026</span>
       <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
-    </div>
     </div>
     <nav id="mainNav" class="nav-links">
       <a href="index.html" class="nav-link">Home</a>
@@ -391,6 +412,18 @@ var GanttChart=(function(){
   var n=new Date(),u8=new Date(n.getTime()+(n.getTimezoneOffset()+480)*6e4);
   var TD=new Date(u8.getFullYear(),u8.getMonth(),u8.getDate());
 
+  // Read CSS variables for theme-aware colors
+  var cs=getComputedStyle(document.documentElement);
+  var C_DONE_BG=cs.getPropertyValue('--bar-done-bg').trim()||'rgba(124,58,237,0.35)';
+  var C_DONE_BD=cs.getPropertyValue('--bar-done-border').trim()||'rgba(139,92,246,0.6)';
+  var C_FUT_BG=cs.getPropertyValue('--bar-future-bg').trim()||'rgba(255,255,255,0.04)';
+  var C_FUT_BD=cs.getPropertyValue('--bar-future-border').trim()||'rgba(255,255,255,0.1)';
+  var C_TEXT=cs.getPropertyValue('--bar-text').trim()||'rgba(255,255,255,0.85)';
+  var C_TEXT_F=cs.getPropertyValue('--bar-text-future').trim()||'rgba(255,255,255,0.35)';
+  var C_GRID=cs.getPropertyValue('--grid-line').trim()||'rgba(255,255,255,0.025)';
+  var C_ACC=cs.getPropertyValue('--accent').trim()||'#8b5cf6';
+  var C_TXT3=cs.getPropertyValue('--text-3').trim()||'#5a6a80';
+
   var P=[
     {l:'Foundation',           s:D(3,16),e:D(3,30),a:'sprint-foundation'},
     {l:'Req. Analysis',        s:D(3,30),e:D(4,6), a:'sprint-req-analysis'},
@@ -416,10 +449,10 @@ var GanttChart=(function(){
   for(var w=0;w<=10;w++){
     var wd=new Date(EP.getTime()+w*7*864e5);
     var wx=px(wd);
-    s+='<line x1="'+wx+'" y1="0" x2="'+wx+'" y2="'+(H-BT)+'" stroke="rgba(255,255,255,0.05)" stroke-width="0.6"/>';
+    s+='<line x1="'+wx+'" y1="0" x2="'+wx+'" y2="'+(H-BT)+'" stroke="'+C_GRID+'" stroke-width="0.6"/>';
     var mm=wd.getMonth()+1,dd=wd.getDate();
-    s+='<text x="'+(wx+1)+'" y="'+(H-2)+'" fill="rgba(255,255,255,0.35)" font-size="8" font-family="Space Mono,monospace">'+mm+'/'+(dd<10?'0':'')+dd+'</text>';
-    s+='<text x="'+(wx+VW/td*3.5)+'" y="'+(H-9)+'" text-anchor="middle" fill="rgba(139,92,246,0.6)" font-size="9" font-family="Space Mono,monospace" font-weight="700">W'+(w+1)+'</text>';
+    s+='<text x="'+(wx+1)+'" y="'+(H-2)+'" fill="'+C_TXT3+'" font-size="8" font-family="Space Mono,monospace">'+mm+'/'+(dd<10?'0':'')+dd+'</text>';
+    s+='<text x="'+(wx+VW/td*3.5)+'" y="'+(H-9)+'" text-anchor="middle" fill="'+C_ACC+'" opacity="0.6" font-size="9" font-family="Space Mono,monospace" font-weight="700">W'+(w+1)+'</text>';
   }
 
   for(var i=0;i<P.length;i++){
@@ -428,19 +461,19 @@ var GanttChart=(function(){
     s+='<g class="wfp">';
     // Split logic
     if(todayX>=x2){
-      s+='<rect x="'+x1+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="rgba(124,58,237,0.3)" stroke="rgba(139,92,246,0.55)" stroke-width="0.8"/>';
+      s+='<rect x="'+x1+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="'+C_DONE_BG+'" stroke="'+C_DONE_BD+'" stroke-width="0.8"/>';
     }else if(todayX<=x1){
-      s+='<rect x="'+x1+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>';
+      s+='<rect x="'+x1+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="'+C_FUT_BG+'" stroke="'+C_FUT_BD+'" stroke-width="0.8"/>';
     }else{
       var dW=todayX-x1,fW=bw-dW,ci='wc'+i;
       s+='<defs><clipPath id="'+ci+'"><rect x="'+x1+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4"/></clipPath></defs>';
       s+='<g clip-path="url(#'+ci+')">';
-      s+='<rect x="'+x1+'" y="'+y+'" width="'+dW+'" height="'+bh+'" fill="rgba(124,58,237,0.3)"/>';
-      s+='<rect x="'+(x1+dW)+'" y="'+y+'" width="'+fW+'" height="'+bh+'" fill="rgba(255,255,255,0.025)"/>';
+      s+='<rect x="'+x1+'" y="'+y+'" width="'+dW+'" height="'+bh+'" fill="'+C_DONE_BG+'"/>';
+      s+='<rect x="'+(x1+dW)+'" y="'+y+'" width="'+fW+'" height="'+bh+'" fill="'+C_FUT_BG+'"/>';
       s+='</g>';
-      s+='<rect x="'+x1+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="none" stroke="rgba(139,92,246,0.45)" stroke-width="0.8"/>';
+      s+='<rect x="'+x1+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="none" stroke="'+C_DONE_BD+'" stroke-width="0.8"/>';
     }
-    var tf=(todayX>x1)?'rgba(255,255,255,1)':'rgba(255,255,255,0.35)';
+    var tf=(todayX>x1)?C_TEXT:C_TEXT_F;
     s+='<text x="'+(x1+bw/2)+'" y="'+(y+bh/2+3.5)+'" text-anchor="middle" fill="'+tf+'" font-size="11" font-weight="600" style="pointer-events:none;">'+e(p.l)+'</text>';
     s+='</g>';
     if(p.a)s+='</a>';
