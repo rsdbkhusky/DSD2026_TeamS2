@@ -166,13 +166,13 @@
           <tr>
             <td>Sensor</td>
             <td>S1 — Firmware &amp; Protocol</td>
-            <td>Zhihang Yu</td>
+            <td>Zhihang YU</td>
             <td>Sensor firmware, wireless protocol, data packet format</td>
           </tr>
           <tr class="highlight">
             <td>Sensor</td>
             <td><strong>S2 — Data Acquisition &amp; Mock Generator ★</strong></td>
-            <td>Zhiqi Zhang</td>
+            <td>Zhiqi ZHANG</td>
             <td>Data pipeline, validation &amp; cleansing, mock data module</td>
           </tr>
           <tr>
@@ -196,7 +196,7 @@
           <tr>
             <td>Monitor</td>
             <td>M2 — Clinical Web Dashboard</td>
-            <td>Yihang Li</td>
+            <td>Yihang LI</td>
             <td>Historical recovery dashboard, 3D limb reconstruction</td>
           </tr>
         </tbody>
@@ -386,10 +386,15 @@
     transform: translateY(-50%);
     z-index: 800;
     display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .news-side-item {
+    display: flex;
     align-items: center;
     gap: 0;
   }
-  .news-side-banner a {
+  .news-side-item a {
     display: flex;
     align-items: center;
     gap: 0;
@@ -415,7 +420,7 @@
     border: 1px solid rgba(255,255,255,0.15);
     border-left: none;
   }
-  .news-side-banner a:hover .news-side-tab {
+  .news-side-item a:hover .news-side-tab {
     background: #b91c1c;
     padding: 18px 14px;
   }
@@ -431,7 +436,7 @@
     opacity: 0;
     pointer-events: none;
   }
-  .news-side-banner:hover .news-side-panel {
+  .news-side-item:hover .news-side-panel {
     max-width: 240px;
     opacity: 1;
     pointer-events: auto;
@@ -471,14 +476,26 @@
 </style>
 
 <div class="news-side-banner">
-  <a href="news/srs-review.html">
-    <div class="news-side-tab">New · SRS Review</div>
-    <div class="news-side-panel">
-      <div class="news-side-panel-label">Latest News</div>
-      <div class="news-side-panel-title">SRS Error Review —<br>Requirements Inspection</div>
-      <div class="news-side-panel-hint">Click to read →</div>
-    </div>
-  </a>
+  <div class="news-side-item">
+    <a href="news/srs-diagrams.html">
+      <div class="news-side-tab">New · SRS Diagrams</div>
+      <div class="news-side-panel">
+        <div class="news-side-panel-label">Latest News</div>
+        <div class="news-side-panel-title">Use Case Diagram &amp;<br>Sequence Diagrams</div>
+        <div class="news-side-panel-hint">Click to read &rarr;</div>
+      </div>
+    </a>
+  </div>
+  <div class="news-side-item">
+    <a href="news/srs-review.html">
+      <div class="news-side-tab">New · SRS Review</div>
+      <div class="news-side-panel">
+        <div class="news-side-panel-label">Review</div>
+        <div class="news-side-panel-title">SRS Error Review<br>Requirements Inspection</div>
+        <div class="news-side-panel-hint">Click to read &rarr;</div>
+      </div>
+    </a>
+  </div>
 </div>
 <!-- ════ END NEWS SIDE BANNER ════ -->
 

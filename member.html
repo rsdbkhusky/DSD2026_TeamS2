@@ -32,7 +32,8 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 28px 26px;
-      display: flex; flex-direction: column;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
       position: relative; overflow: hidden;
       transition: border-color var(--transition), transform var(--transition-slow), box-shadow var(--transition-slow);
     }
@@ -47,29 +48,29 @@
     }
     .member-card:hover::before { opacity: 1; }
     .member-card:hover {
-      border-color: rgba(59,130,246,0.3);
+      border-color: rgba(139,92,246,0.3);
       transform: translateY(-4px);
       box-shadow: 0 20px 48px rgba(0,0,0,0.35);
     }
 
     .member-avatar {
-      width: 52px; height: 52px; border-radius: 50%;
+      width: 80px; height: 80px; border-radius: 50%;
       background: var(--surface-2);
       border: 2px solid var(--border-2);
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 16px;
-      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      font-family: var(--font-display); font-size: 28px; font-weight: 700;
       color: var(--accent);
       transition: border-color var(--transition);
     }
-    .member-card:hover .member-avatar { border-color: rgba(59,130,246,0.45); }
+    .member-card:hover .member-avatar { border-color: rgba(139,92,246,0.45); }
 
     .member-nat {
       position: absolute; top: 22px; right: 22px;
       font-family: var(--font-mono); font-size: 9px; font-weight: 700;
       padding: 3px 7px; border-radius: 4px; letter-spacing: 0.08em;
     }
-    .nat-pt { background: rgba(59,130,246,0.15); color: var(--accent-2); border: 1px solid rgba(59,130,246,0.25); }
+    .nat-pt { background: rgba(139,92,246,0.15); color: var(--accent-2); border: 1px solid rgba(139,92,246,0.25); }
     .nat-cn { background: rgba(249,115,22,0.15); color: var(--orange); border: 1px solid rgba(249,115,22,0.25); }
 
     .member-name {
@@ -78,12 +79,12 @@
     }
     .member-role {
       font-family: var(--font-mono); font-size: 10px; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
     }
+    .member-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 14px; }
     .member-desc {
-      font-size: 13px; color: var(--text-2); line-height: 1.65; flex: 1; margin-bottom: 16px;
+      font-size: 13px; color: var(--text-2); line-height: 1.65; flex: 1;
     }
-    .member-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .member-tag {
       font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
       background: var(--bg-2); border: 1px solid var(--border);
@@ -93,7 +94,7 @@
     /* Recruit banner */
     .recruit-banner {
       background: var(--accent-dim);
-      border: 1px solid rgba(59,130,246,0.25);
+      border: 1px solid rgba(139,92,246,0.25);
       border-radius: var(--radius-lg);
       padding: 32px 36px;
       display: flex; align-items: center; justify-content: space-between;
@@ -154,17 +155,14 @@
       <div class="member-card reveal reveal-d1">
         <div class="member-avatar">ZZ</div>
         <span class="member-nat nat-cn">CN</span>
-        <div class="member-name">Zhiqi Zhang</div>
+        <div class="member-name">Zhiqi ZHANG</div>
         <div class="member-role">Project Manager</div>
-        <div class="member-desc">
-          Leads overall team coordination and sprint planning. Represents S2 at All-Site Meetings
-          and is the primary point of contact with the Steering Committee. Responsible for ensuring
-          the Sprint 1 deliverables — the mock module and IF1 — are on track.
-        </div>
         <div class="member-tags">
-          <span class="member-tag">Coordination</span>
-          <span class="member-tag">Sprint Planning</span>
-          <span class="member-tag">ASM Attendance</span>
+          <span class="member-tag">Project Manager</span>
+          <span class="member-tag">Requirement Analyst</span>
+        </div>
+        <div class="member-desc">
+          Using namespace determination.
         </div>
       </div>
 
@@ -173,66 +171,50 @@
         <span class="member-nat nat-pt">PT</span>
         <div class="member-name">João Neves</div>
         <div class="member-role">Vice Project Manager</div>
-        <div class="member-desc">
-          The shadow PM — leads the Portuguese side of the team during the PM's off-hours,
-          covering the 7–8 hour timezone gap between Lisbon and Changchun. Publishes daily
-          async standup updates to the GitHub Wiki at end of the PT working day.
-        </div>
         <div class="member-tags">
-          <span class="member-tag">Shadow PM</span>
-          <span class="member-tag">PT Side Lead</span>
-          <span class="member-tag">Daily Standups</span>
+          <span class="member-tag">Vice Project Manager</span>
+        </div>
+        <div class="member-desc">
+          Shadow PM on the Portuguese side, bridging the timezone gap between Lisbon and Changchun with daily async standup updates.
         </div>
       </div>
 
       <div class="member-card reveal reveal-d3">
         <div class="member-avatar">HL</div>
         <span class="member-nat nat-cn">CN</span>
-        <div class="member-name">Haobo Lin</div>
+        <div class="member-name">Haobo LIN</div>
         <div class="member-role">System Architect</div>
-        <div class="member-desc">
-          Owns the IF1 interface contract — co-authoring it with V1's System Architect to define
-          the JSON schema, sampling rate, error codes, and MQTT structure that all downstream
-          teams depend on. Responsible for the overall technical architecture of S2's pipeline.
-        </div>
         <div class="member-tags">
-          <span class="member-tag">IF1 Contract</span>
-          <span class="member-tag">Architecture</span>
-          <span class="member-tag">V1 Liaison</span>
+          <span class="member-tag">System Architect</span>
+        </div>
+        <div class="member-desc">
+          Owns the IF1 interface contract, co-authoring it with V1's System Architect to define the data schema that all downstream teams depend on.
         </div>
       </div>
 
       <div class="member-card reveal reveal-d1">
         <div class="member-avatar">PC</div>
         <span class="member-nat nat-cn">CN</span>
-        <div class="member-name">Pengxu Chen</div>
+        <div class="member-name">Pengxu CHEN</div>
         <div class="member-role">Programmer</div>
-        <div class="member-desc">
-          Implements core pipeline and validation components. Formally cross-tests
-          Tianze Wang's code as S2's primary quality-control mechanism — independent
-          verification without a dedicated Tester role.
-        </div>
         <div class="member-tags">
-          <span class="member-tag">Pipeline Dev</span>
-          <span class="member-tag">Cross-testing</span>
-          <span class="member-tag">Code Review</span>
+          <span class="member-tag">Programmer</span>
+        </div>
+        <div class="member-desc">
+          Implements core pipeline and validation components. Cross-tests Tianze WANG's code as S2's quality-control mechanism.
         </div>
       </div>
 
       <div class="member-card reveal reveal-d2">
         <div class="member-avatar">TW</div>
         <span class="member-nat nat-cn">CN</span>
-        <div class="member-name">Tianze Wang</div>
+        <div class="member-name">Tianze WANG</div>
         <div class="member-role">Programmer</div>
-        <div class="member-desc">
-          Implements core pipeline and validation components. Formally cross-tests
-          Pengxu Chen's code. The mutual review model between the two programmers
-          ensures every critical module has been independently verified before it ships.
-        </div>
         <div class="member-tags">
-          <span class="member-tag">Pipeline Dev</span>
-          <span class="member-tag">Cross-testing</span>
-          <span class="member-tag">Code Review</span>
+          <span class="member-tag">Programmer</span>
+        </div>
+        <div class="member-desc">
+          Implements core pipeline and validation components. Cross-tests Pengxu CHEN's code to ensure independent verification before shipping.
         </div>
       </div>
 
@@ -276,33 +258,33 @@
         <tbody>
           <tr class="highlight">
             <td><strong>Project Manager</strong></td>
-            <td>Zhiqi Zhang</td>
+            <td>Zhiqi ZHANG</td>
             <td><span class="badge info">CN · JLU</span></td>
             <td>Team coordination, sprint planning, Steering Committee reporting, ASM attendance.</td>
           </tr>
           <tr>
-            <td><strong>Vice PM (Shadow PM)</strong></td>
+            <td style="white-space:nowrap;"><strong>Vice PM (Shadow PM)</strong></td>
             <td>João Neves</td>
-            <td><span class="badge done">PT · UTAD</span></td>
+            <td style="white-space:nowrap;"><span class="badge done">PT · UTAD</span></td>
             <td>Leads PT side during PM off-hours; daily async standup posts to GitHub Wiki.</td>
           </tr>
           <tr>
             <td><strong>System Architect</strong></td>
-            <td>Haobo Lin</td>
+            <td>Haobo LIN</td>
             <td><span class="badge info">CN · JLU</span></td>
             <td>Defines IF1 (JSON schema, sampling rate, error handling); co-authored with V1 System Architect.</td>
           </tr>
           <tr>
             <td><strong>Programmer</strong></td>
-            <td>Pengxu Chen</td>
+            <td>Pengxu CHEN</td>
             <td><span class="badge info">CN · JLU</span></td>
-            <td>Pipeline and validation development; formally cross-tests Tianze Wang's code.</td>
+            <td>Pipeline and validation development; formally cross-tests Tianze WANG's code.</td>
           </tr>
           <tr>
             <td><strong>Programmer</strong></td>
-            <td>Tianze Wang</td>
+            <td>Tianze WANG</td>
             <td><span class="badge info">CN · JLU</span></td>
-            <td>Pipeline and validation development; formally cross-tests Pengxu Chen's code.</td>
+            <td>Pipeline and validation development; formally cross-tests Pengxu CHEN's code.</td>
           </tr>
         </tbody>
       </table>

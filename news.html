@@ -42,12 +42,12 @@
       content: '';
       position: absolute;
       top: 0; left: -100%; width: 50%; height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(96,165,250,0.6), transparent);
+      background: linear-gradient(90deg, transparent, rgba(167,139,250,0.6), transparent);
       transition: left 0.55s ease;
     }
     .news-card:hover::after { left: 150%; }
     .news-card:hover {
-      border-color: rgba(59,130,246,0.35);
+      border-color: rgba(139,92,246,0.35);
       transform: translateY(-4px);
       box-shadow: 0 16px 40px rgba(0,0,0,0.4);
     }
@@ -61,7 +61,7 @@
       font-family: var(--font-mono); font-size: 9px;
       text-transform: uppercase; letter-spacing: 0.12em;
       color: var(--accent); background: var(--accent-dim);
-      border: 1px solid rgba(59,130,246,0.2);
+      border: 1px solid rgba(139,92,246,0.2);
       padding: 3px 8px; border-radius: 4px;
     }
     .news-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); }
@@ -86,7 +86,7 @@
     .news-card.featured {
       grid-column: 1 / -1;
       flex-direction: row;
-      border-color: rgba(59,130,246,0.2);
+      border-color: rgba(139,92,246,0.2);
     }
     .news-card.featured .news-card-top {
       flex-direction: column; align-items: flex-start; justify-content: center;
@@ -139,12 +139,29 @@
   <div class="container">
     <div class="news-grid">
 
-      <!-- Featured — SRS Error Review -->
-      <a href="news/srs-review.html" class="news-card featured reveal">
+      <!-- Featured — SRS Diagrams -->
+      <a href="news/srs-diagrams.html" class="news-card featured reveal">
+        <div class="news-card-top">
+          <span class="news-category" style="color:#f87171;background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.25);">SRS</span>
+          <span class="news-date">7 Apr 2026 · 15:00</span>
+          <span class="badge active" style="margin-top:6px;">Latest</span>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-title">SRS Use Case Diagram &amp; Sequence Diagrams</div>
+          <div class="news-card-excerpt">
+            Visual diagrams synthesised from the cross-team SRS aggregation by Team M1,
+            with corrections applied. Includes a UML use case diagram and sequence diagrams
+            for the core rehabilitation session, sensor connection, and registration flows.
+          </div>
+          <span class="news-read-more">Read More</span>
+        </div>
+      </a>
+
+      <!-- SRS Error Review -->
+      <a href="news/srs-review.html" class="news-card reveal reveal-d1">
         <div class="news-card-top">
           <span class="news-category" style="color:#f87171;background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.25);">Review</span>
           <span class="news-date">6 Apr 2026 · 19:00</span>
-          <span class="badge active" style="margin-top:6px;">Latest</span>
         </div>
         <div class="news-card-body">
           <div class="news-card-title">SRS Error Review — Requirements Phase Inspection</div>
@@ -190,24 +207,8 @@
         </div>
       </a>
 
-      <!-- Team formed -->
-      <a href="news/team-formed.html" class="news-card reveal reveal-d1">
-        <div class="news-card-top">
-          <span class="news-category">Team</span>
-          <span class="news-date">30 Mar 2026 · 17:30</span>
-        </div>
-        <div class="news-card-body">
-          <div class="news-card-title">Team S2 Formed — Five Members, Two Continents</div>
-          <div class="news-card-excerpt">
-            All five S2 roles have been filled. One member from Portugal (UTAD) and four from
-            China (Jilin University) will together build the data foundation the whole project relies on.
-          </div>
-          <span class="news-read-more">Read More</span>
-        </div>
-      </a>
-
       <!-- Roles assigned -->
-      <a href="news/roles-assigned.html" class="news-card reveal reveal-d2">
+      <a href="news/roles-assigned.html" class="news-card reveal reveal-d1">
         <div class="news-card-top">
           <span class="news-category">Organisation</span>
           <span class="news-date">31 Mar 2026 · 16:00</span>
@@ -217,6 +218,22 @@
           <div class="news-card-excerpt">
             PM, Vice PM, System Architect, and two Programmers — each role has a clear owner.
             The cross-testing model that makes S2's quality process work is now in place.
+          </div>
+          <span class="news-read-more">Read More</span>
+        </div>
+      </a>
+
+      <!-- Team formed -->
+      <a href="news/team-formed.html" class="news-card reveal reveal-d2">
+        <div class="news-card-top">
+          <span class="news-category">Team</span>
+          <span class="news-date">30 Mar 2026 · 17:30</span>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-title">Team S2 Formed — Five Members, Two Continents</div>
+          <div class="news-card-excerpt">
+            All five S2 roles have been filled. One member from Portugal (UTAD) and four from
+            China (Jilin University) will together build the data foundation the whole project relies on.
           </div>
           <span class="news-read-more">Read More</span>
         </div>

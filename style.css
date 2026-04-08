@@ -18,10 +18,10 @@
   --text-2:    #8a9ab0;
   --text-3:    #5a6a80;
 
-  --accent:    #3b82f6;
-  --accent-2:  #60a5fa;
-  --accent-glow: rgba(59,130,246,0.25);
-  --accent-dim:  rgba(59,130,246,0.12);
+  --accent:    #8b5cf6;
+  --accent-2:  #a78bfa;
+  --accent-glow: rgba(139,92,246,0.25);
+  --accent-dim:  rgba(139,92,246,0.12);
 
   --orange:    #f97316;
   --green:     #22c55e;
@@ -131,7 +131,7 @@ img { display: block; max-width: 100%; }
   font-size: 10px;
   color: var(--accent);
   background: var(--accent-dim);
-  border: 1px solid rgba(59,130,246,0.3);
+  border: 1px solid rgba(139,92,246,0.3);
   padding: 2px 7px;
   border-radius: 4px;
   letter-spacing: 0.06em;
@@ -248,7 +248,7 @@ img { display: block; max-width: 100%; }
   font-weight: 700;
   letter-spacing: 0.05em;
 }
-.utag.pt { background: rgba(59,130,246,0.15); color: var(--accent-2); border: 1px solid rgba(59,130,246,0.25); }
+.utag.pt { background: rgba(139,92,246,0.15); color: var(--accent-2); border: 1px solid rgba(139,92,246,0.25); }
 .utag.cn { background: rgba(249,115,22,0.15); color: var(--orange); border: 1px solid rgba(249,115,22,0.25); }
 .sep { color: var(--border-2); }
 
@@ -301,12 +301,12 @@ img { display: block; max-width: 100%; }
   position: absolute;
   top: 0; left: -100%;
   width: 60%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(96,165,250,0.7), transparent);
+  background: linear-gradient(90deg, transparent, rgba(167,139,250,0.7), transparent);
   transition: left 0.5s ease;
 }
 .hero-card:hover::after { left: 150%; }
 .hero-card:hover {
-  border-color: rgba(59,130,246,0.35);
+  border-color: rgba(139,92,246,0.35);
   background: var(--surface-2);
   transform: translateY(-3px);
 }
@@ -510,8 +510,8 @@ h2 {
 }
 .badge.active  { background: rgba(34,197,94,0.15);  color: var(--green);    border: 1px solid rgba(34,197,94,0.25); }
 .badge.pending { background: rgba(249,115,22,0.15); color: var(--orange);   border: 1px solid rgba(249,115,22,0.25); }
-.badge.done    { background: rgba(59,130,246,0.15); color: var(--accent-2); border: 1px solid rgba(59,130,246,0.25); }
-.badge.info    { background: var(--accent-dim);     color: var(--accent-2); border: 1px solid rgba(59,130,246,0.25); }
+.badge.done    { background: rgba(139,92,246,0.15); color: var(--accent-2); border: 1px solid rgba(139,92,246,0.25); }
+.badge.info    { background: var(--accent-dim);     color: var(--accent-2); border: 1px solid rgba(139,92,246,0.25); }
 
 /* ═══════════════════════════════════════════════════
    FLOW DIAGRAM
@@ -552,7 +552,7 @@ h2 {
   box-shadow: 0 0 14px rgba(249,115,22,0.2);
 }
 .flow-node.server  { color: var(--green);    border-color: var(--green);    background: rgba(34,197,94,0.07); }
-.flow-node.monitor { color: var(--accent-2); border-color: var(--accent-2); background: rgba(96,165,250,0.07); }
+.flow-node.monitor { color: var(--accent-2); border-color: var(--accent-2); background: rgba(167,139,250,0.07); }
 
 .flow-arrow { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0 4px; }
 .flow-arrow-if { font-family: var(--font-mono); font-size: 10px; color: var(--orange); font-weight: 700; letter-spacing: 0.06em; }
@@ -585,7 +585,7 @@ tbody tr.highlight td:first-child { border-left: 2px solid var(--accent); }
    ═══════════════════════════════════════════════════ */
 .callout {
   background: var(--accent-dim);
-  border: 1px solid rgba(59,130,246,0.25);
+  border: 1px solid rgba(139,92,246,0.25);
   border-left: 3px solid var(--accent);
   border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
   padding: 20px 24px;
