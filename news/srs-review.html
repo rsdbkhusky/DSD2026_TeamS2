@@ -77,10 +77,17 @@
       content: '\2212';
       color: var(--accent-2);
     }
+    .fact-summary-main { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .fact-num {
       font-family: var(--font-mono); font-size: 10px;
       color: var(--accent); text-transform: uppercase;
       letter-spacing: 0.12em;
+      flex-shrink: 0;
+    }
+    .fact-summary-title {
+      font-family: var(--font-display); font-size: 15px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.01em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .fact-content { padding: 2px 26px 24px; }
     .fact-title {
@@ -270,9 +277,8 @@
 
     <!-- Fact 1 -->
     <details class="fact-card">
-      <summary class="fact-summary"><span class="fact-num">Fact 1</span></summary>
+      <summary class="fact-summary"><span class="fact-summary-main"><span class="fact-num">Fact 1</span><span class="fact-summary-title">The later a defect is found, the more expensive it is to fix</span></span></summary>
       <div class="fact-content">
-        <div class="fact-title">The later a defect is found, the more expensive it is to fix</div>
         <p>
           The cost of correcting a software error grows dramatically as the project advances
           through its lifecycle. A defect that costs 0.1&ndash;0.2 units to fix during
@@ -299,9 +305,8 @@
 
     <!-- Fact 2 -->
     <details class="fact-card">
-      <summary class="fact-summary"><span class="fact-num">Fact 2</span></summary>
+      <summary class="fact-summary"><span class="fact-summary-main"><span class="fact-num">Fact 2</span><span class="fact-summary-title">Many errors remain latent long after they are introduced</span></span></summary>
       <div class="fact-content">
-        <div class="fact-title">Many errors remain latent long after they are introduced</div>
         <p>
           Boehm's analysis of TRW projects found that <strong>54% of all detected errors</strong>
           were not discovered until after the coding and unit testing phases. Worse, the vast
@@ -317,9 +322,8 @@
 
     <!-- Fact 3 -->
     <details class="fact-card">
-      <summary class="fact-summary"><span class="fact-num">Fact 3</span></summary>
+      <summary class="fact-summary"><span class="fact-summary-main"><span class="fact-num">Fact 3</span><span class="fact-summary-title">The requirements phase produces a disproportionate share of errors</span></span></summary>
       <div class="fact-content">
-        <div class="fact-title">The requirements phase produces a disproportionate share of errors</div>
         <p>
           DeMarco's research report indicated that <strong>56% of all detected errors</strong>
           can be traced back to the requirements phase. A separate investigation by AIRMICS
@@ -332,9 +336,8 @@
 
     <!-- Fact 4 -->
     <details class="fact-card">
-      <summary class="fact-summary"><span class="fact-num">Fact 4</span></summary>
+      <summary class="fact-summary"><span class="fact-summary-main"><span class="fact-num">Fact 4</span><span class="fact-summary-title">Requirements errors are characterised by omission, inconsistency, and ambiguity</span></span></summary>
       <div class="fact-content">
-        <div class="fact-title">Requirements errors are characterised by omission, inconsistency, and ambiguity</div>
         <p>
           The U.S. Naval Research Laboratory's field study on the A-7E flight operations
           software found that <strong>77% of requirements errors</strong> were attributable to
@@ -359,9 +362,8 @@
 
     <!-- Fact 5 -->
     <details class="fact-card">
-      <summary class="fact-summary"><span class="fact-num">Fact 5</span></summary>
+      <summary class="fact-summary"><span class="fact-summary-main"><span class="fact-num">Fact 5</span><span class="fact-summary-title">Requirements errors can be caught &mdash; inspection is the most effective method</span></span></summary>
       <div class="fact-content">
-        <div class="fact-title">Requirements errors can be caught &mdash; inspection is the most effective method</div>
         <p>
           Not only are requirements errors detectable, but formal inspection is the single
           most effective technique for finding them:
