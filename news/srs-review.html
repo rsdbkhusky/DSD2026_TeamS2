@@ -2,6 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
   <script src="../theme-init.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SRS Error Review · News · DSD2026 Team S2</title>
