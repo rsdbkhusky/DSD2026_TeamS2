@@ -2,6 +2,30 @@
    DSD2026 · Team S2 · Global Script
    ═══════════════════════════════════════════════════ */
 
+const THEME_KEY = 'dsd2026-theme';
+const themeToggle = document.getElementById('themeToggle');
+function syncThemeToggle() {
+  if (!themeToggle) return;
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  themeToggle.setAttribute('aria-label', isLight ? '切换到深色' : '切换到浅色');
+  themeToggle.title = isLight ? '切换到深色' : '切换到浅色';
+  themeToggle.textContent = isLight ? '☾' : '☼';
+}
+syncThemeToggle();
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const root = document.documentElement;
+    if (root.getAttribute('data-theme') === 'light') {
+      root.removeAttribute('data-theme');
+      try { localStorage.setItem(THEME_KEY, 'dark'); } catch (e) { /* ignore */ }
+    } else {
+      root.setAttribute('data-theme', 'light');
+      try { localStorage.setItem(THEME_KEY, 'light'); } catch (e) { /* ignore */ }
+    }
+    syncThemeToggle();
+  });
+}
+
 // ── Navbar scroll state ──
 const topbar = document.querySelector('.topbar');
 if (topbar) {
