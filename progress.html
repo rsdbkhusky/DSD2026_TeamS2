@@ -502,7 +502,7 @@ var GanttChart=(function(){
 
   for(var i=0;i<P.length;i++){
     var p=P[i],x1=px(p.s),x2=px(p.e),y=i*RH+1,bw=x2-x1,bh=RH-4;
-    if(p.a)s+='<a href="#'+p.a+'">';
+    if(p.a)s+='<a href="progress.html#'+p.a+'">';
     s+='<g class="wfp">';
     // Split logic
     if(todayX>=x2){
