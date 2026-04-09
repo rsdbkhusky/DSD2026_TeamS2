@@ -41,7 +41,7 @@
     .diagram-wrap svg .legend-border { stroke: var(--border); }
     .diagram-wrap svg .assoc-line { stroke: var(--border-2); }
     .diagram-wrap svg .t1 { fill: var(--text); }
-    .diagram-wrap svg .t2 { fill: var(--text-2); }
+    .diagram-wrap svg .t2 { fill: var(--text); opacity: 0.7; }
     .diagram-wrap svg .t3 { fill: var(--text-3); }
     .correction-list { margin: 16px 0 24px; }
     .correction-list li {
@@ -203,22 +203,22 @@
         <text x="70" y="67" text-anchor="middle" fill="#f97316" font-size="9" font-weight="700">UC-03 Connect</text>
 
         <line x1="60" y1="80" x2="180" y2="80" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="120" y="75" text-anchor="middle" fill="currentColor" class="t2" font-size="9">1. Tap "Connect Sensor"</text>
+        <text x="120" y="75" text-anchor="middle" fill="currentColor" class="t2" font-size="10">1. Tap "Connect Sensor"</text>
 
         <line x1="180" y1="100" x2="320" y2="100" stroke="#a78bfa" stroke-width="1" marker-end="url(#ap)"/>
-        <text x="250" y="95" text-anchor="middle" fill="currentColor" class="t2" font-size="9">2. Bluetooth scan + pair</text>
+        <text x="250" y="95" text-anchor="middle" fill="currentColor" class="t2" font-size="10">2. Bluetooth scan + pair</text>
 
         <line x1="320" y1="120" x2="180" y2="120" stroke="#f97316" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ao)"/>
-        <text x="250" y="115" text-anchor="middle" fill="currentColor" class="t2" font-size="9">3. Connection confirmed</text>
+        <text x="250" y="115" text-anchor="middle" fill="currentColor" class="t2" font-size="10">3. Connection confirmed</text>
 
         <line x1="320" y1="140" x2="460" y2="140" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="390" y="135" text-anchor="middle" fill="currentColor" class="t2" font-size="9">4. Calibration data (3s)</text>
+        <text x="390" y="135" text-anchor="middle" fill="currentColor" class="t2" font-size="10">4. Calibration data (3s)</text>
 
         <line x1="460" y1="160" x2="180" y2="160" stroke="#f97316" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ao)"/>
-        <text x="320" y="155" text-anchor="middle" fill="currentColor" class="t2" font-size="9">5. Calibration OK</text>
+        <text x="320" y="155" text-anchor="middle" fill="currentColor" class="t2" font-size="10">5. Calibration OK</text>
 
         <line x1="180" y1="185" x2="60" y2="185" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ap)"/>
-        <text x="120" y="180" text-anchor="middle" fill="currentColor" class="t2" font-size="9">6. "Connected &amp; Ready"</text>
+        <text x="120" y="180" text-anchor="middle" fill="currentColor" class="t2" font-size="10">6. "Connected &amp; Ready"</text>
 
         <!-- UC-04 SESSION START PHASE -->
         <rect x="10" y="215" width="940" height="120" rx="6" fill="none" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
@@ -226,49 +226,49 @@
         <text x="70" y="227" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">UC-04 Start</text>
 
         <line x1="60" y1="245" x2="180" y2="245" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="120" y="240" text-anchor="middle" fill="currentColor" class="t2" font-size="9">7. Tap "Begin Exercise"</text>
+        <text x="120" y="240" text-anchor="middle" fill="currentColor" class="t2" font-size="10">7. Tap "Begin Exercise"</text>
 
         <line x1="180" y1="265" x2="460" y2="265" stroke="#a78bfa" stroke-width="1" marker-end="url(#ap)"/>
-        <text x="320" y="260" text-anchor="middle" fill="currentColor" class="t2" font-size="9">8. Start session request</text>
+        <text x="320" y="260" text-anchor="middle" fill="currentColor" class="t2" font-size="10">8. Start session request</text>
 
         <line x1="460" y1="285" x2="760" y2="285" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="610" y="280" text-anchor="middle" fill="currentColor" class="t2" font-size="9">9. Create session record (patient ID, timestamp)</text>
+        <text x="610" y="280" text-anchor="middle" fill="currentColor" class="t2" font-size="10">9. Create session record (patient ID, timestamp)</text>
 
         <line x1="760" y1="305" x2="460" y2="305" stroke="#22c55e" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ag)"/>
-        <text x="610" y="300" text-anchor="middle" fill="currentColor" class="t2" font-size="9">10. Session ID confirmed</text>
+        <text x="610" y="300" text-anchor="middle" fill="currentColor" class="t2" font-size="10">10. Session ID confirmed</text>
 
         <line x1="180" y1="320" x2="60" y2="320" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ap)"/>
-        <text x="120" y="315" text-anchor="middle" fill="currentColor" class="t2" font-size="9">11. 3s countdown</text>
+        <text x="120" y="315" text-anchor="middle" fill="currentColor" class="t2" font-size="10">11. 3s countdown</text>
 
         <!-- UC-05 LOOP: REAL-TIME FEEDBACK -->
         <rect x="10" y="345" width="940" height="270" rx="6" fill="none" stroke="rgba(34,197,94,0.2)" stroke-width="1"/>
         <rect x="10" y="345" width="170" height="18" rx="3" fill="rgba(34,197,94,0.1)"/>
         <text x="95" y="357" text-anchor="middle" fill="#22c55e" font-size="9" font-weight="700">LOOP [each repetition]</text>
-        <text x="190" y="357" fill="currentColor" class="t3" font-size="8">UC-05 Real-Time Feedback</text>
+        <text x="190" y="357" fill="currentColor" class="t3" font-size="9">UC-05 Real-Time Feedback</text>
 
         <text x="60" y="378" text-anchor="middle" fill="#f97316" font-size="9" font-style="italic">performs rep</text>
 
         <line x1="320" y1="390" x2="460" y2="390" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="390" y="385" text-anchor="middle" fill="currentColor" class="t2" font-size="9">12. Raw IMU packet (IF1)</text>
+        <text x="390" y="385" text-anchor="middle" fill="currentColor" class="t2" font-size="10">12. Raw IMU packet (IF1)</text>
 
         <line x1="460" y1="410" x2="610" y2="410" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="535" y="405" text-anchor="middle" fill="currentColor" class="t2" font-size="9">13. Validated data (IF1)</text>
+        <text x="535" y="405" text-anchor="middle" fill="currentColor" class="t2" font-size="10">13. Validated data (IF1)</text>
 
         <!-- V1 self-call: inference -->
         <rect x="598" y="425" width="24" height="28" fill="rgba(34,197,94,0.08)" stroke="rgba(34,197,94,0.25)" stroke-width="1" rx="3"/>
         <text x="640" y="443" fill="#22c55e" font-size="8">14. Inference + angle compare (UC-V1-01, V1-02)</text>
 
         <line x1="610" y1="465" x2="760" y2="465" stroke="#22c55e" stroke-width="1" marker-end="url(#ag)"/>
-        <text x="685" y="460" text-anchor="middle" fill="currentColor" class="t2" font-size="9">15. Recognition result (V1-V2 contract)</text>
+        <text x="685" y="460" text-anchor="middle" fill="currentColor" class="t2" font-size="10">15. Recognition result (V1-V2 contract)</text>
 
         <line x1="760" y1="485" x2="760" y2="485" stroke="none"/>
         <text x="760" y="490" text-anchor="middle" fill="#22c55e" font-size="8">16. Store + forward</text>
 
         <line x1="760" y1="505" x2="180" y2="505" stroke="#22c55e" stroke-width="1" marker-end="url(#ag)"/>
-        <text x="470" y="500" text-anchor="middle" fill="currentColor" class="t2" font-size="9">17. Feedback data (IF2, WebSocket)</text>
+        <text x="470" y="500" text-anchor="middle" fill="currentColor" class="t2" font-size="10">17. Feedback data (IF2, WebSocket)</text>
 
         <line x1="180" y1="525" x2="60" y2="525" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ap)"/>
-        <text x="120" y="520" text-anchor="middle" fill="currentColor" class="t2" font-size="9">18. Visual + haptic feedback</text>
+        <text x="120" y="520" text-anchor="middle" fill="currentColor" class="t2" font-size="10">18. Visual + haptic feedback</text>
 
         <!-- ALT: posture alert -->
         <rect x="25" y="545" width="910" height="55" rx="4" fill="none" stroke="rgba(239,68,68,0.2)" stroke-width="1" stroke-dasharray="4 2"/>
@@ -279,20 +279,20 @@
         <text x="120" y="565" text-anchor="middle" fill="#ef4444" font-size="8">Full-screen warning, session paused</text>
 
         <line x1="760" y1="585" x2="900" y2="585" stroke="#22c55e" stroke-width="1" marker-end="url(#ag)"/>
-        <text x="830" y="580" text-anchor="middle" fill="currentColor" class="t2" font-size="8">Alert logged for doctor review</text>
+        <text x="830" y="580" text-anchor="middle" fill="currentColor" class="t2" font-size="9">Alert logged for doctor review</text>
 
         <!-- END SESSION -->
         <line x1="60" y1="635" x2="180" y2="635" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="120" y="630" text-anchor="middle" fill="currentColor" class="t2" font-size="9">19. Tap "End Session"</text>
+        <text x="120" y="630" text-anchor="middle" fill="currentColor" class="t2" font-size="10">19. Tap "End Session"</text>
 
         <line x1="180" y1="655" x2="460" y2="655" stroke="#a78bfa" stroke-width="1" marker-end="url(#ap)"/>
-        <text x="320" y="650" text-anchor="middle" fill="currentColor" class="t2" font-size="9">20. Close data stream</text>
+        <text x="320" y="650" text-anchor="middle" fill="currentColor" class="t2" font-size="10">20. Close data stream</text>
 
         <line x1="460" y1="675" x2="760" y2="675" stroke="#f97316" stroke-width="1" marker-end="url(#ao)"/>
-        <text x="610" y="670" text-anchor="middle" fill="currentColor" class="t2" font-size="9">21. Finalize session record</text>
+        <text x="610" y="670" text-anchor="middle" fill="currentColor" class="t2" font-size="10">21. Finalize session record</text>
 
         <line x1="180" y1="695" x2="60" y2="695" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ap)"/>
-        <text x="120" y="690" text-anchor="middle" fill="currentColor" class="t2" font-size="9">22. Session summary</text>
+        <text x="120" y="690" text-anchor="middle" fill="currentColor" class="t2" font-size="10">22. Session summary</text>
       </svg>
     </div>
 
@@ -332,22 +332,22 @@
         <text x="50" y="66" text-anchor="middle" fill="#22c55e" font-size="8" font-weight="700">UC-06</text>
 
         <line x1="70" y1="80" x2="250" y2="80" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="160" y="75" text-anchor="middle" fill="currentColor" class="t2" font-size="9">1. Select patient</text>
+        <text x="160" y="75" text-anchor="middle" fill="currentColor" class="t2" font-size="10">1. Select patient</text>
 
         <line x1="250" y1="100" x2="420" y2="100" stroke="#a78bfa" stroke-width="1" marker-end="url(#cp)"/>
-        <text x="335" y="95" text-anchor="middle" fill="currentColor" class="t2" font-size="9">2. GET /patients/{id}/sessions</text>
+        <text x="335" y="95" text-anchor="middle" fill="currentColor" class="t2" font-size="10">2. GET /patients/{id}/sessions</text>
 
         <line x1="420" y1="120" x2="250" y2="120" stroke="#22c55e" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#co)"/>
-        <text x="335" y="115" text-anchor="middle" fill="currentColor" class="t2" font-size="9">3. Session history + trends</text>
+        <text x="335" y="115" text-anchor="middle" fill="currentColor" class="t2" font-size="10">3. Session history + trends</text>
 
         <line x1="250" y1="140" x2="70" y2="140" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#cp)"/>
-        <text x="160" y="135" text-anchor="middle" fill="currentColor" class="t2" font-size="9">4. Charts, accuracy trends, alerts</text>
+        <text x="160" y="135" text-anchor="middle" fill="currentColor" class="t2" font-size="10">4. Charts, accuracy trends, alerts</text>
 
         <line x1="70" y1="160" x2="250" y2="160" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="160" y="155" text-anchor="middle" fill="currentColor" class="t2" font-size="9">5. Drill into session detail</text>
+        <text x="160" y="155" text-anchor="middle" fill="currentColor" class="t2" font-size="10">5. Drill into session detail</text>
 
         <line x1="250" y1="180" x2="70" y2="180" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#cp)"/>
-        <text x="160" y="175" text-anchor="middle" fill="currentColor" class="t2" font-size="9">6. Per-rep accuracy, angle graphs</text>
+        <text x="160" y="175" text-anchor="middle" fill="currentColor" class="t2" font-size="10">6. Per-rep accuracy, angle graphs</text>
 
         <!-- UC-07 -->
         <rect x="10" y="215" width="575" height="170" rx="6" fill="none" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
@@ -355,28 +355,28 @@
         <text x="50" y="226" text-anchor="middle" fill="#a78bfa" font-size="8" font-weight="700">UC-07</text>
 
         <line x1="70" y1="245" x2="250" y2="245" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="160" y="240" text-anchor="middle" fill="currentColor" class="t2" font-size="9">7. Click "Edit Treatment Plan"</text>
+        <text x="160" y="240" text-anchor="middle" fill="currentColor" class="t2" font-size="10">7. Click "Edit Treatment Plan"</text>
 
         <line x1="250" y1="265" x2="420" y2="265" stroke="#a78bfa" stroke-width="1" marker-end="url(#cp)"/>
-        <text x="335" y="260" text-anchor="middle" fill="currentColor" class="t2" font-size="9">8. GET /patients/{id}/plan</text>
+        <text x="335" y="260" text-anchor="middle" fill="currentColor" class="t2" font-size="10">8. GET /patients/{id}/plan</text>
 
         <line x1="420" y1="285" x2="250" y2="285" stroke="#22c55e" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#co)"/>
-        <text x="335" y="280" text-anchor="middle" fill="currentColor" class="t2" font-size="9">9. Current plan (or blank)</text>
+        <text x="335" y="280" text-anchor="middle" fill="currentColor" class="t2" font-size="10">9. Current plan (or blank)</text>
 
         <line x1="70" y1="305" x2="250" y2="305" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="160" y="300" text-anchor="middle" fill="currentColor" class="t2" font-size="9">10. Configure exercises, save</text>
+        <text x="160" y="300" text-anchor="middle" fill="currentColor" class="t2" font-size="10">10. Configure exercises, save</text>
 
         <line x1="250" y1="325" x2="420" y2="325" stroke="#a78bfa" stroke-width="1" marker-end="url(#cp)"/>
-        <text x="335" y="320" text-anchor="middle" fill="currentColor" class="t2" font-size="9">11. PUT /patients/{id}/plan</text>
+        <text x="335" y="320" text-anchor="middle" fill="currentColor" class="t2" font-size="10">11. PUT /patients/{id}/plan</text>
 
         <line x1="420" y1="345" x2="250" y2="345" stroke="#22c55e" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#co)"/>
-        <text x="335" y="340" text-anchor="middle" fill="currentColor" class="t2" font-size="9">12. Plan saved, version assigned</text>
+        <text x="335" y="340" text-anchor="middle" fill="currentColor" class="t2" font-size="10">12. Plan saved, version assigned</text>
 
         <line x1="420" y1="365" x2="540" y2="365" stroke="#22c55e" stroke-width="1" marker-end="url(#co)"/>
-        <text x="480" y="360" text-anchor="middle" fill="currentColor" class="t2" font-size="9">13. Push notification (IF2)</text>
+        <text x="480" y="360" text-anchor="middle" fill="currentColor" class="t2" font-size="10">13. Push notification (IF2)</text>
 
         <line x1="250" y1="385" x2="70" y2="385" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#cp)"/>
-        <text x="160" y="380" text-anchor="middle" fill="currentColor" class="t2" font-size="9">14. "Plan published" confirmation</text>
+        <text x="160" y="380" text-anchor="middle" fill="currentColor" class="t2" font-size="10">14. "Plan published" confirmation</text>
       </svg>
     </div>
 
