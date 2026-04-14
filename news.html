@@ -64,6 +64,15 @@
       border: 1px solid rgba(139,92,246,0.2);
       padding: 3px 8px; border-radius: 4px;
     }
+    .news-category.cat-foundation {
+      color: #a78bfa; background: rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.25);
+    }
+    .news-category.cat-req {
+      color: #f97316; background: rgba(249,115,22,0.12); border-color: rgba(249,115,22,0.25);
+    }
+    .news-category.cat-sysdesign {
+      color: #f87171; background: rgba(220,38,38,0.12); border-color: rgba(220,38,38,0.25);
+    }
     .news-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); }
     .news-card-body { padding: 20px 22px; flex: 1; display: flex; flex-direction: column; }
     .news-card-title {
@@ -139,12 +148,46 @@
   <div class="container">
     <div class="news-grid">
 
-      <!-- Featured — SRS Diagrams -->
-      <a href="news/srs-diagrams.html" class="news-card featured reveal">
+      <!-- Featured — System Design Review -->
+      <a href="news/system-design-review.html" class="news-card featured reveal">
         <div class="news-card-top">
-          <span class="news-category" style="color:#f87171;background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.25);">SRS</span>
-          <span class="news-date">8 Apr 2026 · 16:37</span>
+          <span class="news-category cat-sysdesign">System Design</span>
+          <span class="news-date">14 Apr 2026 &middot; 13:49</span>
           <span class="badge active" style="margin-top:6px;">Latest</span>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-title">System Design Review &mdash; Interface &amp; Module Inspection</div>
+          <div class="news-card-excerpt">
+            A structured review of the Interface Specification v2.0 and the S2 System Design Draft.
+            Reviewers inspect the Sensor Interface contract, the 45-value data format, calibration
+            data flow, and S2 module design completeness.
+          </div>
+          <span class="news-read-more">Read More</span>
+        </div>
+      </a>
+
+      <!-- System Design Draft -->
+      <a href="news/system-design.html" class="news-card reveal reveal-d1">
+        <div class="news-card-top">
+          <span class="news-category cat-sysdesign">System Design</span>
+          <span class="news-date">13 Apr 2026 · 18:26</span>
+        </div>
+        <div class="news-card-body">
+          <div class="news-card-title">System Design &mdash; S2 Module Specification</div>
+          <div class="news-card-excerpt">
+            The system design for S2's Sensor Interface, data validation pipeline, and calibration
+            data management, based on the Interface Specification v2.0. Includes a Data Flow Diagram
+            showing S2's processes and their interactions with other teams.
+          </div>
+          <span class="news-read-more">Read More</span>
+        </div>
+      </a>
+
+      <!-- SRS Diagrams -->
+      <a href="news/srs-diagrams.html" class="news-card reveal reveal-d2">
+        <div class="news-card-top">
+          <span class="news-category cat-req">Req. Analysis</span>
+          <span class="news-date">8 Apr 2026 &middot; 16:37</span>
         </div>
         <div class="news-card-body">
           <div class="news-card-title">SRS Use Case Diagram &amp; Sequence Diagrams</div>
@@ -160,8 +203,8 @@
       <!-- SRS Error Review -->
       <a href="news/srs-review.html" class="news-card reveal reveal-d1">
         <div class="news-card-top">
-          <span class="news-category" style="color:#f87171;background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.25);">Review</span>
-          <span class="news-date">6 Apr 2026 · 19:00</span>
+          <span class="news-category cat-req">Req. Analysis</span>
+          <span class="news-date">6 Apr 2026 &middot; 19:00</span>
         </div>
         <div class="news-card-body">
           <div class="news-card-title">SRS Error Review — Requirements Phase Inspection</div>
@@ -177,8 +220,8 @@
       <!-- SRS Draft -->
       <a href="news/srs-draft.html" class="news-card reveal reveal-d1">
         <div class="news-card-top">
-          <span class="news-category" style="color:#f87171;background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.25);">SRS</span>
-          <span class="news-date">1 Apr 2026 · 20:55</span>
+          <span class="news-category cat-req">Req. Analysis</span>
+          <span class="news-date">1 Apr 2026 &middot; 20:55</span>
         </div>
         <div class="news-card-body">
           <div class="news-card-title">Software Requirements Specification — Draft Published</div>
@@ -194,7 +237,7 @@
       <!-- Website live -->
       <a href="news/website-live.html" class="news-card reveal reveal-d2">
         <div class="news-card-top">
-          <span class="news-category">Milestone</span>
+          <span class="news-category cat-foundation">Foundation</span>
           <span class="news-date">1 Apr 2026 · 14:25</span>
         </div>
         <div class="news-card-body">
@@ -210,7 +253,7 @@
       <!-- Roles assigned -->
       <a href="news/roles-assigned.html" class="news-card reveal reveal-d1">
         <div class="news-card-top">
-          <span class="news-category">Organisation</span>
+          <span class="news-category cat-foundation">Foundation</span>
           <span class="news-date">31 Mar 2026 · 16:00</span>
         </div>
         <div class="news-card-body">
@@ -226,7 +269,7 @@
       <!-- Team formed -->
       <a href="news/team-formed.html" class="news-card reveal reveal-d2">
         <div class="news-card-top">
-          <span class="news-category">Team</span>
+          <span class="news-category cat-foundation">Foundation</span>
           <span class="news-date">30 Mar 2026 · 17:30</span>
         </div>
         <div class="news-card-body">

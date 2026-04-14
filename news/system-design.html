@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
+  <script src="../theme-init.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Design Draft &middot; News &middot; DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em;
+    }
+    .article-body h4 {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--text); margin: 22px 0 8px;
+    }
+
+    /* revision history */
+    .rev-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0 32px; }
+    .rev-table { width: 100%; border-collapse: collapse; }
+    .rev-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .rev-table td { padding: 10px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+    .rev-table tr:last-child td { border-bottom: none; }
+
+    /* spec table */
+    .spec-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0; }
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table th {
+      background: var(--surface-2);
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-3); text-transform: uppercase;
+      letter-spacing: 0.1em; padding: 10px 16px;
+      text-align: left; font-weight: 400;
+      border-bottom: 1px solid var(--border);
+    }
+    .spec-table td {
+      padding: 11px 16px; font-size: 13px; color: var(--text-2);
+      border-bottom: 1px solid var(--border); vertical-align: top;
+      line-height: 1.55;
+    }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .spec-table td:first-child { color: var(--accent-2); font-weight: 600; white-space: nowrap; font-family: var(--font-mono); font-size: 12px; }
+
+    /* module block (collapsible) */
+    .mod-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin: 28px 0;
+      overflow: hidden;
+    }
+    .mod-summary {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 18px 22px;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .mod-summary::-webkit-details-marker { display: none; }
+    .mod-summary::after {
+      content: '+';
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      line-height: 1;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .mod-block[open] .mod-summary::after { content: '\2212'; }
+    .mod-content { padding: 2px 30px 28px; }
+    .mod-block-header {
+      display: flex; align-items: flex-start;
+      flex: 1;
+      justify-content: space-between; gap: 16px;
+      margin-bottom: 0; flex-wrap: wrap;
+    }
+    .mod-id {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.12em; margin-bottom: 6px;
+    }
+    .mod-title {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.015em;
+    }
+    .mod-section-title {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin: 20px 0 8px;
+    }
+
+    /* code block */
+    .code-block {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 14px 0;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text-2);
+    }
+    .code-block .comment { color: var(--text-3); }
+
+    /* DFD diagram */
+    .diagram-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 16px;
+      margin: 24px 0;
+      overflow-x: auto;
+    }
+    .diagram-wrap svg { display: block; margin: 0 auto; }
+    .diagram-wrap svg .t1 { fill: var(--text); }
+    .diagram-wrap svg .t2 { fill: var(--text); opacity: 0.7; }
+    .diagram-wrap svg .t3 { fill: var(--text-3); }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025&ndash;2026</span>
+      <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
+    </div>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+    <div class="nav-triggers">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Light / Dark">&#9788;</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge" style="background:rgba(220,38,38,0.12);color:#f87171;border-color:rgba(220,38,38,0.25);">System Design</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">13 Apr 2026 &middot; 18:26 UTC+8</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      System Design &mdash; S2 Module Specification
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      The system design for Team S2's data acquisition responsibilities within the Limb Motion
+      Recognition &amp; Assistant system. This document includes Level 0 and Level 1 Data Flow
+      Diagrams and module specifications for the three S2 sub-processes, based on the Interface
+      Specification v2.0 published on April 9, 2026.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- Revision History -->
+    <div class="rev-table-wrap">
+      <table class="rev-table">
+        <thead><tr><th>Date</th><th>Authors</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Apr 13, 2026</td><td>Zhiqi ZHANG, Haobo LIN</td><td>Initial system design for S2 module based on Interface Specification v2.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 0. Background -->
+    <h2>0. Background</h2>
+    <p>
+      On April 9, 2026, the course released two documents for the System Design phase:
+      the <strong>Interface Specification v2.0</strong>, which defines how all modules communicate
+      with each other across the system, and the <strong>System Design (draft)</strong> template,
+      which each team fills in with their own module design.
+    </p>
+    <p>
+      This document is Team S2's contribution to the Back-end section of the System Design.
+      It specifies the internal architecture of the S2 Data Acquisition module: how sensor data
+      is collected, validated, buffered, and transmitted to downstream components.
+      The design is based on the interface contracts defined in Interface Specification v2.0
+      and aligns with the functional requirement clustering in the System Design template.
+    </p>
+
+    <!-- 1. Context -->
+    <h2>1. S2 in the System Architecture</h2>
+    <p>
+      Team S2 operates in <strong>Layer 1 (Sensor)</strong> of the three-layer system architecture.
+      Within the Interface Specification v2.0, S2's deliverables appear under
+      <strong>"Server calls Database &gt; Sensor Interface"</strong>, where S2 provides the
+      <code style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);">collect.py</code>
+      program that bridges physical sensors and the server module.
+    </p>
+    <p>
+      S2's output feeds directly into the Server module (maintained by V1 and V2), which calls
+      <code style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);">collect.py</code>
+      on the embedded platform to receive live sensor samples. This is the core of the IF1 interface contract.
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Layer</td><td>Layer 1: Sensor</td></tr>
+          <tr><td>Team</td><td>S2: Data Acquisition</td></tr>
+          <tr><td>Interface</td><td>IF1 (Sensor to Server), co-owned with V1</td></tr>
+          <tr><td>Deliverable</td><td><code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-2);">collect.py</code></td></tr>
+          <tr><td>Spec Reference</td><td>Interface Specification v2.0 &gt; Server calls Database &gt; Sensor Interface</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- 2. Data Flow Diagrams -->
+    <h2>2. Data Flow Diagrams</h2>
+    <p>
+      The diagram below contains two levels. The upper half is the <strong>Level 0 Context Diagram</strong>,
+      showing S2 as a single process within the overall system data flow (Patient, S1, M1, S2, V1, V2, Server, M2).
+      The lower half is the <strong>Level 1 DFD</strong>, expanding S2 into three sub-processes:
+      S2-01 (Simulated data generation), S2-02 (Data acq. core), and S2-03 (Asynchronous sending),
+      connected by an asynchronous buffer.
+    </p>
+
+    <div style="width:100%;border-radius:var(--radius-lg);overflow:hidden;margin:24px 0;">
+      <img src="../img/dataflow_diagram.png" alt="S2 Data Flow Diagram (Level 0 + Level 1)" style="width:100%;height:auto;display:block;" />
+    </div>
+
+    <h3>Level 1 Process Descriptions</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>ID</th><th>Process</th><th>Inputs</th><th>Outputs</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>S2-01</td>
+            <td>Simulated data generation</td>
+            <td>Simulated data request from M2</td>
+            <td>Simulated raw IMU packet to S2-02</td>
+            <td>Generates synthetic IMU data for development and testing when physical hardware is unavailable</td>
+          </tr>
+          <tr>
+            <td>S2-02</td>
+            <td>Data acq. core</td>
+            <td>Raw IMU packet from S1; simulated packet from S2-01; Start/Close session from M1</td>
+            <td>Validated data to asynchronous buffer</td>
+            <td>Central module: receives real or simulated sensor data, validates format (45 CSV values), writes to buffer</td>
+          </tr>
+          <tr>
+            <td>S2-03</td>
+            <td>Asynchronous sending</td>
+            <td>Data from asynchronous buffer; Start/Close session from M1</td>
+            <td>Formal data to V1 AI</td>
+            <td>Reads from buffer, transmits to V1 asynchronously. Buffer decouples acquisition rate from network rate</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Data Stores</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Store</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Asynchronous buffer</td>
+            <td>In-memory FIFO queue between S2-02 and S2-03. Ensures sensor sampling is never blocked by network I/O</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- 3. Module Specifications -->
+    <h2>3. Module Specifications</h2>
+
+    <!-- Module S2-01: Simulated Data Generation -->
+    <details class="mod-block">
+      <summary class="mod-summary"><div class="mod-block-header">
+        <div>
+          <div class="mod-id">S2-01</div>
+          <div class="mod-title">Simulated Data Generation</div>
+        </div>
+      </div></summary>
+      <div class="mod-content">
+        <p>
+          Generates synthetic IMU data that mimics real sensor output, allowing downstream
+          modules (V1, V2, M1, M2) to operate without physical hardware during development
+          and testing. Produces data in the same 45-value CSV format as real sensor packets.
+        </p>
+        <div class="mod-section-title">Interface</div>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Attribute</th><th>Specification</th></tr></thead>
+            <tbody>
+              <tr><td>Trigger</td><td>Simulated data request from M2 App/frontend</td></tr>
+              <tr><td>Output</td><td>Simulated raw IMU packets to S2-02 (same format as real S1 data)</td></tr>
+              <tr><td>Format</td><td>45 comma-separated floating-point values per sample</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <!-- Module S2-02: Data Acquisition Core -->
+    <details class="mod-block" open>
+      <summary class="mod-summary"><div class="mod-block-header">
+        <div>
+          <div class="mod-id">S2-02</div>
+          <div class="mod-title">Data Acquisition Core</div>
+        </div>
+      </div></summary>
+      <div class="mod-content">
+        <p>
+          The central processing module of S2. Receives sensor data from either the real
+          S1 hardware or the simulated data generator (S2-01), validates the data format,
+          and writes validated samples into the asynchronous buffer for transmission.
+          Responds to session start/close commands from M1.
+        </p>
+        <div class="mod-section-title">Interface Contract</div>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Attribute</th><th>Specification</th></tr></thead>
+            <tbody>
+              <tr><td>Real Input</td><td>Raw IMU packet from S1 Sensor (45 comma-separated values per sample)</td></tr>
+              <tr><td>Simulated Input</td><td>Simulated raw IMU packet from S2-01 (same format)</td></tr>
+              <tr><td>Control</td><td>Start/Close session request from M1 App/frontend</td></tr>
+              <tr><td>Output</td><td>Validated samples written to asynchronous buffer</td></tr>
+              <tr><td>Buffering</td><td>Output buffer SHOULD be flushed after each sample for real-time delivery</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mod-section-title">Validation Rules</div>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Check</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>Column Count</td><td>Each sample must contain exactly 45 comma-separated values</td></tr>
+              <tr><td>Numeric</td><td>All 45 values must be valid floating-point numbers</td></tr>
+              <tr><td>Range</td><td>Values should fall within physically plausible ranges for IMU sensors</td></tr>
+              <tr><td>Continuity</td><td>Detect sudden jumps that indicate sensor disconnection or malfunction</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mod-section-title">Data Format: 45 Values per Sample</div>
+        <p>
+          Each sample contains exactly 45 comma-separated floating-point values representing
+          one time-step of sensor readings from multiple IMU nodes placed on different limb
+          segments. This format is consistent across the entire system: the same 45-value CSV
+          format is used by the predict program's stdin, calibration data files, and training
+          data directories.
+        </p>
+
+        <div class="code-block">
+          <span class="comment"># Example output (one sample per line, 45 values each)</span><br>
+          0.12,0.34,-9.78,0.01,0.02,-0.03,0.45,...,0.67<br>
+          0.13,0.35,-9.77,0.02,0.01,-0.02,0.44,...,0.68<br>
+          <span class="comment"># ... continuous streaming</span>
+        </div>
+      </div>
+    </details>
+
+    <!-- Module S2-03: Asynchronous Sending -->
+    <details class="mod-block" open>
+      <summary class="mod-summary"><div class="mod-block-header">
+        <div>
+          <div class="mod-id">S2-03</div>
+          <div class="mod-title">Asynchronous Sending</div>
+        </div>
+      </div></summary>
+      <div class="mod-content">
+        <p>
+          Reads validated samples from the asynchronous buffer and transmits them to V1 AI
+          as formal data. The buffer decouples the data acquisition rate from the network
+          transmission rate, preventing data loss during transient network delays.
+        </p>
+        <div class="mod-section-title">Interface</div>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Attribute</th><th>Specification</th></tr></thead>
+            <tbody>
+              <tr><td>Input</td><td>Validated samples from asynchronous buffer (FIFO)</td></tr>
+              <tr><td>Control</td><td>Start/Close session request from M1</td></tr>
+              <tr><td>Output</td><td>Formal data to V1 AI (formatted, validated sensor stream)</td></tr>
+              <tr><td>Delivery</td><td>Asynchronous; buffer absorbs rate differences between acquisition and transmission</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          The asynchronous buffer between S2-02 and S2-03 is an in-memory FIFO queue.
+          This design ensures that sensor data collection is never blocked by network I/O,
+          which is critical for maintaining consistent sampling rates on the embedded platform.
+        </p>
+      </div>
+    </details>
+
+    <hr class="article-divider"/>
+
+    <!-- 4. Technical Route -->
+    <h2>4. Technical Route</h2>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Decision</th><th>Choice</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td>Language</td><td>Python 3</td><td>Interface Spec defines <code style="font-family:var(--font-mono);font-size:12px;color:var(--accent-2);">collect.py</code> as Python; consistent with Algorithm module which also uses Python</td></tr>
+          <tr><td>Data Format</td><td>45-value CSV per line</td><td>Standardised across the system: same format used by collect.py, calibration files, train program, and predict program</td></tr>
+          <tr><td>Buffering</td><td>Asynchronous in-memory FIFO</td><td>Decouples acquisition rate from transmission rate; prevents data loss during transient network delays on the embedded platform</td></tr>
+          <tr><td>Transmission</td><td>Asynchronous sending</td><td>S2-03 sends validated data to V1 independently of the acquisition loop, ensuring consistent sensor sampling</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      System Design v0.1 &middot; Zhiqi ZHANG (PM) &amp; Haobo LIN (System Architect) &middot; DSD 2025&ndash;2026 &middot; UTAD &times; Jilin University<br>
+      This document is based on the Interface Specification v2.0 (draft dated April 9, 2026) and will be updated as the specification evolves.
+    </p>
+
+  </div><!-- end article-body -->
+</div><!-- end container -->
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 &middot; Team S2</strong>
+      <p>Data Acquisition &middot; UTAD &times; Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../progress.html">Progress</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

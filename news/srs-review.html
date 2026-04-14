@@ -235,8 +235,7 @@
   <div class="article-header">
     <a href="../news.html" class="back-link">Back to News</a>
     <div class="article-meta">
-      <span class="badge active">Review</span>
-      <span class="badge info">Requirements</span>
+      <span class="badge" style="background:rgba(249,115,22,0.12);color:#f97316;border-color:rgba(249,115,22,0.25);">Req. Analysis</span>
       <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">6 Apr 2026 · 19:00 UTC+8</span>
     </div>
     <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
@@ -468,14 +467,64 @@
          ═══════════════════════════════════════════════════ -->
     <h2>3. Consolidated Summary</h2>
 
-    <div class="summary-placeholder">
-      <p>
-        The consolidated summary will be compiled once all five team members have submitted their
-        individual reviews. It will categorise all findings by error type (omission, inconsistency,
-        ambiguity, incorrect fact), prioritise them by severity, and propose a revision roadmap
-        for SRS v0.2.
-      </p>
+    <p>
+      All five team members have submitted their independent reviews. Across the five inspections,
+      <strong>31 distinct issues</strong> were identified. After deduplication (several reviewers
+      flagged the same underlying problem independently), the findings consolidate into
+      <strong>12 unique high-priority issues</strong> grouped by error type below.
+    </p>
+
+    <h3>By Error Type</h3>
+
+    <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);margin:16px 0;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr>
+          <th style="background:var(--surface-2);font-family:var(--font-mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;padding:10px 16px;text-align:left;font-weight:400;border-bottom:1px solid var(--border);">Type</th>
+          <th style="background:var(--surface-2);font-family:var(--font-mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;padding:10px 16px;text-align:left;font-weight:400;border-bottom:1px solid var(--border);">Count</th>
+          <th style="background:var(--surface-2);font-family:var(--font-mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;padding:10px 16px;text-align:left;font-weight:400;border-bottom:1px solid var(--border);">Key Issues</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td style="padding:10px 16px;font-size:13px;color:var(--orange);font-weight:600;border-bottom:1px solid var(--border);">Omission</td>
+            <td style="padding:10px 16px;font-size:13px;color:var(--text-2);border-bottom:1px solid var(--border);">6</td>
+            <td style="padding:10px 16px;font-size:13px;color:var(--text-2);border-bottom:1px solid var(--border);">Missing non-functional requirements (flagged by 4/5 reviewers); no session management or token policy; WiFi connection path absent from UC-03; no data validation rules; no access control model for UC-06</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 16px;font-size:13px;color:var(--orange);font-weight:600;border-bottom:1px solid var(--border);">Ambiguity</td>
+            <td style="padding:10px 16px;font-size:13px;color:var(--text-2);border-bottom:1px solid var(--border);">3</td>
+            <td style="padding:10px 16px;font-size:13px;color:var(--text-2);border-bottom:1px solid var(--border);">Undefined "real-time" latency target; unquantified safety alert threshold in UC-05; multi-sensor support neither specified nor explicitly excluded</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 16px;font-size:13px;color:var(--orange);font-weight:600;border-bottom:1px solid var(--border);">Inconsistency</td>
+            <td style="padding:10px 16px;font-size:13px;color:var(--text-2);border-bottom:1px solid var(--border);">2</td>
+            <td style="padding:10px 16px;font-size:13px;color:var(--text-2);border-bottom:1px solid var(--border);">"System" treated as actor in some UCs but not others; real-time data path described differently in UC-04 vs UC-05 (V2 present or absent)</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 16px;font-size:13px;color:var(--orange);font-weight:600;border-bottom:none;">Structural</td>
+            <td style="padding:10px 16px;font-size:13px;color:var(--text-2);border-bottom:none;">1</td>
+            <td style="padding:10px 16px;font-size:13px;color:var(--text-2);border-bottom:none;">Missing Use Case Diagram and proper Sequence Diagrams with component lifelines (addressed in a subsequent news post)</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
+    <h3>Top 5 Priority Items for SRS v0.2</h3>
+
+    <ol>
+      <li><strong>Add non-functional requirements section</strong> &mdash; latency budget, availability targets, security constraints (encryption, token expiry, audit logging). Flagged independently by Zhiqi ZHANG, Haobo LIN, Pengxu CHEN, and Tianze WANG.</li>
+      <li><strong>Specify IF1 as a testable contract</strong> &mdash; data schema, sampling rate, transport, error model, validation rules. Without this, Sprint 1 "freeze IF1" is not actionable (Haobo LIN).</li>
+      <li><strong>Resolve System/Actor boundary</strong> &mdash; remove "System" from actor lists, split Section 1 into Actors and System Components, use consistent convention across all UCs (Zhiqi ZHANG, Haobo LIN, Tianze WANG).</li>
+      <li><strong>Add WiFi connection path to UC-03</strong> &mdash; the project requires both Bluetooth and WiFi, but only Bluetooth is specified (Zhiqi ZHANG, Haobo LIN).</li>
+      <li><strong>Define session management and access control</strong> &mdash; token lifetime, refresh/revocation, logout flow, and patient-professional assignment model for UC-06 (Jo&atilde;o Neves).</li>
+    </ol>
+
+    <h3>Addressed Since v0.1</h3>
+    <p>
+      The structural gap (missing diagrams) identified by Zhiqi ZHANG has been addressed in a
+      <a href="srs-diagrams.html" style="color:var(--accent-2);text-decoration:underline;">separate post</a>
+      containing a UML Use Case Diagram and Sequence Diagrams with corrections applied.
+      The remaining 11 issues carry forward to the SRS v0.2 revision.
+    </p>
 
     <hr class="article-divider"/>
     <p style="font-size:13px;color:var(--text-3);">
