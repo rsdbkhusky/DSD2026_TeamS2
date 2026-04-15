@@ -103,6 +103,24 @@
       border-bottom: none; border-right: 1px solid var(--border);
     }
     .news-card.featured .news-card-title { font-size: 21px; }
+    @keyframes badge-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    .badge-new {
+      display: inline-block;
+      background: rgba(220,38,38,0.18);
+      color: #ef4444;
+      border: 1px solid rgba(220,38,38,0.35);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      animation: badge-pulse 1.2s ease-in-out infinite;
+    }
     @media (max-width: 640px) {
       .news-card.featured { flex-direction: column; }
       .news-card.featured .news-card-top {
@@ -153,7 +171,7 @@
         <div class="news-card-top">
           <span class="news-category cat-sysdesign">System Design</span>
           <span class="news-date">14 Apr 2026 &middot; 13:49</span>
-          <span class="badge active" style="margin-top:6px;">Latest</span>
+          <span class="badge-new" style="margin-top:6px;">New!</span>
         </div>
         <div class="news-card-body">
           <div class="news-card-title">System Design Review &mdash; Interface &amp; Module Inspection</div>
@@ -167,10 +185,11 @@
       </a>
 
       <!-- System Design Draft -->
-      <a href="news/system-design.html" class="news-card reveal reveal-d1">
+      <a href="news/system-design.html" class="news-card featured reveal reveal-d1">
         <div class="news-card-top">
           <span class="news-category cat-sysdesign">System Design</span>
-          <span class="news-date">13 Apr 2026 · 18:26</span>
+          <span class="news-date">13 Apr 2026 &middot; 18:26</span>
+          <span class="badge-new" style="margin-top:6px;">New!</span>
         </div>
         <div class="news-card-body">
           <div class="news-card-title">System Design &mdash; S2 Module Specification</div>
