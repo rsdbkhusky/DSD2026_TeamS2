@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
+  <script src="../theme-init.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PM Meeting &amp; Interface Discussion &middot; News &middot; DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em;
+    }
+    .rev-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0 32px; }
+    .rev-table { width: 100%; border-collapse: collapse; }
+    .rev-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .rev-table td { padding: 10px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+    .rev-table tr:last-child td { border-bottom: none; }
+    .spec-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0; }
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .spec-table td { padding: 11px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table tr:hover td { background: rgba(255,255,255,0.02); }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025&ndash;2026</span>
+      <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
+    </div>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+    <div class="nav-triggers">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Light / Dark">&#9788;</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge" style="background:rgba(220,38,38,0.12);color:#f87171;border-color:rgba(220,38,38,0.25);">System Design</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">20 Apr 2026 &middot; 19:23 UTC+8</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      PM Meeting &amp; Interface Discussion
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      A cross-team PM meeting on April 18 aligned the current progress across all teams,
+      followed by private interface discussions between S2 and its neighbouring teams (S1 and V1)
+      to finalise the data exchange details.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- Revision History -->
+    <div class="rev-table-wrap">
+      <table class="rev-table">
+        <thead><tr><th>Date</th><th>Authors</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Apr 20, 2026</td><td>Zhiqi ZHANG, Jo&atilde;o Neves</td><td>PM meeting summary and interface discussion outcomes</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 1. PM Meeting -->
+    <h2>1. Cross-Team PM Meeting</h2>
+    <p>
+      On the evening of April 18, 2026, a cross-team PM meeting was held. Zhiqi ZHANG attended
+      as the S2 team leader. The meeting reviewed the current progress of each team, aligned
+      ongoing work across the six groups, and discussed the overall project timeline for the
+      upcoming sprints.
+    </p>
+    <p>
+      A key focus of the meeting was the <strong>inter-team data interface alignment</strong>.
+      Each team clarified the data they need to send and receive across team boundaries,
+      identified the information that must be exchanged through IF1 and IF2, and flagged
+      open questions that still required further discussion. Teams were encouraged to follow up
+      with private bilateral discussions after the meeting to resolve remaining details.
+    </p>
+
+    <hr class="article-divider"/>
+
+    <!-- 2. S1 Interface Discussion -->
+    <h2>2. Interface Discussion with S1 (Sensor Firmware)</h2>
+    <p>
+      Zhiqi ZHANG conducted a private discussion with the S1 team to clarify the detailed
+      interface between S1 and S2. The outcome:
+    </p>
+    <ul>
+      <li>S1 will be responsible for <strong>raw sensor data acquisition</strong> from the physical IMU hardware.</li>
+      <li>The existing sensor software provides an <strong>SDK</strong> for developers, which is capable of capturing <strong>IMU orientation angles</strong> (attitude/heading).</li>
+      <li>The data that S1 will pass to S2 is the <strong>IMU orientation angle</strong> readings.</li>
+      <li>Development and data collection on the S1 side are currently in progress.</li>
+    </ul>
+
+    <hr class="article-divider"/>
+
+    <!-- 3. V1 Interface Discussion -->
+    <h2>3. Interface Discussion with V1 (AI Engine)</h2>
+    <p>
+      Jo&atilde;o Neves reached out to the V1 team to clarify whether they require any data
+      from S2 beyond the <strong>target angle</strong> (the interface item confirmed during
+      the PM meeting). V1 confirmed that, in addition to the target angle, they ideally need
+      the following data from S2:
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Data Item</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Measured sensor data / motion stream</td><td>The real-time IMU data stream produced by S2 (45-value CSV samples)</td></tr>
+          <tr><td>Timestamp or sequence information</td><td>Time or ordering metadata for each sample to support temporal analysis</td></tr>
+          <tr><td>Sensor / joint identification</td><td>Mapping of data fields to specific sensor nodes or body joints</td></tr>
+          <tr><td>Format and units</td><td>As defined in the IF1 contract (e.g. units for angles, coordinate frame conventions)</td></tr>
+          <tr><td>Payload status / error information</td><td>Indicators of data validity, sensor connectivity, or missing readings</td></tr>
+          <tr><td>Target angle / <del>expected values</del></td><td>Reference values used by V1 for motion comparison and accuracy scoring</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      After analysis, S2 concluded that <strong>all of the above items can be provided by S2</strong>,
+      with one exception: the <strong>target angle expected values</strong>. These reference values
+      represent the prescribed exercise targets set by Medical Professionals, which are stored and
+      managed by V2 (Backend API &amp; Storage). S2's role is to provide real-time measured data,
+      not the prescription data that originates from the clinical side.
+    </p>
+    <p>
+      This conclusion was communicated to the V1 team leader, who confirmed the assessment.
+      V1 will obtain the target angle expected values from V2 directly. The discussion was
+      productive and both sides expressed satisfaction with the outcome.
+    </p>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 &middot; DSD 2025&ndash;2026 &middot; UTAD &times; Jilin University
+    </p>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 &middot; Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator &middot; UTAD &times; Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../progress.html">Progress</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

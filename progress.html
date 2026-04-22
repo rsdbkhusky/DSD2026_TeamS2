@@ -217,13 +217,13 @@
       </details>
 
       <!-- Sprint 3: System Design -->
-      <details class="sprint-item reveal" id="sprint-sys-design" open>
+      <details class="sprint-item reveal" id="sprint-sys-design">
         <summary class="sprint-summary">
-          <div class="sprint-dot" style="background:var(--surface-2);color:#ef4444;border:1px solid rgba(239,68,68,0.3);">S3</div>
+          <div class="sprint-dot" style="background:var(--surface-2);color:var(--green);border:1px solid rgba(34,197,94,0.3);">S3</div>
           <div class="sprint-summary-main">
             <div class="sprint-header" style="margin-bottom:0;">
               <span class="sprint-title">Sprint 3: System Design</span>
-              <span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;border-color:rgba(239,68,68,0.3);">Not Done</span>
+              <span class="badge done">Done</span>
             </div>
           </div>
         </summary>
@@ -235,7 +235,7 @@
           <div class="task-list">
             <div class="task-row"><div><div class="task-name">System Design (Team S2)</div><div class="task-note">Architecture design led by System Architect, PM assisting</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
             <div class="task-row"><div><div class="task-name">Review System Design (Team S2)</div><div class="task-note">Cross-review by Vice PM and Programmers</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
-            <div class="task-row" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);"><div><div class="task-name">System Design (Other Teams) &amp; Merge Final Version</div><div class="task-note">Waiting for other teams to complete their sections; merge into unified document</div></div><div class="task-status"><span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;border-color:rgba(239,68,68,0.3);">50%</span></div></div>
+            <div class="task-row"><div><div class="task-name">System Design (Other Teams) &amp; Merge Final Version</div><div class="task-note">Waiting for other teams to complete their sections; merge into unified document</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
           </div>
           <div id="gantt-s3" class="gantt-wrap"></div>
         </div>
@@ -244,32 +244,47 @@
       <!-- Sprint 4 -->
       <details class="sprint-item reveal" id="sprint-impl" open>
         <summary class="sprint-summary">
-          <div class="sprint-dot active">S4</div>
+          <div class="sprint-dot" style="background:var(--surface-2);color:var(--green);border:1px solid rgba(34,197,94,0.3);">S4</div>
           <div class="sprint-summary-main">
             <div class="sprint-header" style="margin-bottom:0;">
-              <span class="sprint-title">Sprint 4: Implementation + Unit Testing</span>
+              <span class="sprint-title">Sprint 4: System Design 2</span>
+              <span class="badge done">Done</span>
+            </div>
+          </div>
+        </summary>
+        <div class="sprint-body">
+          <p style="font-size:13.5px;color:var(--text-2);max-width:660px;line-height:1.65;margin-bottom:20px;">
+            Revised system design, interface coordination with S1 and V1, and detailed interface specification.
+          </p>
+          <div class="task-list">
+            <div class="task-row"><div><div class="task-name">Revise System Design</div><div class="task-note">Refine overall design based on review feedback</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
+            <div class="task-row"><div><div class="task-name">Interface Coordination (S1 &amp; V1)</div><div class="task-note">Agree on concrete data format and protocol details</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
+            <div class="task-row"><div><div class="task-name">Design Detailed Interface</div><div class="task-note">Specify detailed interface formats and protocols</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
+          </div>
+          <div id="gantt-s4" class="gantt-wrap"></div>
+        </div>
+      </details>
+
+      <!-- Sprint 5 -->
+      <details class="sprint-item reveal" id="sprint-deploy" open>
+        <summary class="sprint-summary">
+          <div class="sprint-dot active">S5</div>
+          <div class="sprint-summary-main">
+            <div class="sprint-header" style="margin-bottom:0;">
+              <span class="sprint-title">Sprint 5: Implement + Test</span>
               <span class="badge active">Active</span>
             </div>
           </div>
         </summary>
         <div class="sprint-body">
-          <p style="font-size:13.5px;color:var(--text-3);">Apr 13 ~ Apr 20. Details to be defined.</p>
-        </div>
-      </details>
-
-      <!-- Sprint 5 -->
-      <details class="sprint-item reveal" id="sprint-deploy">
-        <summary class="sprint-summary">
-          <div class="sprint-dot pending">S5</div>
-          <div class="sprint-summary-main">
-            <div class="sprint-header" style="margin-bottom:0;">
-              <span class="sprint-title">Sprint 5: Deployment + Integration Testing</span>
-              <span class="badge pending">Upcoming</span>
-            </div>
+          <p style="font-size:13.5px;color:var(--text-2);max-width:660px;line-height:1.65;margin-bottom:20px;">
+            Implementation of the S2 data acquisition core module and unit testing.
+          </p>
+          <div class="task-list">
+            <div class="task-row"><div><div class="task-name">Data Acquisition Core Implementation</div><div class="task-note">Core module development</div></div><div class="task-status"><span class="badge pending">0%</span></div></div>
+            <div class="task-row"><div><div class="task-name">Data Acquisition Core Testing</div><div class="task-note">Unit testing by all team members</div></div><div class="task-status"><span class="badge pending">0%</span></div></div>
           </div>
-        </summary>
-        <div class="sprint-body">
-          <p style="font-size:13.5px;color:var(--text-3);">Apr 20 ~ Apr 27. Details to be defined.</p>
+          <div id="gantt-s5" class="gantt-wrap"></div>
         </div>
       </details>
 
@@ -446,7 +461,17 @@ var GanttChart=(function(){
   GanttChart.render('gantt-s3',{tasks:[
     {label:'Sys Design (Lead)',  start:D(4,7), end:D(4,10),members:[2]},
     {label:'Sys Design (Assist)',start:D(4,7), end:D(4,10),members:[0]},
-    {label:'Review Sys Design',  start:D(4,11),end:D(4,13),members:[1,3,4]}
+    {label:'Review Sys Design',  start:D(4,11),end:D(4,13),members:[0,1,3,4]}
+  ]});
+  GanttChart.render('gantt-s4',{tasks:[
+    {label:'Revise Sys Design',      start:D(4,14),end:D(4,15),members:[0]},
+    {label:'Coordinate w/ S1',       start:D(4,16),end:D(4,19),members:[0]},
+    {label:'Coordinate w/ V1',       start:D(4,16),end:D(4,19),members:[1]},
+    {label:'Design Interface',       start:D(4,19),end:D(4,20),members:[0]}
+  ]});
+  GanttChart.render('gantt-s5',{tasks:[
+    {label:'Data Acq. Core Impl.',   start:D(4,21),end:D(4,25),members:[0]},
+    {label:'Data Acq. Core Test',    start:D(4,26),end:D(4,27),members:[0,1,2,3,4]}
   ]});
 })();
 
@@ -473,12 +498,11 @@ var GanttChart=(function(){
   var P=[
     {l:'Foundation',           s:D(3,16),e:D(3,30),a:'sprint-foundation'},
     {l:'Req. Analysis',        s:D(3,30),e:D(4,6), a:'sprint-req-analysis'},
-    {l:'System Design',        s:D(4,6), e:D(4,13),a:'sprint-sys-design'},
-    {l:'Impl. + Unit Test',    s:D(4,13),e:D(4,20),a:'sprint-impl'},
-    {l:'Deploy + Int. Test',   s:D(4,20),e:D(4,27),a:'sprint-deploy'},
+    {l:'System Design',        s:D(4,6), e:D(4,20),a:'sprint-sys-design'},
+    {l:'Impl. + Test',         s:D(4,20),e:D(4,27),a:'sprint-deploy'},
     {l:'Req. Analysis II',     s:D(4,27),e:D(5,4), a:''},
     {l:'System Design II',     s:D(5,4), e:D(5,11),a:''},
-    {l:'Impl. + Unit Test II', s:D(5,11),e:D(5,18),a:''},
+    {l:'Impl. + Test II',      s:D(5,11),e:D(5,18),a:''},
     {l:'Deploy + Int. Test II',s:D(5,18),e:D(5,25),a:''}
   ];
   var el=document.getElementById('waterfall-chart');if(!el)return;
