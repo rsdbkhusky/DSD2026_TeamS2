@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
+  <script src="../theme-init.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S2 Interface Specification &middot; News &middot; DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em;
+      border-left: 2px solid var(--accent); padding-left: 12px;
+    }
+    .article-body h4 {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--text); margin: 22px 0 8px;
+      border-left: 1.5px solid rgba(139,92,246,0.4); padding-left: 10px;
+    }
+    .rev-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0 32px; }
+    .rev-table { width: 100%; border-collapse: collapse; }
+    .rev-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .rev-table td { padding: 10px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+    .rev-table tr:last-child td { border-bottom: none; }
+    .spec-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0; }
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .spec-table td { padding: 11px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .code-block {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px 20px; margin: 14px 0; overflow-x: auto;
+      font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--text-2);
+    }
+    .code-block .comment { color: var(--text-3); }
+    .mod-block {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      margin: 28px 0; overflow: hidden;
+    }
+    .mod-summary {
+      display: flex; align-items: flex-start; gap: 10px; padding: 18px 22px;
+      cursor: pointer; list-style: none; user-select: none;
+    }
+    .mod-summary::-webkit-details-marker { display: none; }
+    .mod-summary::after {
+      content: '+'; font-family: var(--font-mono); font-size: 14px;
+      color: var(--accent); line-height: 1; margin-top: 6px; flex-shrink: 0;
+    }
+    .mod-block[open] .mod-summary::after { content: '\2212'; }
+    .mod-content { padding: 2px 30px 28px; }
+    .mod-block-header {
+      display: flex; align-items: flex-start; flex: 1;
+      justify-content: space-between; gap: 16px; margin-bottom: 0; flex-wrap: wrap;
+    }
+    .mod-id {
+      font-family: var(--font-mono); font-size: 10px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px;
+    }
+    .mod-title {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.015em;
+    }
+    .api-sig {
+      font-family: var(--font-mono); font-size: 13px; color: var(--accent-2);
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 10px 16px; margin: 12px 0 8px; display: block;
+    }
+    .attr-list { margin: 8px 0; }
+    .attr-list li {
+      font-size: 13px; color: var(--text-2); line-height: 1.65; padding: 2px 0;
+    }
+    .attr-list li strong { color: var(--text); }
+    .attr-list li code { font-family: var(--font-mono); font-size: 12px; color: var(--accent-2); }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025&ndash;2026</span>
+      <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
+    </div>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+    <div class="nav-triggers">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Light / Dark">&#9788;</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge" style="background:rgba(220,38,38,0.12);color:#f87171;border-color:rgba(220,38,38,0.25);">System Design</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">24 Apr 2026 &middot; 16:02 UTC+8</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      S2 Interface Specification
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      Complete interface specification for all data exchanges crossing the S2 module boundary.
+      Defines four interfaces (S1&rarr;S2, M1&rarr;S2, S2&rarr;M1, S2&rarr;V2) with function
+      signatures, data classes, and HTTP endpoints.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <div class="rev-table-wrap">
+      <table class="rev-table">
+        <thead><tr><th>Date</th><th>Authors</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Apr 24, 2026</td><td>Zhiqi ZHANG</td><td>S2 interface specification with function call APIs and HTTP REST endpoints</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 1. Overview -->
+    <h2>1. Overview</h2>
+    <p>
+      This document defines the interface specifications for all data exchanges that cross the
+      S2 module boundary. Reference to
+      <a href="system-design-revision.html" style="color:var(--accent-2);text-decoration:underline;">Team S2's System Design</a>.
+    </p>
+
+    <a href="s2-interface-spec/s2-interface-specification.md" download style="display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--accent);border-radius:var(--radius-lg);padding:16px 22px;margin:16px 0 24px;text-decoration:none;transition:border-color var(--transition),box-shadow var(--transition);" onmouseover="this.style.borderColor='rgba(139,92,246,0.6)';this.style.boxShadow='0 0 16px rgba(139,92,246,0.15)';" onmouseout="this.style.borderColor='';this.style.boxShadow='';">
+      <span style="font-size:24px;">&#128196;</span>
+      <span>
+        <span style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--text);display:block;">Download Source Document</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--accent-2);">s2-interface-specification.md</span>
+      </span>
+    </a>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>ID</th><th>Direction</th><th>From</th><th>To</th><th>Data Flow</th></tr></thead>
+        <tbody>
+          <tr><td>IF-S1-S2</td><td>Input</td><td>S1 (Sensor)</td><td>S2</td><td>Raw IMU packet</td></tr>
+          <tr><td>IF-M1-S2</td><td>Input</td><td>M1 (AppFrontend)</td><td>S2</td><td>Start/Close session request</td></tr>
+          <tr><td>IF-S2-M1</td><td>Output</td><td>S2</td><td>M1 (AppFrontend)</td><td>Format data</td></tr>
+          <tr><td>IF-S2-V2</td><td>Output</td><td>S2</td><td>V2 (DB)</td><td>Format data</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- 2. Interface Specifications -->
+    <h2>2. Interface Specifications</h2>
+
+    <!-- 2.1 IF-S1-S2 -->
+    <h3>2.1 IF-S1-S2: Raw IMU Packet</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Dataflow direction</td><td>S1 &rarr; S2</td></tr>
+          <tr><td>Cross-device</td><td>No (S1 and S2 are on the same device)</td></tr>
+          <tr><td>Possible transport</td><td>Function call / HTTP REST API</td></tr>
+          <tr><td>Service provider</td><td>S1</td></tr>
+          <tr><td>Service user</td><td>S2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The following takes function calls as an example.</p>
+
+    <h4>2.1.1 <code>s1.sensor.read()</code></h4>
+    <p>Read a batch of IMU samples collected since the last call.</p>
+    <p><strong>Parameters:</strong> None</p>
+    <p><strong>Returns:</strong> <em>List[SensorSample]</em> &mdash; may be empty if no new data is available.</p>
+    <div class="code-block">
+      samples = s1.sensor.read()<br>
+      for s in samples:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;print(s.timestamp, s.roll, s.pitch, s.yaw)
+    </div>
+
+    <h4>2.1.2 <code>s1.sensor.status()</code></h4>
+    <p>Query the current status of the sensor hardware connection.</p>
+    <p><strong>Parameters:</strong> None</p>
+    <p><strong>Returns:</strong> <em>SensorStatus</em></p>
+    <div class="code-block">
+      st = s1.sensor.status()<br>
+      if not st.connected:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;print("Sensor error:", st.errorMessage)
+    </div>
+
+    <h4>2.1.3 class <em>SensorSample</em></h4>
+    <p>A single IMU sensor reading at one point in time.</p>
+    <ul class="attr-list">
+      <li><strong>timestamp</strong> (<em>int</em>): Unix timestamp in milliseconds.</li>
+      <li><strong>deviceId</strong> (<em>str</em>): Unique sensor device identifier.</li>
+      <li><strong>deviceName</strong> (<em>str</em>): Human-readable sensor name (e.g. <code>"WTL1"</code>).</li>
+      <li><strong>accX, accY, accZ</strong> (<em>float</em>): Accelerometer, in g.</li>
+      <li><strong>gyroX, gyroY, gyroZ</strong> (<em>float</em>): Gyroscope, in deg/s.</li>
+      <li><strong>roll, pitch, yaw</strong> (<em>float</em>): Orientation angles, in degrees.</li>
+    </ul>
+
+    <h4>2.1.4 class <em>SensorStatus</em></h4>
+    <p>Current state of the sensor connection.</p>
+    <ul class="attr-list">
+      <li><strong>connected</strong> (<em>bool</em>): <code>True</code> if sensor is connected and producing data.</li>
+      <li><strong>errorMessage</strong> (<em>str or None</em>): Error description if in error state. Possible values: <code>"sensor_disconnected"</code>, <code>"data_corruption"</code>, <code>"timeout"</code>.</li>
+    </ul>
+
+    <!-- 2.2 IF-M1-S2 -->
+    <h3>2.2 IF-M1-S2: Start/Close Session Request</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Dataflow direction</td><td>M1 &rarr; S2</td></tr>
+          <tr><td>Cross-device</td><td>No</td></tr>
+          <tr><td>Possible transport</td><td>Function call / HTTP REST API</td></tr>
+          <tr><td>Service provider</td><td>S2</td></tr>
+          <tr><td>Service user</td><td>M1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The following takes function calls as an example.</p>
+
+    <h4>2.2.1 <code>s2.session.start(sessionId, patientId, sensorJointMapping, payloadStatus)</code></h4>
+    <p>Start a data acquisition session. S2 begins reading sensor data from S1, validating, buffering, and sending to V2.</p>
+    <p><strong>Parameters:</strong></p>
+    <ul class="attr-list">
+      <li><strong>sessionId</strong> (<em>str</em>): Unique session identifier. MUST be non-empty.</li>
+      <li><strong>patientId</strong> (<em>str</em>): Patient identifier. MUST be non-empty.</li>
+      <li><strong>sensorJointMapping</strong> (<em>dict</em>): Mapping from sensor device ID to joint name. E.g. <code>{"1IYw...": "left_knee", "xR3f...": "right_elbow"}</code>. Fixed for the entire session.</li>
+      <li><strong>payloadStatus</strong> (<em>str</em>): Exercise/task type for this session (e.g. <code>"bend_knee_10"</code>). Fixed for the entire session.</li>
+    </ul>
+    <p><strong>Returns:</strong> <em>StartResult</em></p>
+    <p><strong>Raises:</strong> <em>ValueError</em> if required parameters are empty.</p>
+    <div class="code-block">
+      result = s2.session.start(<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"session-001", "patient-001",<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;{"1IYw...": "left_knee", "xR3f...": "right_elbow"},<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"bend_knee_10"<br>
+      )<br>
+      if result.success:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;print("Acquisition started")
+    </div>
+
+    <h4>2.2.2 <code>s2.session.stop()</code></h4>
+    <p>Stop the current session. S2 flushes remaining buffered data to V2, then enters idle state.</p>
+    <p><strong>Parameters:</strong> None</p>
+    <p><strong>Returns:</strong> <em>SessionSummary</em></p>
+    <p><strong>Raises:</strong> <em>RuntimeError</em> if no session is active.</p>
+
+    <h4>2.2.3 class <em>StartResult</em></h4>
+    <ul class="attr-list">
+      <li><strong>success</strong> (<em>bool</em>): Whether the session started successfully.</li>
+      <li><strong>errorMessage</strong> (<em>str or None</em>): Reason for failure. Possible values: <code>"session_already_active"</code>, <code>"sensor_not_connected"</code>.</li>
+    </ul>
+
+    <h4>2.2.4 class <em>SessionSummary</em></h4>
+    <ul class="attr-list">
+      <li><strong>sessionId</strong> (<em>str</em>): Identifier of the closed session.</li>
+      <li><strong>sampleCount</strong> (<em>int</em>): Total valid samples collected.</li>
+      <li><strong>errorCount</strong> (<em>int</em>): Total rejected samples.</li>
+      <li><strong>startTime</strong> (<em>int</em>): Session start timestamp (Unix ms).</li>
+      <li><strong>endTime</strong> (<em>int</em>): Session end timestamp (Unix ms).</li>
+    </ul>
+
+    <!-- 2.3 IF-S2-M1 -->
+    <h3>2.3 IF-S2-M1: Format Data</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Dataflow direction</td><td>S2 &rarr; M1</td></tr>
+          <tr><td>Cross-device</td><td>No</td></tr>
+          <tr><td>Possible transport</td><td>Function call / HTTP REST API</td></tr>
+          <tr><td>Service provider</td><td>S2</td></tr>
+          <tr><td>Service user</td><td>M1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The following takes function calls as an example.</p>
+
+    <h4>2.3.1 <code>s2.data.read()</code></h4>
+    <p>
+      Read all Format data accumulated since the last call. Returns a <em>FormatData</em>
+      object containing three asynchronous data lists (sensor readings, target angles, and
+      error events), plus the session context set at session start.
+    </p>
+    <p><strong>Parameters:</strong> None</p>
+    <p><strong>Returns:</strong> <em>FormatData</em></p>
+    <p><strong>Notes:</strong> The three lists are <strong>asynchronous</strong>: they may have
+      different lengths on each call, because each sensor samples independently and target angle
+      computation runs at its own rate. This is the same data that S2 sends to V2 (2.4).</p>
+    <div class="code-block">
+      data = s2.data.read()<br>
+      for s in data.sensorData:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;print(s.timestamp, s.deviceId, s.roll, s.pitch, s.yaw)<br>
+      for t in data.targetAngles:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;print(t.timestamp, t.angle)
+    </div>
+
+    <h4>2.3.2 class <em>FormatData</em></h4>
+    <p>Output data structure of S2. Used by both IF-S2-M1 (function call) and IF-S2-V2 (HTTP).</p>
+    <ul class="attr-list">
+      <li><strong>sessionContext</strong> (<em>SessionContext</em>): Session-level info, fixed for the entire session.</li>
+      <li><strong>sensorData</strong> (<em>List[SensorSample]</em>): Validated sensor readings from all sensors since last read. Uses <em>SensorSample</em> defined in 2.1.3.</li>
+      <li><strong>targetAngles</strong> (<em>List[TargetAngle]</em>): Target angles computed by S2 core since last read.</li>
+      <li><strong>errors</strong> (<em>List[ErrorEvent]</em>): Error events since last read.</li>
+    </ul>
+
+    <h4>2.3.3 class <em>SessionContext</em></h4>
+    <ul class="attr-list">
+      <li><strong>sessionId</strong> (<em>str</em>): Unique session identifier.</li>
+      <li><strong>patientId</strong> (<em>str</em>): Patient identifier.</li>
+      <li><strong>sensorJointMapping</strong> (<em>dict</em>): Sensor device ID &rarr; joint name mapping.</li>
+      <li><strong>payloadStatus</strong> (<em>str</em>): Exercise/task type (e.g. <code>"bend_knee_10"</code>).</li>
+    </ul>
+
+    <h4>2.3.4 class <em>TargetAngle</em></h4>
+    <ul class="attr-list">
+      <li><strong>timestamp</strong> (<em>int</em>): Unix timestamp in milliseconds when computed.</li>
+      <li><strong>angleID</strong> (<em>str</em>): Angle identifier.</li>
+      <li><strong>angle</strong> (<em>float</em>): Computed target angle, in degrees.</li>
+    </ul>
+
+    <h4>2.3.5 class <em>ErrorEvent</em></h4>
+    <ul class="attr-list">
+      <li><strong>timestamp</strong> (<em>int</em>): Unix timestamp in milliseconds.</li>
+      <li><strong>sensorId</strong> (<em>str or None</em>): Sensor that caused the error, or <code>None</code> if not sensor-specific.</li>
+      <li><strong>errorType</strong> (<em>str</em>): <code>"sensor_disconnected"</code>, <code>"validation_failure"</code>, <code>"timeout"</code>.</li>
+      <li><strong>message</strong> (<em>str</em>): Human-readable error description.</li>
+    </ul>
+
+    <!-- 2.4 IF-S2-V2 -->
+    <h3>2.4 IF-S2-V2: Format Data</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Dataflow direction</td><td>S2 &rarr; V2 &rarr; V1</td></tr>
+          <tr><td>Cross-device</td><td>Yes</td></tr>
+          <tr><td>Possible transport</td><td>HTTP REST API</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      These data are temporarily passed to V1 through V2; V2 is not responsible for processing them.
+      The upload payload follows the <em>FormatData</em> structure (2.3.2).
+    </p>
+
+    <h4>2.4.1 <code>POST /api/session</code></h4>
+    <p>Create a new session record on the cloud. Includes session context fixed for the entire session.</p>
+    <p>Request type: <code>application/json</code>. Example:</p>
+    <div class="code-block">
+      {<br>
+      &nbsp;&nbsp;"sessionId": "session-001",<br>
+      &nbsp;&nbsp;"patientId": "patient-001",<br>
+      &nbsp;&nbsp;"sensorJointMapping": {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"1IYwPyBcytYa9htYB0LOJQ==": "left_knee",<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"xR3fG...": "right_elbow"<br>
+      &nbsp;&nbsp;},<br>
+      &nbsp;&nbsp;"payloadStatus": "bend_knee_10",<br>
+      &nbsp;&nbsp;"startTime": 1714456800000<br>
+      }
+    </div>
+    <p>Returns <code>200 OK</code> if created, <code>409 Conflict</code> if sessionId already exists.</p>
+
+    <h4>2.4.2 <code>POST /api/session/&lt;sessionId&gt;/data</code></h4>
+    <p>Upload a batch of Format data. The three lists are asynchronous and may have different lengths.</p>
+    <p>Request type: <code>application/json</code>. Example:</p>
+    <div class="code-block">
+      {<br>
+      &nbsp;&nbsp;"sensorData": [<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;{<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"timestamp": 1714456800000,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"sensorId": "1IYwPyBcytYa9htYB0LOJQ==",<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"accX": 0.2266, "accY": 0.2915, "accZ": 0.9668,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"gyroX": 0.0, "gyroY": 3.11, "gyroZ": -0.73,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"roll": 15.57, "pitch": -13.78, "yaw": -144.01<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;{<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"timestamp": 1714456800030,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"sensorId": "xR3fG...",<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"accX": 0.1102, "accY": 0.3301, "accZ": 0.9812,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"gyroX": 0.45, "gyroY": -1.02, "gyroZ": 0.11,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"roll": 8.23, "pitch": -5.41, "yaw": -72.55<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+      &nbsp;&nbsp;],<br>
+      &nbsp;&nbsp;"targetAngles": [<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;{"timestamp": 1714456800020, "angleID": "angle01", "angle": 42.3}<br>
+      &nbsp;&nbsp;],<br>
+      &nbsp;&nbsp;"errors": []<br>
+      }
+    </div>
+    <p>Returns <code>200 OK</code> if accepted, <code>400 Bad Request</code> if invalid, <code>401 Unauthorized</code> if auth fails.</p>
+
+    <h4>2.4.3 <code>PUT /api/session/&lt;sessionId&gt;/end</code></h4>
+    <p>Mark a session as ended.</p>
+    <p>Request type: <code>application/json</code>. Example:</p>
+    <div class="code-block">
+      {"endTime": 1714456860000, "sampleCount": 1200, "errorCount": 3}
+    </div>
+    <p>Returns <code>200 OK</code> always.</p>
+
+    <p><strong>Error handling:</strong> On network failure, S2 buffers data locally and retries.
+      On repeated failure, S2 continues acquiring to avoid data loss.</p>
+
+    <hr class="article-divider"/>
+
+    <!-- 3. Communication Methods -->
+    <h2>3. Communication Methods</h2>
+
+    <h3>3.1 Function Call (Same Device and Same Process)</h3>
+    <p>
+      When two components run on the same device, they communicate through <strong>direct function calls</strong>.
+      One component provides functions (like <code>s2.session.start()</code>), the other calls them directly.
+      If the components run in different processes on the same device, the function signatures remain the same,
+      but the underlying transport is replaced by an IPC mechanism that serializes parameters automatically.
+    </p>
+    <ul>
+      <li><strong>S1 provides</strong> <code>s1.sensor.read()</code> and <code>s1.sensor.status()</code> for S2.</li>
+      <li><strong>S2 provides</strong> <code>s2.session.start()</code>, <code>s2.session.stop()</code>, and <code>s2.data.read()</code> for M1.</li>
+    </ul>
+
+    <h3>3.2 HTTP REST API (Different Devices or Different Process)</h3>
+    <p>
+      When two components run on different devices connected by a network, they communicate through
+      <strong>HTTP REST API</strong>. One component acts as the server (V2), exposing URL endpoints.
+      The other acts as the client (S2), sending HTTP requests.
+    </p>
+    <ul>
+      <li><strong>Method</strong>: <code>GET</code> (read), <code>POST</code> (create/send), <code>PUT</code> (update), <code>DELETE</code> (remove)</li>
+      <li><strong>URL</strong>: endpoint path (e.g. <code>/api/session/&lt;sessionId&gt;/data</code>)</li>
+      <li><strong>Body</strong>: JSON payload</li>
+      <li><strong>Response</strong>: status code (200, 400, 401, etc.) + optional JSON body</li>
+    </ul>
+    <p>
+      <strong>V2 provides</strong> <code>POST /api/session</code>,
+      <code>POST /api/session/&lt;sessionId&gt;/data</code>,
+      <code>PUT /api/session/&lt;sessionId&gt;/end</code> for S2 to call.
+    </p>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 &middot; DSD 2025&ndash;2026 &middot; UTAD &times; Jilin University
+    </p>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 &middot; Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator &middot; UTAD &times; Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../progress.html">Progress</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>
