@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
+  <script src="../theme-init.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Design Conflicts and Solutions &middot; News &middot; DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em;
+      border-left: 2px solid var(--accent); padding-left: 12px;
+    }
+    .rev-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0 32px; }
+    .rev-table { width: 100%; border-collapse: collapse; }
+    .rev-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .rev-table td { padding: 10px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+    .rev-table tr:last-child td { border-bottom: none; }
+    .spec-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0; }
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .spec-table td { padding: 11px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .conflict-table td:first-child {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; width: 140px;
+    }
+    .conflict-table td:last-child { font-size: 15px; line-height: 1.8; }
+    .type-badge {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 4px; display: inline-block;
+    }
+    .type-a { color: #34d399; background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.25); }
+    .type-b { color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.25); }
+    .type-c { color: #f87171; background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.25); }
+    .todo-placeholder {
+      font-style: italic; color: var(--text-3);
+    }
+    .ci { font-family: var(--font-mono); font-size: 12px; color: var(--accent-2); }
+    .code-block {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px 20px; margin: 14px 0; overflow-x: auto;
+      font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--text-2);
+    }
+    .code-block .comment { color: var(--text-3); }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025&ndash;2026</span>
+      <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
+    </div>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+    <div class="nav-triggers">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Light / Dark">&#9788;</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge" style="background:rgba(220,38,38,0.12);color:#f87171;border-color:rgba(220,38,38,0.25);">System Design</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">24 Apr 2026 &middot; 20:44 UTC+8</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      System Design Conflicts and Solutions
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      Cross-team integration of System Design documents. Identifies interface conflicts
+      between S2 and other teams, classifies each conflict, and tracks resolutions.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- Revision History -->
+    <div class="rev-table-wrap">
+      <table class="rev-table">
+        <thead><tr><th>Date</th><th>Authors</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Apr 24, 2026</td><td>Zhiqi ZHANG</td><td>Initial conflict analysis for IF-S2-V2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ 1. Overview ═══ -->
+    <h2>1. Overview</h2>
+
+    <p>
+      During the System Design integration phase, S2 is responsible for consolidating
+      System Design documents from all teams. The primary goal is to determine each team's
+      responsibilities and establish detailed interface specifications so that independently
+      developed components can integrate successfully.
+    </p>
+    <p>
+      When two teams have each designed their side of a shared interface independently,
+      conflicts are inevitable. This document records all identified conflicts, classifies
+      them, and tracks their resolution.
+    </p>
+
+    <p>
+      Conflicts between the designs of two teams are classified into three types:
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Type</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="type-badge type-a">Type A</span></td>
+            <td>One team's design involves richer operations or data than the other's.</td>
+          </tr>
+          <tr>
+            <td><span class="type-badge type-b">Type B</span></td>
+            <td>The two designs are inconsistent (not simply one being richer than the other), but easy to unify.</td>
+          </tr>
+          <tr>
+            <td><span class="type-badge type-c">Type C</span></td>
+            <td>The two designs are inconsistent (not simply one being richer than the other), and require negotiation to reach consensus.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 2. IF-S2-V2 ═══ -->
+    <h2>2. IF-S2-V2</h2>
+
+    <h3>2.1 Overview</h3>
+    <p>
+      Comparing the
+      <a href="s2-interface-spec.html" style="color:var(--accent-2);text-decoration:underline;">S2 Interface Specification</a>
+      (Section 2.4, IF-S2-V2) with V2's Backend Integration Guide, 9 conflicts were identified.
+      All conflicts are within the IF-S2-V2 interface, covering endpoint paths, HTTP methods,
+      request/response structure, data format, naming conventions, and ID schemes.
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Person</th></tr></thead>
+        <tbody>
+          <tr><td>S2</td><td>Zhiqi ZHANG</td></tr>
+          <tr><td>V2</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 1
+         ══════════════════════════════════════════ -->
+    <h3>2.2 Conflict 1: Endpoint Path Mismatch</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <div class="spec-table-wrap" style="margin:0 0 14px;">
+                <table class="spec-table">
+                  <thead><tr><th>Function</th><th>S2 Spec</th><th>V2 Actual</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>Create session</td>
+                      <td><span class="ci">POST /api/session</span></td>
+                      <td><span class="ci">POST /sessions</span></td>
+                    </tr>
+                    <tr>
+                      <td>Upload data</td>
+                      <td><span class="ci">POST /api/session/&lt;sessionId&gt;/data</span></td>
+                      <td><span class="ci">POST /measurements</span> or <span class="ci">POST /measurements/batch</span></td>
+                    </tr>
+                    <tr>
+                      <td>End session</td>
+                      <td><span class="ci">PUT /api/session/&lt;sessionId&gt;/end</span></td>
+                      <td><span class="ci">PATCH /sessions/:id/end</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <ul style="margin:0;padding-left:20px;">
+                <li>S2 uses <span class="ci">/api/session/...</span> prefix; V2 uses <span class="ci">/sessions/...</span> and <span class="ci">/measurements/...</span> with no <span class="ci">/api</span> prefix.</li>
+                <li>S2 nests data uploads under the session path; V2 treats measurements as an independent top-level resource.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-b">Type B</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 2
+         ══════════════════════════════════════════ -->
+    <h3>2.3 Conflict 2: HTTP Method Mismatch</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              End session: S2 uses <span class="ci">PUT</span>; V2 uses <span class="ci">PATCH</span>.
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-b">Type B</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 3
+         ══════════════════════════════════════════ -->
+    <h3>2.4 Conflict 3: Session Creation Request Body</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <p style="margin:0 0 6px;"><strong>S2 sends:</strong></p>
+              <div class="code-block" style="margin:0 0 14px;">
+{<br>
+&nbsp;&nbsp;"sessionId": "session-001",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// string, client-provided</span><br>
+&nbsp;&nbsp;"patientId": "patient-001",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// string</span><br>
+&nbsp;&nbsp;"sensorJointMapping": {...},&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// dict</span><br>
+&nbsp;&nbsp;"payloadStatus": "bend_knee_10",<span class="comment"> // string</span><br>
+&nbsp;&nbsp;"startTime": 1714456800000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Unix ms</span><br>
+}
+              </div>
+              <p style="margin:0 0 6px;"><strong>V2 expects:</strong></p>
+              <div class="code-block" style="margin:0 0 14px;">
+{<br>
+&nbsp;&nbsp;"userId": 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// integer, references users table</span><br>
+}
+              </div>
+              <p style="margin:0 0 6px;"><strong>Specific conflict points:</strong></p>
+              <ul style="margin:0;padding-left:20px;">
+                <li>S2's <span class="ci">sessionId</span> is a client-provided string; V2's session id is a server-generated auto-incrementing integer.</li>
+                <li>S2 uses <span class="ci">patientId</span> (string); V2 uses <span class="ci">userId</span> (integer).</li>
+                <li>S2 sends <span class="ci">sensorJointMapping</span>; V2 has no such field.</li>
+                <li>S2 sends <span class="ci">payloadStatus</span>; V2 has no such field.</li>
+                <li>S2 sends <span class="ci">startTime</span>; V2 auto-generates <span class="ci">started_at</span> and does not accept a client-provided value.</li>
+                <li>S2 expects <span class="ci">200 OK</span> or <span class="ci">409 Conflict</span>; V2 returns <span class="ci">201 Created</span>.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-a">Type A</span>
+              S2's design provides richer information, some of which may be utilised by V1.
+              The additional fields do not affect compatibility with V2's current design.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 4
+         ══════════════════════════════════════════ -->
+    <h3>2.5 Conflict 4: Data Upload Structure</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <p style="margin:0 0 6px;"><strong>S2 sends (three asynchronous lists in one payload):</strong></p>
+              <div class="code-block" style="margin:0 0 14px;">
+{<br>
+&nbsp;&nbsp;"sensorData": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ "timestamp": ..., "sensorId": "...",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"accX": ..., "accY": ..., "accZ": ...,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"gyroX": ..., "gyroY": ..., "gyroZ": ...,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"roll": ..., "pitch": ..., "yaw": ... }<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;"targetAngles": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ "timestamp": ..., "angleID": "...", "angle": ... }<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;"errors": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ "timestamp": ..., "sensorId": "...", "errorType": "...", "message": "..." }<br>
+&nbsp;&nbsp;]<br>
+}
+              </div>
+              <p style="margin:0 0 6px;"><strong>V2 expects (single or batch, much simpler):</strong></p>
+              <div class="code-block" style="margin:0 0 6px;">
+<span class="comment">// single</span><br>
+{ "sessionId": 1, "jointAngles": { "knee": 45.2, "hip": 30.1 }, "isCorrect": true }
+              </div>
+              <div class="code-block" style="margin:0 0 14px;">
+<span class="comment">// batch</span><br>
+{ "sessionId": 1, "measurements": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ "jointAngles": { "knee": 45.2 }, "isCorrect": true }<br>
+]}
+              </div>
+              <p style="margin:0 0 6px;"><strong>Specific conflict points:</strong></p>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>Data granularity is completely different:</strong> S2 sends full IMU raw data (accelerometer, gyroscope, orientation angles, independently per sensor); V2 only accepts <span class="ci">jointAngles</span> (a free-form JSON object like <span class="ci">{"knee": 45.2}</span>). V2 has no storage capability for raw IMU data (no <span class="ci">accX/Y/Z</span>, <span class="ci">gyroX/Y/Z</span> fields).</li>
+                <li>V2 has no <span class="ci">sensorId</span> / <span class="ci">deviceId</span> concept; it does not distinguish which sensor produced a reading. V2 also has no storage for <span class="ci">sensorJointMapping</span> or <span class="ci">payloadStatus</span>.</li>
+                <li>S2's <span class="ci">targetAngles</span> list: V2 has no such concept.</li>
+                <li>S2's <span class="ci">errors</span> list: V2 has no such concept.</li>
+                <li>V2 has an <span class="ci">isCorrect</span> field on each measurement; S2 does not determine movement correctness (this is V1/AI's responsibility).</li>
+                <li>S2's batch upload is one request containing three kinds of asynchronous data; V2's batch upload is an array of the same measurement type.</li>
+                <li>S2 puts <span class="ci">sessionId</span> in the URL path; V2 puts <span class="ci">sessionId</span> in the request body.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-c">Type C</span>
+              This is the most critical conflict. Upstream, it involves how S1 and S2 actually sample
+              and process sensor data. Downstream, it involves what information V1 needs for AI computation
+              and what M2 needs for display. This requires thorough discussion and negotiation to resolve.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 5
+         ══════════════════════════════════════════ -->
+    <h3>2.6 Conflict 5: Session End Request Body</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <p style="margin:0 0 6px;"><strong>S2 sends:</strong></p>
+              <div class="code-block" style="margin:0 0 14px;">
+{ "endTime": 1714456860000, "sampleCount": 1200, "errorCount": 3 }
+              </div>
+              <p style="margin:0 0 6px;"><strong>V2 expects:</strong> No request body (just <span class="ci">PATCH /sessions/:id/end</span>; the server automatically sets <span class="ci">ended_at</span>).</p>
+              <ul style="margin:10px 0 0;padding-left:20px;">
+                <li>V2 does not accept <span class="ci">endTime</span>, <span class="ci">sampleCount</span>, or <span class="ci">errorCount</span>.</li>
+                <li>V2 has no fields for storing <span class="ci">sampleCount</span> / <span class="ci">errorCount</span>.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-a">Type A</span>
+              It may not be necessary to send <span class="ci">sampleCount</span> and
+              <span class="ci">errorCount</span>, as these are either unnecessary or
+              can be easily computed on the V2 side. However, whether having the client record
+              session start and end times is a more reasonable design may need to be determined
+              through negotiation.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 6
+         ══════════════════════════════════════════ -->
+    <h3>2.7 Conflict 6: Timestamp Format</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>S2:</strong> Unix millisecond timestamps (integer), e.g. <span class="ci">1714456800000</span></li>
+                <li><strong>V2:</strong> ISO 8601 strings (UTC), e.g. <span class="ci">"2025-04-21T14:30:00.000Z"</span></li>
+              </ul>
+              <p style="margin:10px 0 0;">This discrepancy applies to all time-related fields across all endpoints.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-b">Type B</span>
+              V2's design (ISO 8601) is more reasonable for a REST API.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 7
+         ══════════════════════════════════════════ -->
+    <h3>2.8 Conflict 7: Field Naming Convention</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>S2:</strong> camelCase throughout (both requests and responses).</li>
+                <li><strong>V2:</strong> camelCase in requests, snake_case in responses (e.g. send <span class="ci">sessionId</span>, receive <span class="ci">session_id</span>).</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-b">Type B</span>
+              The naming convention needs to be unified.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 8
+         ══════════════════════════════════════════ -->
+    <h3>2.9 Conflict 8: Session ID Type</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>S2:</strong> string, client-generated (e.g. <span class="ci">"session-001"</span>).</li>
+                <li><strong>V2:</strong> integer, server auto-incremented (e.g. <span class="ci">1</span>, <span class="ci">2</span>, <span class="ci">3</span>).</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-b">Type B</span>
+              V2's design (server-generated ID) is more reasonable.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Conflict 9
+         ══════════════════════════════════════════ -->
+    <h3>2.10 Conflict 9: HTTP Status Codes and Authentication</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <div class="spec-table-wrap" style="margin:0 0 14px;">
+                <table class="spec-table">
+                  <thead><tr><th>Operation</th><th>S2 Spec</th><th>V2 Actual</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>Create session (success)</td>
+                      <td><span class="ci">200 OK</span></td>
+                      <td><span class="ci">201 Created</span></td>
+                    </tr>
+                    <tr>
+                      <td>Upload data (success)</td>
+                      <td><span class="ci">200 OK</span></td>
+                      <td><span class="ci">201 Created</span></td>
+                    </tr>
+                    <tr>
+                      <td>Upload data (auth failure)</td>
+                      <td><span class="ci">401 Unauthorized</span></td>
+                      <td>N/A (V2 currently has no authentication)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style="margin:0;">
+                S2 specifies <span class="ci">401 Unauthorized</span> as a possible response,
+                while V2 explicitly states that there is currently no authentication mechanism.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-b">Type B</span>
+              V2's design is more reasonable.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>In negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 &middot; DSD 2025&ndash;2026 &middot; UTAD &times; Jilin University
+    </p>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 &middot; Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator &middot; UTAD &times; Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../progress.html">Progress</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>
