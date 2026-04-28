@@ -229,37 +229,38 @@
         </summary>
         <div class="sprint-body">
           <p style="font-size:13.5px;color:var(--text-2);max-width:660px;line-height:1.65;margin-bottom:20px;">
-            System architecture design led by the System Architect, with PM assisting
-            and cross-review by the remaining team members.
+            System architecture design led by the System Architect, with PM assisting,
+            cross-review by team members, interface coordination with S1 and V1,
+            and detailed interface specification.
           </p>
           <div class="task-list">
             <div class="task-row"><div><div class="task-name">System Design (Team S2)</div><div class="task-note">Architecture design led by System Architect, PM assisting</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
             <div class="task-row"><div><div class="task-name">Review System Design (Team S2)</div><div class="task-note">Cross-review by Vice PM and Programmers</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
-            <div class="task-row"><div><div class="task-name">System Design (Other Teams) &amp; Merge Final Version</div><div class="task-note">Waiting for other teams to complete their sections; merge into unified document</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
+            <div class="task-row"><div><div class="task-name">Revise System Design</div><div class="task-note">Refine overall design based on review feedback</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
+            <div class="task-row"><div><div class="task-name">Interface Coordination (S1 &amp; V1)</div><div class="task-note">Agree on concrete data format and protocol details</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
+            <div class="task-row"><div><div class="task-name">Design Detailed Interface</div><div class="task-note">Specify detailed interface formats and protocols</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
           </div>
           <div id="gantt-s3" class="gantt-wrap"></div>
         </div>
       </details>
 
-      <!-- Sprint 4 -->
-      <details class="sprint-item reveal" id="sprint-impl" open>
+      <!-- Sprint 4: System Design (Extra) -->
+      <details class="sprint-item reveal" id="sprint-sd-extra" open>
         <summary class="sprint-summary">
-          <div class="sprint-dot" style="background:var(--surface-2);color:var(--green);border:1px solid rgba(34,197,94,0.3);">S4</div>
+          <div class="sprint-dot active">S4</div>
           <div class="sprint-summary-main">
             <div class="sprint-header" style="margin-bottom:0;">
-              <span class="sprint-title">Sprint 4: System Design 2</span>
-              <span class="badge done">Done</span>
+              <span class="sprint-title">Sprint 4: System Design (Extra)</span>
+              <span class="badge active">Active</span>
             </div>
           </div>
         </summary>
         <div class="sprint-body">
           <p style="font-size:13.5px;color:var(--text-2);max-width:660px;line-height:1.65;margin-bottom:20px;">
-            Revised system design, interface coordination with S1 and V1, and detailed interface specification.
+            Consolidating system design documents from all teams into an integrated version.
           </p>
           <div class="task-list">
-            <div class="task-row"><div><div class="task-name">Revise System Design</div><div class="task-note">Refine overall design based on review feedback</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
-            <div class="task-row"><div><div class="task-name">Interface Coordination (S1 &amp; V1)</div><div class="task-note">Agree on concrete data format and protocol details</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
-            <div class="task-row"><div><div class="task-name">Design Detailed Interface</div><div class="task-note">Specify detailed interface formats and protocols</div></div><div class="task-status"><span class="badge done">100%</span></div></div>
+            <div class="task-row"><div><div class="task-name">Consolidate System Design</div><div class="task-note">Integrate all teams' system design into unified document</div></div><div class="task-status"><span class="badge active">In Progress</span></div></div>
           </div>
           <div id="gantt-s4" class="gantt-wrap"></div>
         </div>
@@ -300,7 +301,7 @@
           </div>
         </summary>
         <div class="sprint-body">
-          <p style="font-size:13.5px;color:var(--text-3);">Apr 27 ~ May 25. Second iteration of the waterfall cycle.</p>
+          <p style="font-size:13.5px;color:var(--text-3);">May 11 ~ Jun 8. Second iteration of the waterfall cycle.</p>
         </div>
       </details>
 
@@ -360,7 +361,7 @@ var GanttChart=(function(){
     var el=document.getElementById(id);if(!el)return;
     var T=cfg.tasks,minD=T[0].start,maxD=T[0].end;
     for(var i=1;i<T.length;i++){if(T[i].start<minD)minD=T[i].start;if(T[i].end>maxD)maxD=T[i].end;}
-    var rs=minD,re=maxD,td=db(rs,re)+1;
+    var rs=cfg.rangeStart||minD,re=cfg.rangeEnd||maxD,td=db(rs,re)+1;
     // pct: convert day index to percentage of grid width
     var pct=function(d){return d/td*100;};
     var ti=db(rs,TD),tmPct=pct(ti+0.5);
@@ -461,17 +462,18 @@ var GanttChart=(function(){
   GanttChart.render('gantt-s3',{tasks:[
     {label:'Sys Design (Lead)',  start:D(4,7), end:D(4,10),members:[2]},
     {label:'Sys Design (Assist)',start:D(4,7), end:D(4,10),members:[0]},
-    {label:'Review Sys Design',  start:D(4,11),end:D(4,13),members:[0,1,3,4]}
-  ]});
-  GanttChart.render('gantt-s4',{tasks:[
+    {label:'Review Sys Design',  start:D(4,11),end:D(4,13),members:[0,1,3,4]},
     {label:'Revise Sys Design',      start:D(4,14),end:D(4,15),members:[0]},
     {label:'Coordinate w/ S1',       start:D(4,16),end:D(4,19),members:[0]},
     {label:'Coordinate w/ V1',       start:D(4,16),end:D(4,19),members:[1]},
     {label:'Design Interface',       start:D(4,19),end:D(4,20),members:[0]}
   ]});
+  GanttChart.render('gantt-s4',{rangeStart:D(4,21),rangeEnd:D(5,4),tasks:[
+    {label:'Consolidate Sys Design', start:D(4,23),end:D(5,4),members:[0]}
+  ]});
   GanttChart.render('gantt-s5',{tasks:[
-    {label:'Data Acq. Core Impl.',   start:D(4,21),end:D(4,25),members:[0]},
-    {label:'Data Acq. Core Test',    start:D(4,26),end:D(4,27),members:[0,1,2,3,4]}
+    {label:'Data Acq. Core Impl.',   start:D(5,4),end:D(5,8),members:[0]},
+    {label:'Data Acq. Core Test',    start:D(5,9),end:D(5,11),members:[0,1,2,3,4]}
   ]});
 })();
 
@@ -495,18 +497,23 @@ var GanttChart=(function(){
   var C_ACC=cs.getPropertyValue('--accent').trim()||'#8b5cf6';
   var C_TXT3=cs.getPropertyValue('--text-3').trim()||'#5a6a80';
 
+  // delay extension target: W7 right end = 5/4
+  var DELAY_END=D(5,4);
+  // Indices of phases with delay extensions (drawn after main bars)
+  var DELAY_IDX=[1,2]; // Req. Analysis, System Design
+
   var P=[
     {l:'Foundation',           s:D(3,16),e:D(3,30),a:'sprint-foundation'},
     {l:'Req. Analysis',        s:D(3,30),e:D(4,6), a:'sprint-req-analysis'},
     {l:'System Design',        s:D(4,6), e:D(4,20),a:'sprint-sys-design'},
-    {l:'Impl. + Test',         s:D(4,20),e:D(4,27),a:'sprint-deploy'},
-    {l:'Req. Analysis II',     s:D(4,27),e:D(5,4), a:''},
-    {l:'System Design II',     s:D(5,4), e:D(5,11),a:''},
-    {l:'Impl. + Test II',      s:D(5,11),e:D(5,18),a:''},
-    {l:'Deploy + Int. Test II',s:D(5,18),e:D(5,25),a:''}
+    {l:'Impl. + Test',         s:D(4,27),e:D(5,11),a:'sprint-deploy'},
+    {l:'Req. Analysis II',     s:D(5,11),e:D(5,18),a:''},
+    {l:'System Design II',     s:D(5,18),e:D(5,25),a:''},
+    {l:'Impl. + Test II',      s:D(5,25),e:D(6,1), a:''},
+    {l:'Deploy + Int. Test II',s:D(6,1), e:D(6,8), a:''}
   ];
   var el=document.getElementById('waterfall-chart');if(!el)return;
-  var EP=D(3,16),td=db(EP,D(5,25));
+  var EP=D(3,16),td=db(EP,D(6,8));
   // Use VW=1000 as coordinate system, maps to 100% width
   var VW=1000,RH=38,BT=18,H=P.length*RH+BT;
   var px=function(d){return db(EP,d)/td*VW;};
@@ -516,7 +523,7 @@ var GanttChart=(function(){
   s+='<style>.wfp:hover rect{filter:brightness(1.4);}.wfp{cursor:pointer;}</style>';
 
   // Week grid
-  for(var w=0;w<=10;w++){
+  for(var w=0;w<=12;w++){
     var wd=new Date(EP.getTime()+w*7*864e5);
     var wx=px(wd);
     s+='<line x1="'+wx+'" y1="0" x2="'+wx+'" y2="'+(H-BT)+'" stroke="'+C_GRID+'" stroke-width="0.6"/>';
@@ -547,6 +554,23 @@ var GanttChart=(function(){
     s+='<text x="'+(x1+bw/2)+'" y="'+(y+bh/2+3.5)+'" text-anchor="middle" fill="'+tf+'" font-size="11" font-weight="600" style="pointer-events:none;">'+e(p.l)+'</text>';
     s+='</g>';
     if(p.a)s+='</a>';
+
+    // Delay extension (red) for specified phases
+    if(DELAY_IDX.indexOf(i)!==-1){
+      var origEnd;
+      if(i===1) origEnd=D(4,6);
+      else if(i===2) origEnd=D(4,20);
+      else if(i===3) origEnd=D(4,27);
+      var dx1=px(origEnd),dx2=px(DELAY_END);
+      var dw=dx2-dx1;
+      if(dw>0){
+        var dci='wd'+i;
+        // Clip to a rect with only right-side rounded corners
+        s+='<defs><clipPath id="'+dci+'"><rect x="'+dx1+'" y="'+y+'" width="'+dw+'" height="'+bh+'"/></clipPath></defs>';
+        s+='<rect clip-path="url(#'+dci+')" x="'+(dx1-4)+'" y="'+y+'" width="'+(dw+4)+'" height="'+bh+'" rx="4" fill="rgba(220,38,38,0.25)" stroke="rgba(220,38,38,0.5)" stroke-width="0.8"/>';
+      }
+    }
+
     // Arrow
     if(i<P.length-1){
       var np=P[i+1],nx=px(np.s),ny=(i+1)*RH+1,nbh=RH-4;
