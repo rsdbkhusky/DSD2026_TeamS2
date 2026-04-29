@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
+  <script src="../theme-init.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRS Update &amp; Team S2 Section Approved &middot; News &middot; DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em;
+      border-left: 2px solid var(--accent); padding-left: 12px;
+    }
+    .article-body h4 {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--text); margin: 22px 0 8px;
+      border-left: 1.5px solid rgba(139,92,246,0.4); padding-left: 10px;
+    }
+    .rev-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0 32px; }
+    .rev-table { width: 100%; border-collapse: collapse; }
+    .rev-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .rev-table td { padding: 10px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+    .rev-table tr:last-child td { border-bottom: none; }
+    .spec-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0; }
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .spec-table td { padding: 11px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table tr:hover td { background: rgba(255,255,255,0.02); }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025&ndash;2026</span>
+      <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
+    </div>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+    <div class="nav-triggers">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Light / Dark">&#9788;</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge" style="background:rgba(249,115,22,0.12);color:#f97316;border-color:rgba(249,115,22,0.25);">Req. Analysis</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">29 Apr 2026 &middot; 14:06 UTC+8</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      SRS Update &amp; Team S2 Section in SRS Has Been Approved
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      Updated Software Requirements Analysis for Team S2's Data Processing module.
+      The document has been reviewed and approved by the requirements analysis coordinator.
+      Covers session lifecycle management, formal sensor data delivery, and
+      interactions with S1, M1, and V2.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- Revision History -->
+    <div class="rev-table-wrap">
+      <table class="rev-table">
+        <thead><tr><th>Date</th><th>Authors</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Apr 29, 2026</td><td>Zhiqi ZHANG</td><td>SRS update for Team S2; approved by requirements analysis coordinator</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ Part 1 Introduction ═══ -->
+    <h2>Part 1: Introduction</h2>
+
+    <!-- 1. Review -->
+    <h3>1. Review by Requirements Analysis Coordinator</h3>
+    <p>
+      Following the requirements of <strong>requirements analysis coordinator Yiding WANG</strong>,
+      Team S2 revised the SRS document and discussed it with the coordinator.
+      This version of the Team S2 section in SRS is the result of that discussion.
+      All content in this document <strong>has been reviewed and approved</strong> by the requirements analysis coordinator.
+    </p>
+
+    <!-- 2. Glossary -->
+    <h3>2. Glossary</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Term</th><th>Definition</th><th>Abbreviation/Alias</th><th>Remarks</th></tr></thead>
+        <tbody>
+          <tr><td>Raw Sensor Data</td><td>Sensor data collected by S1.</td><td></td><td>The data collected by S1.</td></tr>
+          <tr><td>Formal Sensor Data</td><td>Sensor data processed by S2.</td><td></td><td>The data collected by S1 is called raw sensor data, and S2 processes the raw sensor data to obtain the Formal sensor data</td></tr>
+          <tr><td>Rehabilitation Session</td><td>A discrete period of training during which sensor data is actively collected, processed, and streamed.</td><td>Session</td><td>Core unit of a patient's training activity.</td></tr>
+          <tr><td>Rehabilitation Session Meta Data</td><td>Meta information determined and fixed at the start of a session, including the rehabilitation training category, etc.</td><td>Session Meta Data</td><td>Key information of a session.</td></tr>
+          <tr><td>Token</td><td>A digital credential returned by V2 upon successful authentication, used by M1 to maintain the patient's logged-in state.</td><td>Login Token</td><td>Used in Register and Log In use cases.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3. References -->
+    <h3>3. References</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>No.</th><th>Document Name</th><th>Source/Author</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Requirements_Analysis_Sample_EN.md</td><td>Wang Yiding</td><td>SRS format specification</td></tr>
+          <tr><td>2</td><td>2026-4-27-SRS_v1.2(No rendering).md</td><td>Wang Yiding, Enhe Zhang, Diogo Pinhel</td><td>S2 Software Requirements Analysis</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ Part 2 External Use Cases ═══ -->
+    <h2>Part 2: External Use Cases</h2>
+    <p>None.</p>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ Part 3 Internal Use Cases ═══ -->
+    <h2>Part 3: Internal Use Cases</h2>
+
+    <!-- 1. Actor Table -->
+    <h3>1. Actor Table</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Actor</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>S1</td><td>Sensor team, a part of the application, responsible for basic sensor operations.</td></tr>
+          <tr><td>S2</td><td>Sensor data processing team, a part of the application, responsible for processing formal sensor data from S1.</td></tr>
+          <tr><td>V2</td><td>Backend server team, serving as a data transfer station between devices.</td></tr>
+          <tr><td>M1</td><td>Mobile application group, the main body of the application.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. Use Case Table -->
+    <h3>2. Use Case Table</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Use Case ID</th><th>Use Case Name</th><th>Primary Actors</th><th>Brief Description</th></tr></thead>
+        <tbody>
+          <tr><td>IUC-S2-01-01</td><td>Start Session's Data Processing Work</td><td>M1, S2</td><td>M1 calls S2's session start method. S2 completes initialization and returns a confirmation signal to M1; otherwise returns an error signal.</td></tr>
+          <tr><td>IUC-S2-01-02</td><td>End Session's Data Processing Work</td><td>M1, S2</td><td>M1 calls S2's session end method. S2 completes finalization and returns a confirmation signal to M1; otherwise returns an error signal.</td></tr>
+          <tr><td>IUC-S2-02-01</td><td>Deliver Formal Sensor Data</td><td>M1, S2, V2</td><td>M1 sends a data delivery request to S2. S2 returns the data accumulated since the last delivery to M1 via the return value, and simultaneously transmits it to V2 over the network using a Token for authentication.</td></tr>
+          <tr><td>IUC-S2-03-01</td><td>Start Session's Raw Data Collecting Work</td><td>S1, S2</td><td>S2 calls S1's session start method. S1 completes initialization and returns a confirmation signal to S2; otherwise returns an error signal.</td></tr>
+          <tr><td>IUC-S2-03-02</td><td>End Session's Raw Data Collecting Work</td><td>S1, S2</td><td>S2 calls S1's session end method. S1 completes initialization and returns a confirmation signal to S2; otherwise returns an error signal.</td></tr>
+          <tr><td>IUC-S2-03-03</td><td>Deliver Raw Sensor Data</td><td>S1, S2</td><td>S2 calls S1's deliver raw sensor data method. S2 completes finalization and returns a confirmation signal to M1; otherwise returns an error signal.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3. Detailed Use Cases -->
+    <h3>3. Detailed Use Cases</h3>
+
+    <!-- IUC-S2-01-01 -->
+    <h4>IUC-S2-01-01 Start Session's Data Processing Work</h4>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Element</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reference</strong></td><td>IUC-S2-01-01</td></tr>
+          <tr><td><strong>Actors</strong></td><td>M1, S2</td></tr>
+          <tr><td><strong>Goal</strong></td><td>Allow M1 AppFrontend to start a session's data processing work.</td></tr>
+          <tr><td><strong>Summary</strong></td><td>M1 calls S2's session data processing start method. S2 completes initialization and returns a confirmation signal to M1; otherwise returns an error signal.</td></tr>
+          <tr><td><strong>Trigger</strong></td><td>M1 calls S2's session data processing start method.</td></tr>
+          <tr><td><strong>Precondition</strong></td><td>The patient is logged in.</td></tr>
+          <tr><td><strong>Postconditions</strong></td><td>The session's data processing work has started.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Basic Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Step</th><th>M1</th><th>S2</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>M1 calls S2's session data processing start method, passing the user Token and session meta data.</td><td></td></tr>
+          <tr><td>2</td><td></td><td>Initializes the program.</td></tr>
+          <tr><td>3</td><td></td><td>Returns a confirmation signal.</td></tr>
+          <tr><td>4</td><td>Receives the confirmation signal, displays the status on screen, and proceeds with subsequent steps.</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Alternative Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Occurrence Step</th><th>Condition</th><th>System Response</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>Initialization fails.</td><td>M1 displays an error message on screen. The step is terminated.</td></tr>
+          <tr><td>4</td><td>S2 method does not finish normally / times out.</td><td>M1 displays an error/timeout message on screen. The step is terminated.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- IUC-S2-01-02 -->
+    <h4>IUC-S2-01-02 End Session's Data Processing Work</h4>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Element</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reference</strong></td><td>IUC-S2-01-02</td></tr>
+          <tr><td><strong>Actors</strong></td><td>M1, S2</td></tr>
+          <tr><td><strong>Goal</strong></td><td>Allow M1 AppFrontend to end a session's data processing work.</td></tr>
+          <tr><td><strong>Summary</strong></td><td>M1 calls S2's session data processing end method. S2 completes finalization and returns a confirmation signal to M1; otherwise returns an error signal.</td></tr>
+          <tr><td><strong>Trigger</strong></td><td>M1 calls S2's session data processing end method.</td></tr>
+          <tr><td><strong>Precondition</strong></td><td>The session's data processing work has already started.</td></tr>
+          <tr><td><strong>Postconditions</strong></td><td>The session's data processing work has ended.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Basic Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Step</th><th>M1</th><th>S2</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>M1 calls S2's session data processing end method.</td><td></td></tr>
+          <tr><td>2</td><td></td><td>Completes the finalization work.</td></tr>
+          <tr><td>3</td><td></td><td>Returns a confirmation signal.</td></tr>
+          <tr><td>4</td><td>Receives the confirmation signal, displays the status on screen, and proceeds with subsequent steps.</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Alternative Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Occurrence Step</th><th>Condition</th><th>System Response</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>Finalization fails.</td><td>M1 displays an error message on screen. The step is terminated. The user may choose to forcefully terminate S2 or retry.</td></tr>
+          <tr><td>4</td><td>S2 method does not finish normally / times out.</td><td>M1 displays an error/timeout message on screen. The step is terminated. The user may choose to forcefully terminate S2 or retry.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- IUC-S2-02-01 -->
+    <h4>IUC-S2-02-01 Deliver Formal Sensor Data</h4>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Element</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reference</strong></td><td>IUC-S2-02-01</td></tr>
+          <tr><td><strong>Actors</strong></td><td>M1, S2, V2</td></tr>
+          <tr><td><strong>Goal</strong></td><td>Allow M1 AppFrontend to obtain formal sensor data, while simultaneously transmitting it to the server.</td></tr>
+          <tr><td><strong>Summary</strong></td><td>M1 sends a data delivery request to S2. S2 returns the data accumulated since the last delivery to M1 via the return value, and simultaneously transmits it to V2 over the network using a Token for authentication.</td></tr>
+          <tr><td><strong>Trigger</strong></td><td>Periodically called by M1's internal logic.</td></tr>
+          <tr><td><strong>Precondition</strong></td><td>The session's data processing work has already started.</td></tr>
+          <tr><td><strong>Postconditions</strong></td><td>None</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Basic Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Step</th><th>M1</th><th>S2</th><th>V2</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>M1 calls S2's data delivery method.</td><td></td><td></td></tr>
+          <tr><td>2</td><td></td><td>Packages the data accumulated since the last delivery into Formal Sensor Data.</td><td></td></tr>
+          <tr><td>3</td><td></td><td>Transmits the Formal Sensor Data over the network, along with the user Token and session meta data for authentication and identification.</td><td></td></tr>
+          <tr><td>4</td><td></td><td>Starts a subprocess to receive V2's confirmation (only one needs to be started per session).</td><td></td></tr>
+          <tr><td>5</td><td></td><td>Returns the Formal Sensor Data.</td><td></td></tr>
+          <tr><td>6</td><td>Receives the Formal Sensor Data and proceeds with subsequent steps.</td><td></td><td></td></tr>
+          <tr><td>7</td><td></td><td></td><td>Receives the Formal Sensor Data, user Token, and session meta data, and performs meta data verification.</td></tr>
+          <tr><td>8</td><td></td><td></td><td>Returns a confirmation signal.</td></tr>
+          <tr><td>9</td><td></td><td>Receives the confirmation signal; the subprocess continues.</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Alternative Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Occurrence Step</th><th>Condition</th><th>System Response</th></tr></thead>
+        <tbody>
+          <tr><td>3</td><td>Network transmission fails.</td><td>S2 method is interrupted and returns an error. M1 displays an error message on screen. Since the data has not been synced to the database, the step may be terminated.</td></tr>
+          <tr><td>4</td><td>Subprocess fails to start.</td><td>S2 method is interrupted and returns an error. M1 displays an error message on screen. Since the data may not have been synced to the database, the step may be terminated.</td></tr>
+          <tr><td>6</td><td>S2 method does not finish normally / times out.</td><td>M1 displays an error/timeout message on screen. The step is terminated.</td></tr>
+          <tr><td>7</td><td>V2 verification fails.</td><td>V2 sends an error message. S2's subprocess receives it and interrupts, returning an error to the main method. The main method returns the error on the next call of this use case by M1. M1 displays an error message on screen. Since the data has not been synced to the database, the step may be terminated.</td></tr>
+          <tr><td>9</td><td>V2 does not respond for an extended period.</td><td>S2's subprocess interrupts and returns an error to the main method. The main method returns the error on the next call of this use case by M1. M1 displays an error message on screen. Since the data may not have been synced to the database, the step may be terminated.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- IUC-S2-03-01 -->
+    <h4>IUC-S2-03-01 Start Session's Raw Data Collecting Work</h4>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Element</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reference</strong></td><td>IUC-S2-03-01</td></tr>
+          <tr><td><strong>Actors</strong></td><td>S1, S2</td></tr>
+          <tr><td><strong>Goal</strong></td><td>Allow S2 to start a session's raw data collecting work.</td></tr>
+          <tr><td><strong>Summary</strong></td><td>S2 calls S1's session start method. S1 completes initialization and returns a confirmation signal to S2; otherwise returns an error signal.</td></tr>
+          <tr><td><strong>Trigger</strong></td><td>S2 calls S1's session raw data collecting start method.</td></tr>
+          <tr><td><strong>Precondition</strong></td><td>The patient is logged in.</td></tr>
+          <tr><td><strong>Postconditions</strong></td><td>The session's raw data collecting work has started.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Basic Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Step</th><th>S2</th><th>S1</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>S2 calls S1's raw data collecting start method, passing the session meta data.</td><td></td></tr>
+          <tr><td>2</td><td></td><td>Initializes the program.</td></tr>
+          <tr><td>3</td><td></td><td>Returns a confirmation signal.</td></tr>
+          <tr><td>4</td><td>Receives the confirmation signal and proceeds with subsequent steps.</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Alternative Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Occurrence Step</th><th>Condition</th><th>System Response</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>Initialization fails.</td><td>S2 terminates its step and returns an error signal.</td></tr>
+          <tr><td>4</td><td>S1 method does not finish normally / times out.</td><td>S2 terminates its step and returns an error signal.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- IUC-S2-03-02 -->
+    <h4>IUC-S2-03-02 End Session's Raw Data Collecting Work</h4>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Element</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reference</strong></td><td>IUC-S2-03-02</td></tr>
+          <tr><td><strong>Actors</strong></td><td>S1, S2</td></tr>
+          <tr><td><strong>Goal</strong></td><td>Allow S2 to end a session's raw data processing work.</td></tr>
+          <tr><td><strong>Summary</strong></td><td>S2 calls S1's session end method. S1 completes initialization and returns a confirmation signal to S2; otherwise returns an error signal.</td></tr>
+          <tr><td><strong>Trigger</strong></td><td>S2 calls S1's session raw data collecting end method.</td></tr>
+          <tr><td><strong>Precondition</strong></td><td>The session's raw data collecting work has already started.</td></tr>
+          <tr><td><strong>Postconditions</strong></td><td>The session's raw data collecting work has ended.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Basic Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Step</th><th>S2</th><th>S1</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>S1 calls S2's raw data processing end method.</td><td></td></tr>
+          <tr><td>2</td><td></td><td>Completes the finalization work.</td></tr>
+          <tr><td>3</td><td></td><td>Returns a confirmation signal.</td></tr>
+          <tr><td>4</td><td>Receives the confirmation signal and proceeds with subsequent steps.</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Alternative Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Occurrence Step</th><th>Condition</th><th>System Response</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>Finalization fails.</td><td>S2 terminates its step and returns an error signal.</td></tr>
+          <tr><td>4</td><td>S2 method does not finish normally / times out.</td><td>S2 terminates its step and returns an error signal.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- IUC-S2-03-03 -->
+    <h4>IUC-S2-03-03 Deliver Raw Sensor Data</h4>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Element</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reference</strong></td><td>IUC-S2-03-03</td></tr>
+          <tr><td><strong>Actors</strong></td><td>S1, S2</td></tr>
+          <tr><td><strong>Goal</strong></td><td>Allow S1 to obtain raw sensor data.</td></tr>
+          <tr><td><strong>Summary</strong></td><td>S2 calls S1's deliver raw sensor data method. S2 completes finalization and returns a confirmation signal to M1; otherwise returns an error signal.</td></tr>
+          <tr><td><strong>Trigger</strong></td><td>Periodically called by S2's internal logic.</td></tr>
+          <tr><td><strong>Precondition</strong></td><td>The session's raw data collecting work has already started.</td></tr>
+          <tr><td><strong>Postconditions</strong></td><td>None</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Basic Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Step</th><th>S2</th><th>S1</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>S2 calls S1's deliver raw sensor data method.</td><td></td></tr>
+          <tr><td>2</td><td></td><td>Packages the data accumulated since the last delivery.</td></tr>
+          <tr><td>3</td><td></td><td>Returns the raw sensor data.</td></tr>
+          <tr><td>4</td><td>Receives the raw sensor data; the subprocess continues.</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Alternative Flow</strong></p>
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Occurrence Step</th><th>Condition</th><th>System Response</th></tr></thead>
+        <tbody>
+          <tr><td>4</td><td>S1 method does not finish normally / times out.</td><td>S2 method is interrupted and returns an error.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 &middot; DSD 2025&ndash;2026 &middot; UTAD &times; Jilin University
+    </p>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 &middot; Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator &middot; UTAD &times; Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../progress.html">Progress</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>
