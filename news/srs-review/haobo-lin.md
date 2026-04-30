@@ -34,7 +34,7 @@ In the SRS draft, “System” is defined as an actor in Section 1, and sometime
 
 ::: Omission · B-2
 **IF1 is referenced but not specified as a testable contract (schema + transport + QoS).**
-The project repeatedly states IF1 includes “JSON schema, sampling rate, error codes, MQTT structure”, but SRS v0.1 does not define these as concrete, verifiable requirements. Without this, Sprint 1 “freeze IF1” is not actionable: downstream teams cannot build stubs, mocks, or validation tests.
+The project repeatedly states IF1 includes “JSON schema, sampling rate, error codes, MQTT structure”, but SRSv0.1 does not define these as concrete, verifiable requirements. Without this, Sprint 1 “freeze IF1” is not actionable: downstream teams cannot build stubs, mocks, or validation tests.
 
 **Recommendation:** Add an **IF1 Contract** section (or appendix) that includes at minimum:
 - **Message schema**: required fields, types, units, coordinate frames, timestamps, device/session identifiers, optional fields, versioning.

@@ -1,4 +1,4 @@
-# S2 Interface Specification
+# S2 Interface Specification v0.1
 
 ## 1. Overview
 
