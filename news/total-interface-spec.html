@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
+  <script src="../theme-init.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Total Interface Specification v1.0 &middot; News &middot; DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em;
+      border-left: 2px solid var(--accent); padding-left: 12px;
+    }
+    .article-body h4 {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--text); margin: 22px 0 8px;
+      border-left: 1.5px solid rgba(139,92,246,0.4); padding-left: 10px;
+    }
+    .rev-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0 32px; }
+    .rev-table { width: 100%; border-collapse: collapse; }
+    .rev-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .rev-table td { padding: 10px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+    .rev-table tr:last-child td { border-bottom: none; }
+    .spec-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0; }
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .spec-table td { padding: 11px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .code-block {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px 20px; margin: 14px 0; overflow-x: auto;
+      font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--text-2);
+    }
+    .code-block .comment { color: var(--text-3); }
+    .ci { font-family: var(--font-mono); font-size: 12px; color: var(--accent-2); }
+    .api-sig {
+      font-family: var(--font-mono); font-size: 13px; color: var(--accent-2);
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 10px 16px; margin: 12px 0 8px; display: block;
+    }
+    .attr-list { margin: 8px 0; }
+    .attr-list li {
+      font-size: 13px; color: var(--text-2); line-height: 1.65; padding: 2px 0;
+    }
+    .attr-list li strong { color: var(--text); }
+    .attr-list li code { font-family: var(--font-mono); font-size: 12px; color: var(--accent-2); }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025&ndash;2026</span>
+      <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
+    </div>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+    <div class="nav-triggers">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Light / Dark">&#9788;</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge" style="background:rgba(220,38,38,0.12);color:#f87171;border-color:rgba(220,38,38,0.25);">System Design</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">3 May 2026 &middot; 14:19 UTC+8</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      Total Interface Specification v1.0
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      Consolidated interface specification for all cross-team data exchanges.
+      Integrates all teams' interface designs after conflict resolution and negotiation.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- Revision History -->
+    <div class="rev-table-wrap">
+      <table class="rev-table">
+        <thead><tr><th>Date</th><th>Authors</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>May 3, 2026</td><td>Zhiqi ZHANG</td><td>Total Interface Specification v1.0: consolidated, post-negotiation interface specification for all cross-team data exchanges</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ 1. Overview ═══ -->
+    <h2>1. Overview</h2>
+    <p>
+      This document is the consolidated, post-negotiation interface specification for all cross-team
+      data exchanges in the system. All conflicts identified during the integration phase have been
+      resolved (see <a href="sd-conflicts.html" style="color:var(--accent-2);text-decoration:underline;">Total SD Conflicts and Solutions</a> for details).
+    </p>
+    <p>
+      Source documents:
+    </p>
+    <ul>
+      <li><strong>S1:</strong> S1 confirmed to follow S2's design (file sent by Zhihang YU)</li>
+      <li><strong>S2:</strong> <a href="s2-interface-spec.html" style="color:var(--accent-2);text-decoration:underline;">S2 Interface Specification v0.1</a></li>
+      <li><strong>V1:</strong> V1 confirmed no conflicts with V2 (file sent by Yanbo QIAO)</li>
+      <li><strong>V2:</strong> V2 Backend Integration Guide (file sent by Sergio Moniz)</li>
+      <li><strong>M1:</strong> <a href="https://diogopinhel.github.io/DSD2026_TeamM1/2026/04/26/M1_Interface_Specification.html" style="color:var(--accent-2);text-decoration:underline;">M1 Interface Specification</a></li>
+      <li><strong>M2:</strong> M2 Web Backend API Specification (file sent by Yihang LI)</li>
+      <li><strong>Conflict resolution:</strong> <a href="sd-conflicts.html" style="color:var(--accent-2);text-decoration:underline;">Total SD Conflicts and Solutions</a></li>
+    </ul>
+
+    <a href="total-inference-spec/total-interface-specification-v1.0.md" download style="display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--accent);border-radius:var(--radius-lg);padding:16px 22px;margin:16px 0 24px;text-decoration:none;transition:border-color var(--transition),box-shadow var(--transition);" onmouseover="this.style.borderColor='rgba(139,92,246,0.6)';this.style.boxShadow='0 0 16px rgba(139,92,246,0.15)';" onmouseout="this.style.borderColor='';this.style.boxShadow='';">
+      <span style="font-size:24px;">&#128196;</span>
+      <span>
+        <span style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--text);display:block;">Download Source Document</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--accent-2);">total-interface-specification-v1.0.md</span>
+      </span>
+    </a>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th></th><th>S1</th><th>S2</th><th>V1</th><th>V2</th><th>M1</th><th>M2</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Internal System Design</td>
+            <td>Zhihang YU (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Zhiqi ZHANG (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Yanbo QIAO (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Moniz Sergio (<span style="background:rgba(220,38,38,0.12);color:#f87171;padding:1px 6px;border-radius:4px;font-weight:700;">not done</span>)</td>
+            <td>Diogo Pinhel (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Shu WANG (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+          </tr>
+          <tr>
+            <td>Interface Specification</td>
+            <td>Zhihang YU (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Zhiqi ZHANG (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Yanbo QIAO (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Moniz Sergio (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Yiding WANG (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+            <td>Yihang LI (<span style="background:rgba(34,197,94,0.12);color:#22c55e;padding:1px 6px;border-radius:4px;">done</span>)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.1 System Data Flow Diagram</h3>
+
+    <div style="margin:16px 0 24px;text-align:center;">
+      <img src="../img/total_dataflow_diagram.png" alt="Total Data Flow Diagram" style="max-width:100%;border-radius:var(--radius-lg);border:1px solid var(--border);" />
+    </div>
+
+    <p>
+      The overall architecture follows a design where all teams interact through two central hubs:
+      <strong>S2</strong> (on the App/device side) and <strong>V2</strong> (on the Server side).
+      There is no direct interface between S2 and V2; instead, M1 acts as the intermediary for all
+      App-to-Server data transfers. This concentrates interfaces around S2 and V2, making integration
+      straightforward.
+    </p>
+
+    <p><strong>App side (same device):</strong></p>
+    <ul>
+      <li>S1 (Sensor) provides raw IMU data to S2</li>
+      <li>S2 (Data Acq.) processes data and delivers formatted data to M1</li>
+      <li>M1 (AppFrontend) manages session control with S2 and handles all communication with the Server</li>
+    </ul>
+
+    <p><strong>Server side (cross-device, HTTP REST):</strong></p>
+    <ul>
+      <li>V2 (DB) is the central backend; all other teams communicate with V2</li>
+      <li>V1 (AI) exchanges batch format data, reference data, and analysis results with V2</li>
+      <li>M1 sends format data and register info to V2 and receives user info and doctor feedback</li>
+      <li>M2 (Dashboard) exchanges patient logs, doctor feedback, register info, and register confirmation with V2</li>
+    </ul>
+
+    <h3>1.2 Interface Summary</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>ID</th><th>From</th><th>To</th><th>Data Flow</th><th>Transport</th></tr></thead>
+        <tbody>
+          <tr><td>IF-S1-S2</td><td>S1 (Sensor)</td><td>S2</td><td>Raw IMU packet</td><td>Function call</td></tr>
+          <tr><td>IF-S2-S1</td><td>S2</td><td>S1 (Sensor)</td><td>Begin/End session request</td><td>Function call</td></tr>
+          <tr><td>IF-M1-S2</td><td>M1 (AppFrontend)</td><td>S2</td><td>Begin/End session request</td><td>Function call</td></tr>
+          <tr><td>IF-S2-M1</td><td>S2</td><td>M1 (AppFrontend)</td><td>Format data</td><td>Function call</td></tr>
+          <tr><td>IF-M1-V2</td><td>M1</td><td>V2 (DB)</td><td>Format data, Register Info</td><td>HTTP REST API</td></tr>
+          <tr><td>IF-V2-M1</td><td>V2 (DB)</td><td>M1</td><td>User Info, Doctor Feedback</td><td>HTTP REST API</td></tr>
+          <tr><td>IF-V1-V2</td><td>V1 (AI)</td><td>V2 (DB)</td><td>Analysis results</td><td>HTTP REST API</td></tr>
+          <tr><td>IF-V2-V1</td><td>V2 (DB)</td><td>V1 (AI)</td><td>Batch Format data, Reference data</td><td>HTTP REST API</td></tr>
+          <tr><td>IF-M2-V2</td><td>M2 (Dashboard)</td><td>V2 (DB)</td><td>Doctor Feedback, Register Info, Register Confirmation</td><td>HTTP REST API</td></tr>
+          <tr><td>IF-V2-M2</td><td>V2 (DB)</td><td>M2 (Dashboard)</td><td>Patient log, Register Info</td><td>HTTP REST API</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 2. IF-S2: App-Side Interfaces ═══ -->
+    <h2>2. IF-S2: App-Side Interfaces</h2>
+    <p>All interfaces in this section are on the same device (App side), using function calls.</p>
+
+    <!-- 2.1 IF-S1-S2 -->
+    <h3>2.1 IF-S1-S2: Raw IMU Packet</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Dataflow direction</td><td>S1 &rarr; S2</td></tr>
+          <tr><td>Cross-device</td><td>No (same device)</td></tr>
+          <tr><td>Transport</td><td>Function call</td></tr>
+          <tr><td>Service provider</td><td>S1</td></tr>
+          <tr><td>Service user</td><td>S2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>2.1.1 <code>s1.sensor.read()</code></h4>
+    <p>Read a batch of IMU samples collected since the last call.</p>
+    <ul class="attr-list">
+      <li><strong>Parameters:</strong> None</li>
+      <li><strong>Returns:</strong> <em>List[SensorSample]</em> (may be empty if no new data is available)</li>
+    </ul>
+    <p>Example:</p>
+    <div class="code-block">
+samples = s1.sensor.read()<br>
+for s in samples:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(s.timestamp, s.roll, s.pitch, s.yaw)
+    </div>
+
+    <h4>2.1.2 <code>s1.sensor.status()</code></h4>
+    <p>Query the current status of the sensor hardware connection.</p>
+    <ul class="attr-list">
+      <li><strong>Parameters:</strong> None</li>
+      <li><strong>Returns:</strong> <em>SensorStatus</em></li>
+    </ul>
+    <p>Example:</p>
+    <div class="code-block">
+st = s1.sensor.status()<br>
+if not st.connected:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("Sensor error:", st.errorMessage)
+    </div>
+
+    <h4>2.1.3 class <em>SensorSample</em></h4>
+    <p>A single IMU sensor reading at one point in time.</p>
+    <ul class="attr-list">
+      <li><strong>timestamp</strong> (<em>int</em>): Unix timestamp in milliseconds.</li>
+      <li><strong>deviceId</strong> (<em>str</em>): Unique sensor device identifier.</li>
+      <li><strong>deviceName</strong> (<em>str</em>): Human-readable sensor name (e.g. <code>"WTL1"</code>).</li>
+      <li><strong>accX, accY, accZ</strong> (<em>float</em>): Accelerometer, in g.</li>
+      <li><strong>gyroX, gyroY, gyroZ</strong> (<em>float</em>): Gyroscope, in deg/s.</li>
+      <li><strong>roll, pitch, yaw</strong> (<em>float</em>): Orientation angles, in degrees.</li>
+    </ul>
+
+    <h4>2.1.4 class <em>SensorStatus</em></h4>
+    <p>Current state of the sensor connection.</p>
+    <ul class="attr-list">
+      <li><strong>connected</strong> (<em>bool</em>): True if sensor is connected and producing data.</li>
+      <li><strong>errorMessage</strong> (<em>str or None</em>): Error description if in error state. Possible values: <code>"sensor_disconnected"</code>, <code>"data_corruption"</code>, <code>"timeout"</code>.</li>
+    </ul>
+
+    <hr class="article-divider"/>
+
+    <!-- 2.2 IF-S2-S1 -->
+    <h3>2.2 IF-S2-S1: Begin/End Session Request</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Dataflow direction</td><td>S2 &rarr; S1</td></tr>
+          <tr><td>Cross-device</td><td>No (same device)</td></tr>
+          <tr><td>Transport</td><td>Function call</td></tr>
+          <tr><td>Service provider</td><td>S1</td></tr>
+          <tr><td>Service user</td><td>S2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>S2 calls S1's session start/end methods to control raw data collection. Defined in SRS use cases IUC-S2-03-01 and IUC-S2-03-02.</p>
+
+    <h4>2.2.1 <code>s1.session.start(sessionMetaData)</code></h4>
+    <p>Start raw data collection on S1.</p>
+    <ul class="attr-list">
+      <li><strong>Parameters:</strong>
+        <ul class="attr-list">
+          <li><strong>sessionMetaData</strong> (<em>dict</em>): Session meta data including rehabilitation training category, etc.</li>
+        </ul>
+      </li>
+      <li><strong>Returns:</strong> Confirmation signal on success; error signal on failure.</li>
+    </ul>
+
+    <h4>2.2.2 <code>s1.session.stop()</code></h4>
+    <p>Stop raw data collection on S1.</p>
+    <ul class="attr-list">
+      <li><strong>Parameters:</strong> None</li>
+      <li><strong>Returns:</strong> Confirmation signal on success; error signal on failure.</li>
+    </ul>
+
+    <hr class="article-divider"/>
+
+    <!-- 2.3 IF-M1-S2 -->
+    <h3>2.3 IF-M1-S2: Begin/End Session Request</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Dataflow direction</td><td>M1 &rarr; S2</td></tr>
+          <tr><td>Cross-device</td><td>No</td></tr>
+          <tr><td>Transport</td><td>Function call</td></tr>
+          <tr><td>Service provider</td><td>S2</td></tr>
+          <tr><td>Service user</td><td>M1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>2.3.1 <code>s2.session.start(sessionId, userId, sensorJointMapping, payloadStatus)</code></h4>
+    <p>Start a data acquisition session. S2 begins reading sensor data from S1, validating, buffering, and delivering to M1.</p>
+    <ul class="attr-list">
+      <li><strong>Parameters:</strong>
+        <ul class="attr-list">
+          <li><strong>sessionId</strong> (<em>int</em>): Session identifier, server-generated by V2. MUST be valid.</li>
+          <li><strong>userId</strong> (<em>int</em>): User identifier, referencing the V2 users table. MUST be valid.</li>
+          <li><strong>sensorJointMapping</strong> (<em>dict, optional</em>): Mapping from sensor device ID to joint name. E.g. <code>{"1IYw...": "left_knee", "xR3f...": "right_elbow"}</code>. Fixed for the entire session.</li>
+          <li><strong>payloadStatus</strong> (<em>str</em>): Exercise/task type for this session (e.g. <code>"bend_knee_10"</code>). Fixed for the entire session.</li>
+        </ul>
+      </li>
+      <li><strong>Returns:</strong> <em>StartResult</em></li>
+      <li><strong>Raises:</strong> <em>ValueError</em> if required parameters are invalid.</li>
+    </ul>
+    <p>Example:</p>
+    <div class="code-block">
+result = s2.session.start(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1, 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{"1IYw...": "left_knee", "xR3f...": "right_elbow"},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"bend_knee_10"<br>
+)<br>
+if result.success:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("Acquisition started")
+    </div>
+
+    <h4>2.3.2 <code>s2.session.stop()</code></h4>
+    <p>Stop the current session. S2 flushes remaining buffered data, then enters idle state.</p>
+    <ul class="attr-list">
+      <li><strong>Parameters:</strong> None</li>
+      <li><strong>Returns:</strong> <em>SessionSummary</em></li>
+      <li><strong>Raises:</strong> <em>RuntimeError</em> if no session is active.</li>
+    </ul>
+
+    <h4>2.3.3 class <em>StartResult</em></h4>
+    <ul class="attr-list">
+      <li><strong>success</strong> (<em>bool</em>): Whether the session started successfully.</li>
+      <li><strong>errorMessage</strong> (<em>str or None</em>): Reason for failure. Possible values: <code>"session_already_active"</code>, <code>"sensor_not_connected"</code>.</li>
+    </ul>
+
+    <h4>2.3.4 class <em>SessionSummary</em></h4>
+    <ul class="attr-list">
+      <li><strong>sessionId</strong> (<em>int</em>): Identifier of the closed session.</li>
+      <li><strong>sampleCount</strong> (<em>int</em>): Total valid samples collected.</li>
+      <li><strong>errorCount</strong> (<em>int</em>): Total rejected samples.</li>
+      <li><strong>startTime</strong> (<em>str</em>): Session start timestamp (ISO 8601).</li>
+      <li><strong>endTime</strong> (<em>str</em>): Session end timestamp (ISO 8601).</li>
+    </ul>
+
+    <hr class="article-divider"/>
+
+    <!-- 2.4 IF-S2-M1 -->
+    <h3>2.4 IF-S2-M1: Format Data</h3>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Dataflow direction</td><td>S2 &rarr; M1</td></tr>
+          <tr><td>Cross-device</td><td>No</td></tr>
+          <tr><td>Transport</td><td>Function call</td></tr>
+          <tr><td>Service provider</td><td>S2</td></tr>
+          <tr><td>Service user</td><td>M1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>2.4.1 <code>s2.data.read()</code></h4>
+    <p>
+      Read all Format data accumulated since the last call. Returns a <em>FormatData</em>
+      object containing three asynchronous data lists (sensor readings, target angles, and
+      error events), plus the session context set at session start.
+    </p>
+    <ul class="attr-list">
+      <li><strong>Parameters:</strong> None</li>
+      <li><strong>Returns:</strong> <em>FormatData</em></li>
+      <li><strong>Notes:</strong> The three lists in <em>FormatData</em> are <strong>asynchronous</strong>: they may have
+        different lengths on each call, because each sensor samples independently and target angle
+        computation runs at its own rate.</li>
+    </ul>
+    <p>Example:</p>
+    <div class="code-block">
+data = s2.data.read()<br>
+for s in data.sensorData:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(s.timestamp, s.deviceId, s.roll, s.pitch, s.yaw)<br>
+for t in data.targetAngles:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print(t.timestamp, t.angle)
+    </div>
+
+    <h4>2.4.2 class <em>FormatData</em></h4>
+    <p>Output data structure of S2.</p>
+    <ul class="attr-list">
+      <li><strong>sessionContext</strong> (<em>SessionContext</em>): Session-level info, fixed for the entire session.</li>
+      <li><strong>sensorData</strong> (<em>List[SensorSample]</em>): Validated sensor readings from all sensors since last read. Uses <em>SensorSample</em> defined in 2.1.3.</li>
+      <li><strong>targetAngles</strong> (<em>List[TargetAngle]</em>): Target angles computed by S2 core since last read.</li>
+      <li><strong>errors</strong> (<em>List[ErrorEvent]</em>): Error events since last read.</li>
+    </ul>
+
+    <h4>2.4.3 class <em>SessionContext</em></h4>
+    <ul class="attr-list">
+      <li><strong>sessionId</strong> (<em>int</em>): Session identifier, server-generated by V2.</li>
+      <li><strong>userId</strong> (<em>int</em>): User identifier, referencing the V2 users table.</li>
+      <li><strong>sensorJointMapping</strong> (<em>dict</em>): Sensor device ID &rarr; joint name mapping.</li>
+      <li><strong>payloadStatus</strong> (<em>str</em>): Exercise/task type (e.g. <code>"bend_knee_10"</code>).</li>
+    </ul>
+
+    <h4>2.4.4 class <em>TargetAngle</em></h4>
+    <ul class="attr-list">
+      <li><strong>timestamp</strong> (<em>int</em>): Unix timestamp in milliseconds when computed.</li>
+      <li><strong>angleID</strong> (<em>str</em>): Angle identifier.</li>
+      <li><strong>angle</strong> (<em>float</em>): Computed target angle, in degrees.</li>
+    </ul>
+
+    <h4>2.4.5 class <em>ErrorEvent</em></h4>
+    <ul class="attr-list">
+      <li><strong>timestamp</strong> (<em>int</em>): Unix timestamp in milliseconds.</li>
+      <li><strong>sensorId</strong> (<em>str or None</em>): Sensor that caused the error, or None if not sensor-specific.</li>
+      <li><strong>errorType</strong> (<em>str</em>): <code>"sensor_disconnected"</code>, <code>"validation_failure"</code>, <code>"timeout"</code>.</li>
+      <li><strong>message</strong> (<em>str</em>): Human-readable error description.</li>
+    </ul>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 3. IF-V2: Server-Side Interfaces ═══ -->
+    <h2>3. IF-V2: Server-Side Interfaces</h2>
+    <p>All interfaces in this section go through V2's HTTP REST API.</p>
+
+    <p><strong>API to Interface Mapping:</strong></p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>API</th><th>IF-M1-V2</th><th>IF-V2-M1</th><th>IF-V1-V2</th><th>IF-V2-V1</th><th>IF-M2-V2</th><th>IF-V2-M2</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ci">POST /auth/register</span></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td><td></td></tr>
+          <tr><td><span class="ci">POST /auth/login</span></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td><td></td></tr>
+          <tr><td><span class="ci">GET /auth/me</span></td><td></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td></tr>
+          <tr><td><span class="ci">GET /users/:id</span></td><td></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td></tr>
+          <tr><td><span class="ci">POST /sessions</span></td><td>&#10003;</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td><span class="ci">GET /sessions/:id</span></td><td></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td></tr>
+          <tr><td><span class="ci">PATCH /sessions/:id/end</span></td><td>&#10003;</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td><span class="ci">DELETE /sessions/:id</span></td><td></td><td></td><td></td><td></td><td>&#10003;</td><td></td></tr>
+          <tr><td><span class="ci">POST /measurements</span></td><td>&#10003;</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td><span class="ci">POST /measurements/batch</span></td><td>&#10003;</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td><span class="ci">GET /measurements/:sessionId</span></td><td></td><td>&#10003;</td><td></td><td>&#10003;</td><td></td><td>&#10003;</td></tr>
+          <tr><td><span class="ci">POST /recommendations</span></td><td></td><td></td><td>&#10003;</td><td></td><td></td><td></td></tr>
+          <tr><td><span class="ci">GET /recommendations/session/:sessionId</span></td><td></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td></tr>
+          <tr><td><span class="ci">GET /recommendations/engine/:userId</span></td><td></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td></tr>
+          <tr><td><span class="ci">PATCH /recommendations/:id</span></td><td></td><td></td><td></td><td></td><td>&#10003;</td><td></td></tr>
+          <tr><td><span class="ci">POST /schedule</span></td><td></td><td></td><td></td><td></td><td>&#10003;</td><td></td></tr>
+          <tr><td><span class="ci">GET /schedule/:userId</span></td><td></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td></tr>
+          <tr><td><span class="ci">PATCH /schedule/:id</span></td><td>&#10003;</td><td></td><td></td><td></td><td>&#10003;</td><td></td></tr>
+          <tr><td><span class="ci">DELETE /schedule/:id</span></td><td></td><td></td><td></td><td></td><td>&#10003;</td><td></td></tr>
+          <tr><td><span class="ci">POST /push/register</span></td><td>&#10003;</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td><span class="ci">GET /push/tokens/:userId</span></td><td></td><td></td><td></td><td></td><td></td><td>&#10003;</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Base URL:</strong> <span class="ci">https://dsd2026-teamv2-production.up.railway.app</span></p>
+
+    <p><strong>General rules:</strong></p>
+    <ul>
+      <li>All request bodies are JSON (<span class="ci">Content-Type: application/json</span>), unless otherwise specified</li>
+      <li>All responses are JSON</li>
+      <li>Request field naming: <strong>camelCase</strong></li>
+      <li>Response field naming: <strong>snake_case</strong></li>
+      <li>Timestamps: <strong>ISO 8601</strong> (e.g. <span class="ci">"2026-05-02T13:43:38.549Z"</span>)</li>
+      <li>Authentication: JWT token via <span class="ci">Authorization: Bearer &lt;token&gt;</span> header (where required)</li>
+    </ul>
+
+    <!-- 3.1 Authentication -->
+    <h3>3.1 Authentication</h3>
+    <p>Used by: M1, M2</p>
+
+    <h4>3.1.1 <code>POST /auth/register</code></h4>
+    <p>Register a new user account.</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"name": "Ana Costa",<br>
+&nbsp;&nbsp;"email": "ana@utad.pt",<br>
+&nbsp;&nbsp;"password": "123456",<br>
+&nbsp;&nbsp;"role": "patient"<br>
+}
+    </div>
+    <p><span class="ci">role</span> must be <span class="ci">"patient"</span> or <span class="ci">"clinician"</span> (default: <span class="ci">"patient"</span>).</p>
+
+    <p><strong>Response (201):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"token": "jwt-token-string",<br>
+&nbsp;&nbsp;"user": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"name": "Ana Costa",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"email": "ana@utad.pt",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"role": "patient",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2026-05-02T13:43:28.000Z"<br>
+&nbsp;&nbsp;}<br>
+}
+    </div>
+
+    <p><strong>Note:</strong> For doctor registration, M2 requires an optional <span class="ci">license</span> file upload and approval workflow. This is pending V2 implementation (see <a href="sd-conflicts.html" style="color:var(--accent-2);text-decoration:underline;">Total SD Conflicts and Solutions</a>, Chapter 8, Conflicts 2-3).</p>
+
+    <h4>3.1.2 <code>POST /auth/login</code></h4>
+    <p>Log in with existing credentials.</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"email": "ana@utad.pt",<br>
+&nbsp;&nbsp;"password": "123456"<br>
+}
+    </div>
+
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"token": "jwt-token-string",<br>
+&nbsp;&nbsp;"user": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"name": "Ana Costa",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"email": "ana@utad.pt",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"role": "patient",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2026-05-02T13:43:28.000Z"<br>
+&nbsp;&nbsp;}<br>
+}
+    </div>
+
+    <h4>3.1.3 <code>GET /auth/me</code></h4>
+    <p>Get current authenticated user info. Requires <span class="ci">Authorization: Bearer &lt;token&gt;</span> header.</p>
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"name": "Ana Costa",<br>
+&nbsp;&nbsp;"email": "ana@utad.pt",<br>
+&nbsp;&nbsp;"role": "patient",<br>
+&nbsp;&nbsp;"created_at": "2026-05-02T13:43:28.000Z"<br>
+}
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- 3.2 Users -->
+    <h3>3.2 Users</h3>
+    <p>Used by: M1, M2</p>
+
+    <h4>3.2.1 <code>GET /users/:id</code></h4>
+    <p>Get user by ID.</p>
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"name": "Ana Costa",<br>
+&nbsp;&nbsp;"email": "ana@utad.pt",<br>
+&nbsp;&nbsp;"role": "patient",<br>
+&nbsp;&nbsp;"created_at": "2026-05-02T13:43:28.000Z",<br>
+&nbsp;&nbsp;"session_count": 3<br>
+}
+    </div>
+
+    <p><strong>Note:</strong> <span class="ci">POST /users</span> is a legacy endpoint (no password, no JWT). Use <span class="ci">POST /auth/register</span> instead.</p>
+
+    <p><strong>Note:</strong> M2 requires <span class="ci">GET /patients</span> (list all users with role=patient) and <span class="ci">GET /patients/:id</span> endpoints, with an <span class="ci">age</span> field in patient data. These are pending V2 implementation (see <a href="sd-conflicts.html" style="color:var(--accent-2);text-decoration:underline;">Total SD Conflicts and Solutions</a>, Chapter 8, Conflict 7).</p>
+
+    <hr class="article-divider"/>
+
+    <!-- 3.3 Sessions -->
+    <h3>3.3 Sessions</h3>
+    <p>Used by: M1, M2</p>
+
+    <h4>3.3.1 <code>POST /sessions</code></h4>
+    <p>Create a new rehabilitation session.</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"userId": 1<br>
+}
+    </div>
+
+    <p><strong>Response (201):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"user_id": 1,<br>
+&nbsp;&nbsp;"user_name": "Ana Costa",<br>
+&nbsp;&nbsp;"started_at": "2026-05-02T13:43:35.000Z",<br>
+&nbsp;&nbsp;"ended_at": null<br>
+}
+    </div>
+
+    <h4>3.3.2 <code>GET /sessions/:id</code></h4>
+    <p>Get session details with all measurements inline.</p>
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"user_id": 1,<br>
+&nbsp;&nbsp;"user_name": "Ana Costa",<br>
+&nbsp;&nbsp;"user_email": "ana@utad.pt",<br>
+&nbsp;&nbsp;"started_at": "2026-05-02T13:43:35.000Z",<br>
+&nbsp;&nbsp;"ended_at": null,<br>
+&nbsp;&nbsp;"measurements": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"session_id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"target_angles": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"timestamp": "2026-05-02T13:43:38.549Z", "angle_id": "knee", "angle": 45.2}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errors": [],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"sensor_data": []<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;]<br>
+}
+    </div>
+
+    <h4>3.3.3 <code>PATCH /sessions/:id/end</code></h4>
+    <p>End an active session. No request body required; server sets <span class="ci">ended_at</span> automatically.</p>
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"user_id": 1,<br>
+&nbsp;&nbsp;"started_at": "2026-05-02T13:43:35.000Z",<br>
+&nbsp;&nbsp;"ended_at": "2026-05-02T13:43:52.000Z"<br>
+}
+    </div>
+
+    <h4>3.3.4 <code>DELETE /sessions/:id</code></h4>
+    <p>Delete a session.</p>
+    <p><strong>Response:</strong> 204 No Content</p>
+
+    <hr class="article-divider"/>
+
+    <!-- 3.4 Measurements -->
+    <h3>3.4 Measurements</h3>
+    <p>Used by: M1 (upload), M2 (read), V1 (read)</p>
+
+    <p>Per the IF-S2-V2 Conflict 4 resolution, V2 accepts the negotiated format based on S2's design (targetAngles + sensorData + errors), replacing the original jointAngles + isCorrect format.</p>
+
+    <h4>3.4.1 <code>POST /measurements</code></h4>
+    <p>Add a single measurement to an active session. Requires authentication (login first to obtain JWT token).</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"sessionId": 1,<br>
+&nbsp;&nbsp;"targetAngles": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{"timestamp": "2026-05-02T13:43:38.549Z", "angleID": "knee", "angle": 45.2},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{"timestamp": "2026-05-02T13:43:38.580Z", "angleID": "hip", "angle": 30.1}<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;"errors": [],<br>
+&nbsp;&nbsp;"sensorData": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2026-05-02T13:43:38.549Z",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"sensorId": "1IYwPyBcytYa9htYB0LOJQ==",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"accX": 0.2266, "accY": 0.2915, "accZ": 0.9668,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"gyroX": 0.0, "gyroY": 3.11, "gyroZ": -0.73,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"roll": 15.57, "pitch": -13.78, "yaw": -144.01<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;]<br>
+}
+    </div>
+
+    <p><span class="ci">errors</span> and <span class="ci">sensorData</span> are optional fields.</p>
+
+    <p><strong>Response (201):</strong> Stored measurement object.</p>
+
+    <p><strong>Error responses:</strong></p>
+    <ul>
+      <li>409 Conflict: Session is closed</li>
+    </ul>
+
+    <h4>3.4.2 <code>POST /measurements/batch</code></h4>
+    <p>Add multiple measurements at once. Requires authentication (login first to obtain JWT token).</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"sessionId": 1,<br>
+&nbsp;&nbsp;"measurements": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"targetAngles": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"timestamp": "2026-05-02T13:43:38.549Z", "angleID": "knee", "angle": 45.2}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errors": [],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"sensorData": []<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"targetAngles": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"timestamp": "2026-05-02T13:43:38.582Z", "angleID": "knee", "angle": 38.0}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errors": [],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"sensorData": []<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;]<br>
+}
+    </div>
+
+    <p><strong>Response (201):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"inserted": 2,<br>
+&nbsp;&nbsp;"sessionId": 1<br>
+}
+    </div>
+
+    <h4>3.4.3 <code>GET /measurements/:sessionId</code></h4>
+    <p>Get all measurements for a session.</p>
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+[<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"session_id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"target_angles": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"timestamp": "2026-05-02T13:43:38.549Z", "angle_id": "knee", "angle": 45.2}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"errors": [],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"sensor_data": [],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2026-05-02T13:43:38.549Z"<br>
+&nbsp;&nbsp;}<br>
+]
+    </div>
+
+    <p><strong>Note:</strong> Response uses snake_case per V2 convention. M2 requires date range filtering (e.g. <span class="ci">?startDate=...&amp;endDate=...</span>). This is pending V2 implementation (see <a href="sd-conflicts.html" style="color:var(--accent-2);text-decoration:underline;">Total SD Conflicts and Solutions</a>, Chapter 8, Conflict 8).</p>
+
+    <hr class="article-divider"/>
+
+    <!-- 3.5 Recommendations -->
+    <h3>3.5 Recommendations</h3>
+    <p>Used by: V1 (create), M1 (read), M2 (read, update)</p>
+
+    <h4>3.5.1 <code>POST /recommendations</code></h4>
+    <p>Create a recommendation.</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"sessionId": 1,<br>
+&nbsp;&nbsp;"movement": "knee flexion",<br>
+&nbsp;&nbsp;"confidence": 0.87,<br>
+&nbsp;&nbsp;"status": "pending"<br>
+}
+    </div>
+
+    <p><span class="ci">confidence</span> is a float between 0.0 and 1.0. <span class="ci">status</span> must be <span class="ci">"pending"</span>, <span class="ci">"accepted"</span>, or <span class="ci">"rejected"</span> (default: <span class="ci">"pending"</span>).</p>
+
+    <p><strong>Note:</strong> M2 requests an optional <span class="ci">notes</span> field for doctor comments. This is pending V2 implementation (see <a href="sd-conflicts.html" style="color:var(--accent-2);text-decoration:underline;">Total SD Conflicts and Solutions</a>, Chapter 8, Conflict 5).</p>
+
+    <p><strong>Response (201):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"session_id": 1,<br>
+&nbsp;&nbsp;"movement": "knee flexion",<br>
+&nbsp;&nbsp;"confidence": 0.87,<br>
+&nbsp;&nbsp;"status": "pending",<br>
+&nbsp;&nbsp;"created_at": "2026-05-02T13:43:41.000Z"<br>
+}
+    </div>
+
+    <h4>3.5.2 <code>GET /recommendations/session/:sessionId</code></h4>
+    <p>Get recommendations for a specific session.</p>
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+[<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"session_id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"movement": "knee flexion",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"confidence": 0.87,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"status": "pending",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2026-05-02T13:43:41.000Z"<br>
+&nbsp;&nbsp;}<br>
+]
+    </div>
+
+    <h4>3.5.3 <code>GET /recommendations/engine/:userId</code></h4>
+    <p>Auto-analysis across last 10 sessions of a user.</p>
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"userId": 1,<br>
+&nbsp;&nbsp;"sessions_analysed": 5,<br>
+&nbsp;&nbsp;"generated_at": "2026-05-02T13:43:44.670Z",<br>
+&nbsp;&nbsp;"suggestions": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"joint": "knee",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"accuracy_percent": 42,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"total_measurements": 50,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"priority": "high",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"suggestion": "Needs improvement (42% correct)"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;]<br>
+}
+    </div>
+
+    <p><span class="ci">priority</span> is <span class="ci">"high"</span> if accuracy &lt; 50%, <span class="ci">"medium"</span> if &lt; 70%, <span class="ci">"low"</span> otherwise.</p>
+
+    <p><strong>Known bug:</strong> <span class="ci">userId</span> is returned as string instead of int in V2's current implementation.</p>
+
+    <h4>3.5.4 <code>PATCH /recommendations/:id</code></h4>
+    <p>Update status of a recommendation.</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"status": "accepted"<br>
+}
+    </div>
+
+    <p><strong>Response (200):</strong> Updated recommendation object.</p>
+
+    <hr class="article-divider"/>
+
+    <!-- 3.6 Schedule -->
+    <h3>3.6 Schedule</h3>
+    <p>Used by: M1 (read), M2 (manage)</p>
+
+    <h4>3.6.1 <code>POST /schedule</code></h4>
+    <p>Create a rehabilitation schedule entry.</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"userId": 1,<br>
+&nbsp;&nbsp;"exercise": "squat",<br>
+&nbsp;&nbsp;"date": "2026-05-03T21:43:43.000Z",<br>
+&nbsp;&nbsp;"duration": 30,<br>
+&nbsp;&nbsp;"notes": "Test schedule"<br>
+}
+    </div>
+
+    <p><strong>Response (201):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"user_id": 1,<br>
+&nbsp;&nbsp;"exercise": "squat",<br>
+&nbsp;&nbsp;"date": "2026-05-03T21:43:43.000Z",<br>
+&nbsp;&nbsp;"duration": 30,<br>
+&nbsp;&nbsp;"notes": "Test schedule",<br>
+&nbsp;&nbsp;"status": "pending",<br>
+&nbsp;&nbsp;"created_at": "2026-05-02T13:43:46.000Z"<br>
+}
+    </div>
+
+    <h4>3.6.2 <code>GET /schedule/:userId</code></h4>
+    <p>Get all schedule entries for a user.</p>
+    <p><strong>Response (200):</strong> Array of schedule objects.</p>
+
+    <h4>3.6.3 <code>PATCH /schedule/:id</code></h4>
+    <p>Update schedule status.</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"status": "completed"<br>
+}
+    </div>
+
+    <p><strong>Response (200):</strong> Updated schedule object.</p>
+
+    <h4>3.6.4 <code>DELETE /schedule/:id</code></h4>
+    <p>Delete a schedule entry.</p>
+    <p><strong>Response:</strong> 204 No Content</p>
+
+    <hr class="article-divider"/>
+
+    <!-- 3.7 Push Notifications -->
+    <h3>3.7 Push Notifications</h3>
+    <p>Used by: M1 (register), M2 (query)</p>
+
+    <h4>3.7.1 <code>POST /push/register</code></h4>
+    <p>Register a device push token.</p>
+    <p><strong>Request body:</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"userId": 1,<br>
+&nbsp;&nbsp;"token": "device_token_string",<br>
+&nbsp;&nbsp;"platform": "ios"<br>
+}
+    </div>
+
+    <p><strong>Response (201):</strong></p>
+    <div class="code-block">
+{<br>
+&nbsp;&nbsp;"message": "Push token registered",<br>
+&nbsp;&nbsp;"userId": 1,<br>
+&nbsp;&nbsp;"token": "device_token_string"<br>
+}
+    </div>
+
+    <p><strong>Known bug:</strong> Response uses <span class="ci">userId</span> (camelCase) instead of <span class="ci">user_id</span> (snake_case).</p>
+
+    <h4>3.7.2 <code>GET /push/tokens/:userId</code></h4>
+    <p>Get all push tokens for a user.</p>
+    <p><strong>Response (200):</strong></p>
+    <div class="code-block">
+[<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"user_id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"token": "device_token_string",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"platform": "ios",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2026-05-02T13:43:50.000Z"<br>
+&nbsp;&nbsp;}<br>
+]
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 4. Communication Methods ═══ -->
+    <h2>4. Communication Methods</h2>
+
+    <h3>4.1 Function Call (Same Device)</h3>
+    <p>
+      Used for all App-side interfaces (IF-S1-S2, IF-M1-S2, IF-S2-M1). Components on the same device
+      communicate through direct function calls. If running in different processes, the function signatures
+      remain the same but the underlying transport is replaced by an IPC mechanism.
+    </p>
+    <ul>
+      <li>S1 provides <span class="ci">s1.sensor.read()</span>, <span class="ci">s1.sensor.status()</span>, <span class="ci">s1.session.start()</span>, and <span class="ci">s1.session.stop()</span> for S2.</li>
+      <li>S2 provides <span class="ci">s2.session.start()</span>, <span class="ci">s2.session.stop()</span>, and <span class="ci">s2.data.read()</span> for M1.</li>
+    </ul>
+
+    <h3>4.2 HTTP REST API (Cross-Device)</h3>
+    <p>
+      Used for all Server-side interfaces (IF-M1-V2, IF-V2-M1, IF-V1-V2, IF-V2-V1, IF-M2-V2, IF-V2-M2).
+      V2 exposes URL endpoints; other teams send HTTP requests.
+    </p>
+    <ul>
+      <li><strong>Method:</strong> GET (read), POST (create/send), PATCH (update), DELETE (remove)</li>
+      <li><strong>URL:</strong> endpoint path (e.g. <span class="ci">/sessions/:id/end</span>)</li>
+      <li><strong>Body:</strong> JSON payload</li>
+      <li><strong>Response:</strong> status code (200, 201, 204, 400, 404, 409, 500) + optional JSON body</li>
+      <li><strong>Error format:</strong> <span class="ci">{ "error": "Human-readable message" }</span></li>
+    </ul>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 &middot; DSD 2025&ndash;2026 &middot; UTAD &times; Jilin University
+    </p>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 &middot; Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator &middot; UTAD &times; Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../progress.html">Progress</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

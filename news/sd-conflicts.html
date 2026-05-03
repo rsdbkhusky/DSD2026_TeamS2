@@ -93,7 +93,7 @@
     <a href="../news.html" class="back-link">Back to News</a>
     <div class="article-meta">
       <span class="badge" style="background:rgba(220,38,38,0.12);color:#f87171;border-color:rgba(220,38,38,0.25);">System Design</span>
-      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">24 Apr 2026 &middot; 20:44 UTC+8</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">2 May 2026 &middot; 21:59 UTC+8</span>
     </div>
     <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
       Total SD Conflicts and Solutions
@@ -112,6 +112,7 @@
         <thead><tr><th>Date</th><th>Authors</th><th>Description</th></tr></thead>
         <tbody>
           <tr><td>Apr 24, 2026</td><td>Zhiqi ZHANG</td><td>Initial conflict analysis for IF-S2-V2</td></tr>
+          <tr><td>May 2, 2026</td><td>Zhiqi ZHANG</td><td>Updated conflict classification; added IF-S1-S2, IF-M1-S2 &amp; IF-S2-M1, IF-V2-SelfCorrection, IF-M1-V2 &amp; IF-V2-M1, IF-V1-V2 &amp; IF-V2-V1, IF-M2-V2 &amp; IF-V2-M2</td></tr>
         </tbody>
       </table>
     </div>
@@ -141,15 +142,15 @@
         <tbody>
           <tr>
             <td><span class="type-badge type-a">Type A</span></td>
-            <td>One team's design involves richer operations or data than the other's.</td>
+            <td>Minor conflict: easy to unify.</td>
           </tr>
           <tr>
             <td><span class="type-badge type-b">Type B</span></td>
-            <td>The two designs are inconsistent (not simply one being richer than the other), but easy to unify.</td>
+            <td>Moderate conflict: one team's design involves richer operations or data than the other's.</td>
           </tr>
           <tr>
             <td><span class="type-badge type-c">Type C</span></td>
-            <td>The two designs are inconsistent (not simply one being richer than the other), and require negotiation to reach consensus.</td>
+            <td>Critical conflict: require negotiation to reach consensus.</td>
           </tr>
         </tbody>
       </table>
@@ -174,7 +175,7 @@
         <thead><tr><th>Role</th><th>Person</th></tr></thead>
         <tbody>
           <tr><td>S2</td><td>Zhiqi ZHANG</td></tr>
-          <tr><td>V2</td><td></td></tr>
+          <tr><td>V2</td><td>Sergio Moniz</td></tr>
         </tbody>
       </table>
     </div>
@@ -219,15 +220,15 @@
           </tr>
           <tr>
             <td>Classification</td>
-            <td><span class="type-badge type-b">Type B</span></td>
+            <td><span class="type-badge type-a">Type A</span></td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
+            <td>Use V2's design</td>
           </tr>
         </tbody>
       </table>
@@ -248,15 +249,15 @@
           </tr>
           <tr>
             <td>Classification</td>
-            <td><span class="type-badge type-b">Type B</span></td>
+            <td><span class="type-badge type-a">Type A</span></td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
+            <td>Use V2's design</td>
           </tr>
         </tbody>
       </table>
@@ -302,18 +303,18 @@
           <tr>
             <td>Classification</td>
             <td>
-              <span class="type-badge type-a">Type A</span>
+              <span class="type-badge type-b">Type B</span>
               S2's design provides richer information, some of which may be utilised by V1.
               The additional fields do not affect compatibility with V2's current design.
             </td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
+            <td>Use V2's design</td>
           </tr>
         </tbody>
       </table>
@@ -380,11 +381,11 @@
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
+            <td>Negotiated new format based on S2's design (see implementation guide for details)</td>
           </tr>
         </tbody>
       </table>
@@ -414,7 +415,7 @@
           <tr>
             <td>Classification</td>
             <td>
-              <span class="type-badge type-a">Type A</span>
+              <span class="type-badge type-b">Type B</span>
               It may not be necessary to send <span class="ci">sampleCount</span> and
               <span class="ci">errorCount</span>, as these are either unnecessary or
               can be easily computed on the V2 side. However, whether having the client record
@@ -424,11 +425,11 @@
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
+            <td>Use V2's design</td>
           </tr>
         </tbody>
       </table>
@@ -454,24 +455,17 @@
           <tr>
             <td>Classification</td>
             <td>
-              <span class="type-badge type-b">Type B</span>
+              <span class="type-badge type-a">Type A</span>
               V2's design (ISO 8601) is more reasonable for a REST API.
             </td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- ══════════════════════════════════════════
-         Conflict 7
+            <td>Use V2's design (ISO 8601). Note: V2's actual implementation has timestamp format inconsistencies; see Chapter 5, Bug 1.</td>
          ══════════════════════════════════════════ -->
     <h3>2.8 Conflict 7: Field Naming Convention</h3>
     <div class="spec-table-wrap">
@@ -489,17 +483,17 @@
           <tr>
             <td>Classification</td>
             <td>
-              <span class="type-badge type-b">Type B</span>
+              <span class="type-badge type-a">Type A</span>
               The naming convention needs to be unified.
             </td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
+            <td>Use V2's design</td>
           </tr>
         </tbody>
       </table>
@@ -524,17 +518,17 @@
           <tr>
             <td>Classification</td>
             <td>
-              <span class="type-badge type-b">Type B</span>
+              <span class="type-badge type-a">Type A</span>
               V2's design (server-generated ID) is more reasonable.
             </td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
+            <td>Use V2's design</td>
           </tr>
         </tbody>
       </table>
@@ -567,31 +561,823 @@
                     <tr>
                       <td>Upload data (auth failure)</td>
                       <td><span class="ci">401 Unauthorized</span></td>
-                      <td>N/A (V2 currently has no authentication)</td>
+                      <td>N/A (V2 had no authentication at the time of this analysis; V2 has since implemented JWT authentication, see Chapter 5)</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <p style="margin:0;">
-                S2 specifies <span class="ci">401 Unauthorized</span> as a possible response,
-                while V2 explicitly states that there is currently no authentication mechanism.
+                S2 specifies <span class="ci">401 Unauthorized</span> as a possible response.
+                At the time of this analysis, V2 had no authentication mechanism.
+                V2 has since implemented JWT authentication (see Chapter 5, Conflict 1).
               </p>
             </td>
           </tr>
           <tr>
             <td>Classification</td>
             <td>
-              <span class="type-badge type-b">Type B</span>
+              <span class="type-badge type-a">Type A</span>
               V2's design is more reasonable.
             </td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>In negotiation</td>
+            <td>Resolved</td>
           </tr>
           <tr>
             <td>Resolution</td>
-            <td><span class="todo-placeholder">[TODO]</span></td>
+            <td>Use V2's design</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 3. IF-S1-S2 ═══ -->
+    <h2>3. IF-S1-S2</h2>
+
+    <h3>3.1 Overview</h3>
+    <p>
+      Comparing the
+      <a href="s2-interface-spec.html" style="color:var(--accent-2);text-decoration:underline;">S2 Interface Specification v0.1</a>
+      (Section 2.1, IF-S1-S2) with S1's interface design.
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Person</th></tr></thead>
+        <tbody>
+          <tr><td>S2</td><td>Zhiqi ZHANG</td></tr>
+          <tr><td>S1</td><td>Zhihang YU</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>After review and discussion with the S1 team leader, no conflicts were identified between the two teams' interface designs.</strong>
+    </p>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 4. IF-M1-S2 & IF-S2-M1 ═══ -->
+    <h2>4. IF-M1-S2 &amp; IF-S2-M1</h2>
+
+    <h3>4.1 Overview</h3>
+    <p>
+      Comparing the
+      <a href="s2-interface-spec.html" style="color:var(--accent-2);text-decoration:underline;">S2 Interface Specification v0.1</a>
+      (Sections 2.2 and 2.3, IF-M1-S2 and IF-S2-M1) with M1's Interface Specification.
+      M1's IS document was written based on S2's original design (before cross-team negotiation),
+      so several fields have not been updated to reflect the agreed changes.
+      5 conflicts were identified.
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Person</th></tr></thead>
+        <tbody>
+          <tr><td>S2</td><td>Zhiqi ZHANG</td></tr>
+          <tr><td>M1</td><td>Yiding WANG</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 1 -->
+    <h3>4.2 Conflict 1: sessionId Type</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M1 IS:</strong> <span class="ci">sessionId</span> is a string (e.g. <span class="ci">"session-001"</span>).</li>
+                <li><strong>S2 (after negotiation):</strong> <span class="ci">sessionId</span> is an int, server-generated by V2.</li>
+              </ul>
+              <p style="margin:10px 0 0;">M1's document has not been updated to reflect the negotiation result (IF-S2-V2 Conflict 8: use V2's design).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-a">Type A</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use <span class="ci">sessionId</span> as <span class="ci">int</span> (V2 server-generated). M1 should update their IS document.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 2 -->
+    <h3>4.3 Conflict 2: patientId vs userId</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M1 IS:</strong> uses <span class="ci">patientId</span> (string) in <span class="ci">s2.session.start()</span> and <span class="ci">SessionContext</span>.</li>
+                <li><strong>S2 (after negotiation):</strong> uses <span class="ci">userId</span> (int), referencing V2's users table.</li>
+              </ul>
+              <p style="margin:10px 0 0;">M1's document has not been updated to reflect the negotiation result (IF-S2-V2 Conflict 9: use V2's design).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-a">Type A</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use <span class="ci">userId</span> as <span class="ci">int</span>. M1 should update their IS document.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 3 -->
+    <h3>4.4 Conflict 3: sensorJointMapping Optionality</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M1 IS:</strong> <span class="ci">sensorJointMapping</span> is listed as a required parameter in <span class="ci">s2.session.start()</span>.</li>
+                <li><strong>S2 (after negotiation with M1):</strong> <span class="ci">sensorJointMapping</span> was agreed to be optional.</li>
+              </ul>
+              <p style="margin:10px 0 0;">M1's document has not been updated to reflect M1's own confirmed negotiation result.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-a">Type A</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td><span class="ci">sensorJointMapping</span> is optional. M1 should update their IS document.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 4 -->
+    <h3>4.5 Conflict 4: SessionSummary Timestamp Format</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M1 IS:</strong> <span class="ci">SessionSummary.startTime</span> and <span class="ci">endTime</span> are <span class="ci">number</span> (Unix ms).</li>
+                <li><strong>S2 (after negotiation):</strong> timestamps use ISO 8601 strings (per IF-S2-V2 Conflict 6: use V2's design).</li>
+              </ul>
+              <p style="margin:10px 0 0;">M1's document has not been updated to reflect the negotiation result.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-a">Type A</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use ISO 8601 strings. M1 should update their IS document.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 5 -->
+    <h3>4.6 Conflict 5: IF-S1-M1 Direct Communication</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <p style="margin:0 0 6px;">
+                M1's IS document defines an interface <span class="ci">IF-S1-M1</span> (S1 directly to M1 via BLE),
+                meaning M1 directly receives raw IMU sensor data from S1.
+              </p>
+              <p style="margin:0;">
+                According to the DFD, the data flow should be S1 &rarr; S2 &rarr; M1.
+                M1 should not communicate directly with S1; instead, S2 acts as the intermediary
+                that processes raw data from S1 and delivers formatted data to M1.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-c">Type C</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>After discussion with M1 lead Yiding WANG: <strong>M1 does not communicate directly with S1. All sensor data goes through S2.</strong> M1 should remove IF-S1-M1 from their IS document.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 5. IF-V2 ═══ -->
+    <h2>5. IF-V2-SelfCorrection</h2>
+
+    <h3>5.1 Overview</h3>
+    <p>
+      V2 provided an Interface Specification document describing their API endpoints. An independent
+      test was conducted against the live V2 backend to verify the actual behavior of all endpoints.
+      This section documents discrepancies between V2's documented interface design and the actual
+      test results, serving as corrections to V2's interface specification.
+    </p>
+    <p>
+      Tested by Yanbo QIAO and Zhiqi ZHANG.
+    </p>
+
+    <!-- Conflict 1 -->
+    <h3>5.2 Bug 1: Timestamp Format Inconsistency</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <p style="margin:0 0 6px;">
+                V2's documentation states "All dates are ISO 8601". However, the actual API responses
+                use two different timestamp formats:
+              </p>
+              <ul style="margin:0 0 10px;padding-left:20px;">
+                <li><span class="ci">timestamp</span> and <span class="ci">generated_at</span> fields: standard ISO 8601 (e.g. <span class="ci">"2026-05-02T13:43:38.549Z"</span>)</li>
+                <li><span class="ci">created_at</span>, <span class="ci">started_at</span>, <span class="ci">ended_at</span> fields: non-standard format without T separator and Z suffix (e.g. <span class="ci">"2026-05-02 13:43:28"</span>)</li>
+              </ul>
+              <p style="margin:0;">
+                The two formats can be freely converted to each other, so this does not cause functional issues.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>V2 implementation bug</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Identified</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>V2 should fix the bug: all timestamp fields should use standard ISO 8601 format. <span class="todo-placeholder">[TODO]</span><br>
+            Note: since the two formats can be freely converted, V2's non-standard format (<span class="ci">"YYYY-MM-DD HH:MM:SS"</span>) may be accepted as a compatible alternative format.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 2 -->
+    <h3>5.3 Conflict 1: Authentication Endpoints Not Documented</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              V2's IS document only lists <span class="ci">POST /users</span> (legacy, no password) for user creation.
+              However, V2 has actually implemented a full JWT authentication system with
+              <span class="ci">POST /auth/register</span>, <span class="ci">POST /auth/login</span>,
+              and <span class="ci">GET /auth/me</span>. The IS document is outdated.
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-b">Type B</span>
+              V2's actual implementation provides richer functionality than documented.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use V2's actual implementation (JWT authentication endpoints).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 3 -->
+    <h3>5.4 Conflict 2: Legacy POST /users Returns Undocumented Field</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              V2's documentation says <span class="ci">POST /users</span> request body is
+              <span class="ci">{ name, email, role }</span>. The actual response includes an
+              undocumented <span class="ci">password: null</span> field.
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-a">Type A</span>
+              Minor documentation gap. The extra field does not affect functionality.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use V2's actual implementation. The <span class="ci">password: null</span> field can be ignored by consumers.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Bug 1 -->
+    <h3>5.5 Bug 2: userId Type Inconsistency in Engine Endpoint</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <span class="ci">GET /recommendations/engine/:userId</span> returns <span class="ci">userId</span>
+              as a string (e.g. <span class="ci">"3"</span>), while all other endpoints return user IDs as integers.
+              This is likely caused by the URL path parameter not being converted from string to integer.
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>V2 implementation bug</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Identified</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>V2 should fix the bug: <span class="ci">userId</span> should be <span class="ci">int</span>, consistent with all other endpoints. <span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Bug 2 -->
+    <h3>5.6 Bug 3: Field Naming Inconsistency in Push Register</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <span class="ci">POST /push/register</span> response uses <span class="ci">userId</span> (camelCase),
+              while all other V2 response fields use snake_case (e.g. <span class="ci">user_id</span>).
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>V2 implementation bug</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Identified</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>V2 should fix the bug: response field should use <span class="ci">user_id</span> (snake_case), consistent with all other endpoints. <span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 6. IF-M1-V2 & IF-V2-M1 ═══ -->
+    <h2>6. IF-M1-V2 &amp; IF-V2-M1</h2>
+
+    <h3>6.1 Overview</h3>
+    <p>
+      Comparing M1's Interface Specification (Sections 2.1 IF-V2-M1 and 2.2 IF-M1-V2)
+      with V2's verified API (tested and documented in Chapter 5).
+      2 conflicts were identified.
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Person</th></tr></thead>
+        <tbody>
+          <tr><td>M1</td><td>Yiding WANG</td></tr>
+          <tr><td>V2</td><td>Sergio Moniz</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 1 -->
+    <h3>6.2 Conflict 1: User Registration Endpoint</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M1 IS:</strong> uses <span class="ci">POST /users</span> with <span class="ci">{ name, email, role }</span> (no password) to create a user.</li>
+                <li><strong>V2 actual:</strong> <span class="ci">POST /users</span> is a legacy endpoint. V2 has implemented <span class="ci">POST /auth/register</span> with <span class="ci">{ name, email, password, role }</span>, which returns a JWT token and user object.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-b">Type B</span>
+              V2's actual implementation provides a richer authentication system than what M1's IS document covers.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use V2's design (<span class="ci">POST /auth/register</span> with password and JWT). M1 should update their IS document.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 2 -->
+    <h3>6.3 Conflict 2: Missing V2 Endpoints in M1 IS</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <p style="margin:0 0 6px;">M1's IS document does not cover the following V2 endpoints that have been verified as operational:</p>
+              <ul style="margin:0;padding-left:20px;">
+                <li>Authentication: <span class="ci">POST /auth/login</span>, <span class="ci">GET /auth/me</span></li>
+                <li>Session deletion: <span class="ci">DELETE /sessions/:id</span></li>
+                <li>Schedule management: <span class="ci">POST /schedule</span>, <span class="ci">GET /schedule/:userId</span>, <span class="ci">PATCH /schedule/:id</span>, <span class="ci">DELETE /schedule/:id</span></li>
+                <li>Push notifications: <span class="ci">POST /push/register</span>, <span class="ci">GET /push/tokens/:userId</span></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-b">Type B</span>
+              V2's actual implementation provides more endpoints than M1's IS document covers.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use V2's design. M1 should add these endpoints to their IS document as needed.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 7. IF-V1-V2 & IF-V2-V1 ═══ -->
+    <h2>7. IF-V1-V2 &amp; IF-V2-V1</h2>
+
+    <h3>7.1 Overview</h3>
+    <p>
+      Comparing V1's interface design with V2's verified API.
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Person</th></tr></thead>
+        <tbody>
+          <tr><td>V1</td><td>Yanbo QIAO</td></tr>
+          <tr><td>V2</td><td>Sergio Moniz</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>No conflicts were identified between V1 and V2's interface designs.</strong>
+    </p>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 8. IF-M2-V2 & IF-V2-M2 ═══ -->
+    <h2>8. IF-M2-V2 &amp; IF-V2-M2</h2>
+
+    <h3>8.1 Overview</h3>
+    <p>
+      Comparing M2's Web Backend API Specification (Doctor Module) with V2's verified API.
+      8 conflicts were identified, several of which require V2 to add new functionality.
+    </p>
+
+    <div class="spec-table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Person</th></tr></thead>
+        <tbody>
+          <tr><td>M2</td><td>Yihang LI</td></tr>
+          <tr><td>V2</td><td>Sergio Moniz</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 1 -->
+    <h3>8.2 Conflict 1: patientId vs userId in POST /sessions</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M2:</strong> uses <span class="ci">patientId</span> in <span class="ci">POST /sessions</span>.</li>
+                <li><strong>V2 actual:</strong> uses <span class="ci">userId</span>.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-a">Type A</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use V2's design (<span class="ci">userId</span>). M2 should update their document.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 2 -->
+    <h3>8.3 Conflict 2: POST /auth/register Requires File Upload</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M2:</strong> requires <span class="ci">POST /auth/register</span> to accept <span class="ci">multipart/form-data</span> with a <span class="ci">license</span> file field for doctor registration and admin approval.</li>
+                <li><strong>V2 actual:</strong> only accepts <span class="ci">application/json</span> with <span class="ci">{ name, email, password, role }</span>. No file upload support.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-c">Type C</span>
+              V2 needs to add file upload support.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Pending negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>V2 should add optional <span class="ci">license</span> file upload to <span class="ci">POST /auth/register</span>. The field should be optional so that patient registration (used by M1, JSON without file) is not affected. <span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 3 -->
+    <h3>8.4 Conflict 3: Doctor Approval Flow Missing in V2</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <p style="margin:0 0 6px;">M2 requires a doctor approval workflow:</p>
+              <ul style="margin:0;padding-left:20px;">
+                <li><span class="ci">POST /auth/register</span> for doctor should return <span class="ci">{ userId, status: "pending" }</span> instead of immediately granting a JWT token.</li>
+                <li><span class="ci">POST /auth/login</span> response should include a <span class="ci">status</span> field in the user object (e.g. <span class="ci">"approved"</span>, <span class="ci">"pending"</span>).</li>
+                <li><span class="ci">GET /auth/status</span> endpoint is needed for checking approval status.</li>
+              </ul>
+              <p style="margin:10px 0 0;">V2 currently has no approval workflow. Registration immediately succeeds and returns a JWT token.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-c">Type C</span>
+              V2 needs to implement an approval flow for doctor accounts.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Pending negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>V2 should implement role-based registration: patient registration remains unchanged (immediate success + JWT); doctor registration enters a pending state requiring admin approval. V2 should add <span class="ci">status</span> field to user objects and add <span class="ci">GET /auth/status</span> endpoint. This does not affect M1 (patient flow unchanged). <span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 4 -->
+    <h3>8.5 Conflict 4: Response Naming Convention</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              M2's document writes <span class="ci">GET /measurements/:sessionId</span> response fields in camelCase
+              (e.g. <span class="ci">jointAngles</span>, <span class="ci">isCorrect</span>).
+              V2's actual responses use snake_case
+              (e.g. <span class="ci">joint_angles</span>, <span class="ci">is_correct</span>).
+              V2's convention (request camelCase, response snake_case) is consistent across all endpoints and confirmed by all other teams.
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-a">Type A</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use V2's design (request camelCase, response snake_case). M2 should update their document.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 5 -->
+    <h3>8.6 Conflict 5: POST /recommendations Field Mismatch</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M2:</strong> sends <span class="ci">{ sessionId, movement, confidence, notes }</span>.</li>
+                <li><strong>V2 actual:</strong> accepts <span class="ci">{ sessionId, movement, confidence, status }</span>.</li>
+              </ul>
+              <p style="margin:10px 0 0;">
+                <span class="ci">notes</span> and <span class="ci">status</span> are different fields.
+                <span class="ci">status</span> is the recommendation state ("pending"/"accepted"/"rejected");
+                <span class="ci">notes</span> is a free-text comment by the doctor. M2 is missing <span class="ci">status</span>,
+                and V2 does not have <span class="ci">notes</span>.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-a">Type A</span> for missing <span class="ci">status</span> (use V2's design).
+              <span class="type-badge type-c">Type C</span> for <span class="ci">notes</span> (V2 needs to add).
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Partially resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>M2 should add <span class="ci">status</span> field (use V2's design). V2 should add optional <span class="ci">notes</span> field to the recommendations table and endpoint. Adding an optional field does not affect other teams. <span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 6 -->
+    <h3>8.7 Conflict 6: GET /recommendations Response Structure</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <ul style="margin:0;padding-left:20px;">
+                <li><strong>M2 expects:</strong> <span class="ci">{ type, content }</span></li>
+                <li><strong>V2 actual:</strong> <span class="ci">{ id, session_id, movement, status, confidence, created_at }</span></li>
+              </ul>
+              <p style="margin:10px 0 0;">The response structures are completely different.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><span class="type-badge type-a">Type A</span></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Resolved</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>Use V2's design. M2 should adapt their frontend to consume V2's response format.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 7 -->
+    <h3>8.8 Conflict 7: Missing V2 Endpoints Required by M2</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              <p style="margin:0 0 6px;">M2 requires the following endpoints that do not exist in V2:</p>
+              <ul style="margin:0;padding-left:20px;">
+                <li><span class="ci">GET /patients</span>: list all patients (filtered by role=patient). M2 also expects an <span class="ci">age</span> field in patient data, which V2's users table does not have.</li>
+                <li><span class="ci">GET /patients/:id</span>: get patient details with <span class="ci">age</span> field.</li>
+              </ul>
+              <p style="margin:10px 0 0;">Adding <span class="ci">age</span> to the users table and adding these endpoints does not affect other teams (M1 simply ignores extra fields).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-c">Type C</span>
+              V2 needs to add these endpoints and the <span class="ci">age</span> field.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Pending negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>V2 should add <span class="ci">GET /patients</span> and <span class="ci">GET /patients/:id</span> endpoints (filter users by role=patient), and add <span class="ci">age</span> field to the users table. <span class="todo-placeholder">[TODO]</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conflict 8 -->
+    <h3>8.9 Conflict 8: Measurements Date Filtering</h3>
+    <div class="spec-table-wrap">
+      <table class="spec-table conflict-table">
+        <tbody>
+          <tr>
+            <td>Description</td>
+            <td>
+              M2 requires the ability to query measurement data filtered by date range
+              (e.g. a specific day or a month). V2's <span class="ci">GET /measurements/:sessionId</span>
+              only returns all measurements for a given session, with no date filtering parameters.
+            </td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td>
+              <span class="type-badge type-c">Type C</span>
+              V2 needs to add date filtering capability.
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>Pending negotiation</td>
+          </tr>
+          <tr>
+            <td>Resolution</td>
+            <td>V2 should add optional date range query parameters (e.g. <span class="ci">?startDate=...&amp;endDate=...</span>) to measurement retrieval endpoints. Adding optional parameters does not affect other teams. <span class="todo-placeholder">[TODO]</span></td>
           </tr>
         </tbody>
       </table>
