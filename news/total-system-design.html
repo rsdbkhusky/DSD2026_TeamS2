@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+  (function () {
+    if (location.protocol === 'file:') return;
+    var segs = location.pathname.split('/').filter(Boolean);
+    var last = segs[segs.length - 1];
+    if (last && last.indexOf('.') !== -1) segs.pop();
+    var dir = segs.length ? '/' + segs.join('/') + '/' : '/';
+    var b = document.createElement('base');
+    b.href = dir;
+    var h = document.head;
+    var cs = h.querySelector('meta[charset]');
+    if (cs) h.insertBefore(b, cs.nextSibling);
+    else h.prepend(b);
+  })();
+  </script>
+  <script src="../theme-init.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Total System Design v1.0 &middot; News &middot; DSD2026 Team S2</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .article-body h2 { border-left: 3px solid var(--accent); padding-left: 14px; }
+    .article-body h3 {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      color: var(--text); margin: 28px 0 10px; letter-spacing: -0.01em;
+      border-left: 2px solid var(--accent); padding-left: 12px;
+    }
+    .article-body h4 {
+      font-family: var(--font-display); font-size: 14px; font-weight: 600;
+      color: var(--text); margin: 22px 0 8px;
+      border-left: 1.5px solid rgba(139,92,246,0.4); padding-left: 10px;
+    }
+    .rev-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0 32px; }
+    .rev-table { width: 100%; border-collapse: collapse; }
+    .rev-table th { background: var(--surface-2); font-family: var(--font-mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px; text-align: left; font-weight: 400; border-bottom: 1px solid var(--border); }
+    .rev-table td { padding: 10px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+    .rev-table tr:last-child td { border-bottom: none; }
+
+    /* figure / caption */
+    .fig-wrap { margin: 20px 0 8px; text-align: center; }
+    .fig-wrap img {
+      max-width: 100%;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+    .fig-caption {
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-3);
+      margin: 8px auto 24px; text-align: center; max-width: 680px; line-height: 1.55;
+    }
+
+    /* group header pill */
+    .group-pill {
+      display: inline-block;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      background: var(--accent-dim); color: var(--accent);
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      margin-bottom: 10px; letter-spacing: 0.05em;
+    }
+
+    /* process list */
+    .proc-list { margin: 10px 0 16px; padding-left: 0; list-style: none; }
+    .proc-list li {
+      font-size: 13px; color: var(--text-2); line-height: 1.65;
+      padding: 4px 0 4px 16px; position: relative;
+    }
+    .proc-list li::before {
+      content: '▸'; position: absolute; left: 0;
+      color: var(--accent); font-size: 10px; top: 6px;
+    }
+    .proc-list li strong { color: var(--text); }
+    .proc-list li code { font-family: var(--font-mono); font-size: 12px; color: var(--accent-2); }
+
+    /* sub-group note box */
+    .note-box {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-left: 3px solid rgba(139,92,246,0.5);
+      border-radius: var(--radius); padding: 14px 18px; margin: 16px 0;
+      font-size: 13px; color: var(--text-2); line-height: 1.65;
+    }
+    .note-box strong { color: var(--text); }
+
+    /* flow step chips */
+    .flow-steps {
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 8px; margin: 14px 0 20px;
+    }
+    .flow-step {
+      font-family: var(--font-mono); font-size: 11px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 5px 12px; color: var(--text-2);
+      white-space: nowrap;
+    }
+    .flow-arrow { color: var(--accent); font-size: 14px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<div class="nav-progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-tag">DSD 2025&ndash;2026</span>
+      <span class="brand-title">S2 &middot; <span>Data Acquisition</span></span>
+    </div>
+    <nav id="mainNav" class="nav-links">
+      <a href="../index.html"    class="nav-link">Home</a>
+      <a href="../progress.html" class="nav-link">Progress</a>
+      <a href="../news.html"     class="nav-link">News</a>
+      <a href="../member.html"   class="nav-link">Member</a>
+    </nav>
+    <div class="nav-triggers">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Light / Dark">&#9788;</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="article-header">
+    <a href="../news.html" class="back-link">Back to News</a>
+    <div class="article-meta">
+      <span class="badge" style="background:rgba(220,38,38,0.12);color:#f87171;border-color:rgba(220,38,38,0.25);">System Design</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">5 May 2026 &middot; 00:32 UTC+8</span>
+    </div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-0.025em;line-height:1.08;margin-bottom:16px;">
+      Total System Design v1.0
+    </h1>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.7;max-width:720px;">
+      Consolidated system design document for the Limb Motion Recognition and Assistant system.
+      Covers each team's internal architecture and process flows — from raw sensor capture through AI analysis to clinical dashboard display.
+    </p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- Revision History -->
+    <div class="rev-table-wrap">
+      <table class="rev-table">
+        <thead><tr><th>Date</th><th>Authors</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>May 5, 2026</td><td>Haobo LIN</td><td>Total System Design v1.0: consolidated system design document, including all teams' internal architecture diagrams and process flow descriptions</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ 1. Overview ═══ -->
+    <h2>1. Overview</h2>
+
+    <p>
+      This document consolidates the internal system designs submitted by all six groups —
+      <strong>S1</strong>, <strong>S2</strong>, <strong>V1</strong>, <strong>V2</strong>,
+      <strong>M1</strong>, and <strong>M2</strong> — into a single reference. Each section
+      presents the group's process flow diagrams along with captions and descriptions.
+      For cross-team interface contracts, see the
+      <a href="total-interface-spec.html" style="color:var(--accent-2);text-decoration:underline;">Total Interface Specification v1.0</a>.
+    </p>
+
+    <h3>1.1 System Overview</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-overview.png" alt="Total System Overview Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 1.1 — Total System Overview.</strong>
+      End-to-end data flow across all six groups. The App boundary (dashed left) and Server boundary (dashed right) separate local from network communication.
+    </p>
+
+    <p>
+      The system is structured across two physical contexts:
+    </p>
+
+    <p><strong>App side</strong> (all components run on the same mobile device):</p>
+    <ul class="proc-list">
+      <li>The <strong>Patient</strong> performs exercises; body movements are captured by the <strong>S1 Sensor</strong> via Bluetooth IMU hardware.</li>
+      <li><strong>S1</strong> passes raw IMU packets to <strong>S2 Data Acq.</strong> for validation and formatting.</li>
+      <li><strong>M1 AppFrontend</strong> controls session start/end for S2, receives formatted data back, and provides real-time visual feedback to the patient.</li>
+      <li>M1 is the sole gateway to the Server — it sends session measurements and registration data and receives user information and AI-generated feedback.</li>
+    </ul>
+
+    <p><strong>Server side</strong> (cross-device, HTTP REST):</p>
+    <ul class="proc-list">
+      <li><strong>V2 DB</strong> is the central backend hub; all server-side teams communicate exclusively through V2.</li>
+      <li><strong>V1 AI Engine</strong> pulls batch format data and reference data from V2, runs AI inference, and writes analysis results and suggestion statuses back.</li>
+      <li><strong>M2 Dashboard</strong> enables clinicians (doctors and admins) to view patient motion logs, manage rehabilitation suggestions, and oversee account registration — all via V2.</li>
+    </ul>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 2. S1 — Sensor Group ═══ -->
+    <h2>2. S1 &mdash; Sensor Group</h2>
+
+    <span class="group-pill">S1 &middot; Sensor</span>
+
+    <p>
+      S1 is responsible for reading raw IMU data from Bluetooth-connected wearable sensors
+      attached to the patient's limbs, and for responding to session lifecycle commands issued
+      by S2.
+    </p>
+
+    <h3>2.1 Internal Process Flow</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-s1.png" alt="S1 Sensor Internal Process Flow Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 2.1 — S1 Sensor: Internal Process Flow.</strong>
+      Three sub-processes handle Bluetooth reception, session command processing, and output aggregation.
+    </p>
+
+    <p>
+      S1 is decomposed into three sub-processes:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>S1-01 — Receive Bluetooth Data:</strong>
+        Continuously listens for and receives raw IMU frames broadcast by the patient's wearable
+        sensors over Bluetooth. Outputs a raw data stream to S1-03.
+      </li>
+      <li>
+        <strong>S1-02 — Process Session Command:</strong>
+        Receives <em>Begin/End Session</em> requests from S2. Translates these lifecycle signals
+        into start and stop controls that gate the data flow in S1-03. When a session ends,
+        S1-02 signals S1-03 to halt output.
+      </li>
+      <li>
+        <strong>S1-03 — Output Raw IMU Data:</strong>
+        Aggregates the raw data stream from S1-01 under session control from S1-02, then
+        forwards the resulting <em>Raw IMU Data</em> packets to S2 Group. S1-03 only emits data
+        while a session is active.
+      </li>
+    </ul>
+
+    <div class="note-box">
+      <strong>Key interface:</strong> S1 exposes <code>s1.sensor.read()</code> and
+      <code>s1.sensor.status()</code> for S2 to poll data and check connection health, and
+      <code>s1.session.start()</code> / <code>s1.session.stop()</code> for session lifecycle control.
+      All calls are same-device function calls (see
+      <a href="total-interface-spec.html#if-s1-s2" style="color:var(--accent-2);text-decoration:underline;">IF-S1-S2 and IF-S2-S1</a>).
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 3. S2 — Data Acquisition Group ═══ -->
+    <h2>3. S2 &mdash; Data Acquisition Group</h2>
+
+    <span class="group-pill">S2 &middot; Data Acquisition</span>
+
+    <p>
+      S2 is the data processing hub on the App side. It receives raw IMU packets from S1,
+      validates and formats them, computes target joint angles, and delivers structured
+      <em>Format Data</em> to M1 asynchronously. S2 also includes a simulated data generator
+      for offline testing.
+    </p>
+
+    <h3>3.1 Internal Process Flow</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-s2.png" alt="S2 Data Acquisition Internal Process Flow Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 3.1 — S2 Data Acquisition: Internal Process Flow.</strong>
+      Three modules — simulated data generation, core acquisition, and asynchronous output — collaborate through a shared buffer.
+    </p>
+
+    <p>
+      S2 contains three internal modules:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>S2-01 — Simulated Data Generation:</strong>
+        Produces synthetic raw IMU packets on demand when no physical sensor is connected.
+        Activated by a <em>Simulated data request</em> from S2-02 and returns a
+        <em>Simulated raw IMU packet</em>. This module enables development and testing without
+        hardware dependency.
+      </li>
+      <li>
+        <strong>S2-02 — Data Acquisition Core:</strong>
+        The central processing unit. Receives <em>Start/Close session requests</em> from
+        <strong>M1 AppFrontend</strong> and propagates them to <strong>S1 Sensor</strong> as
+        <em>Start/Close session requests</em>. During an active session, S2-02 reads
+        <em>Raw IMU packets</em> from S1 (or simulated packets from S2-01), validates
+        the data, computes target joint angles, and writes the results into the
+        <em>Asynchronous buffer</em>.
+      </li>
+      <li>
+        <strong>S2-03 — Asynchronous Sending:</strong>
+        Drains the <em>Asynchronous buffer</em> and delivers <em>Format data</em> to
+        <strong>M1 AppFrontend</strong>. The decoupled buffer design means M1 can poll
+        at its own rate without blocking sensor acquisition. S2-03 also receives
+        <em>Start/Close session requests</em> from S2-02 to reset its state at session
+        boundaries.
+      </li>
+    </ul>
+
+    <div class="note-box">
+      <strong>Asynchronous design rationale:</strong> Each sensor samples independently
+      and target-angle computation runs at a different rate from sensor polling.
+      The buffer in S2-02 → S2-03 decouples these rates, so <code>s2.data.read()</code>
+      always returns whatever has accumulated since the last call without stalling
+      upstream processing.
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 4. V1 — AI Engine Group ═══ -->
+    <h2>4. V1 &mdash; AI Engine Group</h2>
+
+    <span class="group-pill">V1 &middot; AI Engine</span>
+
+    <p>
+      V1 runs on the server side. It pulls batched sensor measurements from V2, applies
+      a machine-learning inference pipeline, and writes rehabilitation recommendations and
+      suggestion statuses back to V2. V1 has no direct interface with any App-side component.
+    </p>
+
+    <h3>4.1 Internal Process Flow</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-v1.png" alt="V1 AI Engine Internal Process Flow Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 4.1 — V1 AI Engine: Internal Process Flow.</strong>
+      A three-stage pipeline: data preprocessing, model inference, and result post-processing.
+      V2 DB is the sole external data source and sink.
+    </p>
+
+    <p>
+      V1 is a three-stage sequential pipeline:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>V1-01 — Data Preprocessing:</strong>
+        Fetches <em>Batch Format Data</em> from <strong>V2 DB</strong> and applies cleaning
+        and normalisation according to <em>Preprocessing Parameters</em>. Outputs
+        <em>Cleaned / Normalised Data</em> to the next stage.
+      </li>
+      <li>
+        <strong>V1-02 — Model Inference:</strong>
+        Receives the cleaned data and queries V2 for <em>Reference Data</em> (e.g. gold-standard
+        motion templates). Runs model inference with the configured <em>Model &amp; Threshold Config</em>
+        to produce <em>Raw Predictions</em>.
+      </li>
+      <li>
+        <strong>V1-03 — Result Post-processing:</strong>
+        Applies <em>Post-processing Rules</em> to the raw predictions to produce human-readable
+        rehabilitation recommendations. Writes <em>Analysis Results</em> and
+        <em>Suggestion Status</em> back to <strong>V2 DB</strong> via
+        <code>POST /recommendations</code>.
+      </li>
+    </ul>
+
+    <div class="note-box">
+      <strong>Key interface:</strong> V1 communicates exclusively with V2 over HTTP REST.
+      It reads from <code>GET /measurements/:sessionId</code> and writes to
+      <code>POST /recommendations</code>. No direct connection to M1, M2, S1, or S2.
+    </div>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 5. V2 — Database Backend Group ═══ -->
+    <h2>5. V2 &mdash; Database Backend Group</h2>
+
+    <span class="group-pill">V2 &middot; Database Backend</span>
+
+    <p>
+      V2 is the central server-side backend. It exposes a full HTTP REST API consumed by
+      M1, M2, and V1. Internally it is built on Node.js with an SQLite database (via sql.js,
+      no native bindings required) persisted to disk after every write operation.
+    </p>
+
+    <h3>5.1 Server Initialisation Flow</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-v2-setup.png" alt="V2 Server Initialisation Flow" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 5.1 — V2: Server Initialisation Sequence.</strong>
+      On startup, <code>initDb()</code> creates all tables and indexes, runs migrations, saves the
+      database to disk, then starts the HTTP listener on port 3000.
+    </p>
+
+    <p>
+      When V2 starts, the following sequence runs synchronously before accepting any requests:
+    </p>
+
+    <div class="flow-steps">
+      <span class="flow-step">node src/server.js</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">calls initDb()</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">CREATE IF NOT EXISTS Tables + Indexes</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">ALTER TABLE Migrations</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">save() → data/v2.db</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">app.listen(3000)</span>
+    </div>
+
+    <p>
+      <code>initDb()</code> uses <em>CREATE IF NOT EXISTS</em> so the schema is idempotent —
+      a restart on an existing database does not destroy data. Migration <em>ALTER TABLE</em>
+      statements run afterwards to add columns introduced after the initial schema. Once
+      the database is stable, the HTTP server begins accepting connections.
+    </p>
+
+    <h3>5.2 Request Handling Flow</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-v2-request.png" alt="V2 Request Handling Flow Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 5.2 — V2: Per-Request Processing Pipeline.</strong>
+      Every HTTP request passes through middleware, routing, optional auth guard, controller logic,
+      database helpers, and finally produces a JSON response. Write operations persist the database
+      to disk via <code>save()</code>.
+    </p>
+
+    <p>
+      Every inbound request traverses six layers:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>Middleware:</strong> <code>CORS</code>, <code>express.json()</code> for JSON body
+        parsing, and <code>conditionalUpload(Multer)</code> which activates file upload handling
+        only on <code>multipart/form-data</code> requests (used for clinician licence file uploads).
+      </li>
+      <li>
+        <strong>Routers:</strong> Requests are dispatched to one of eight route groups —
+        <code>/auth</code>, <code>/users</code>, <code>/patients</code>, <code>/sessions</code>,
+        <code>/measurements</code>, <code>/recommendations</code>, <code>/schedule</code>,
+        <code>/push</code>.
+      </li>
+      <li>
+        <strong>Auth Guard:</strong> Protected routes invoke <code>requireAuth</code> middleware
+        which calls <code>jwt.verify(token, JWT_SECRET)</code>. Returns HTTP 401 if the token
+        is missing or invalid.
+      </li>
+      <li>
+        <strong>Controllers:</strong> Each router has a dedicated controller
+        (<code>authController</code>, <code>usersController</code>, <code>sessionsController</code>,
+        <code>measurementsController</code>, <code>recommendationsController</code>,
+        <code>scheduleController</code>, <code>pushController</code>) that validates input,
+        applies business logic, and builds queries via DB helpers.
+      </li>
+      <li>
+        <strong>DB Helpers / sql.js:</strong> <code>queryAll()</code> + <code>normalizeDates()</code>
+        (converts all <code>*_at</code> fields to ISO 8601 on every read), <code>queryOne()</code>,
+        and <code>run()</code> operate on an SQLite in-memory store (pure JS, no compilation required).
+      </li>
+      <li>
+        <strong>Persistence:</strong> After every write operation, <code>save()</code> flushes the
+        in-memory database to <code>data/v2.db</code>. File uploads are written separately to
+        <code>data/licenses/</code>. Read-only operations do not trigger <code>save()</code>.
+      </li>
+    </ul>
+
+    <p>
+      Uncaught errors propagate to a global <code>errorHandler</code> middleware that returns
+      <code>{ "error": "..." }</code> JSON to the client.
+    </p>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 6. M1 — App Frontend Group ═══ -->
+    <h2>6. M1 &mdash; App Frontend Group</h2>
+
+    <span class="group-pill">M1 &middot; App Frontend</span>
+
+    <p>
+      M1 is the patient-facing mobile application. It manages user authentication, BLE sensor
+      connectivity, session lifecycle, real-time exercise feedback, data upload to the server,
+      and push notification reception. M1 is the <strong>sole App-side gateway</strong> to
+      the V2 backend.
+    </p>
+
+    <h3>6.1 Internal Module Architecture</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-m1.png" alt="M1 App Frontend Internal Module Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 6.1 — M1 App Frontend: Internal Module Architecture.</strong>
+      Six modules cooperate around the central Session Controller (MOD-M1-03). External actors
+      are the Patient, S1 Sensor (BLE), S2 Data Acq., Push Service, and V2 Backend API.
+    </p>
+
+    <p>
+      M1 is composed of six modules:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>MOD-M1-01 — Auth &amp; Session Manager:</strong>
+        Handles patient <em>Register / Login</em> flows. Issues auth requests to <strong>V2 Backend API</strong>
+        and propagates the resulting <em>AuthState</em> (JWT token and user identity) to
+        MOD-M1-03 so downstream modules can make authenticated API calls. Also receives the
+        patient's <em>Begin / End Session</em> intent and forwards it to M1-03.
+      </li>
+      <li>
+        <strong>MOD-M1-02 — BLE Sensor Manager:</strong>
+        Manages the Bluetooth Low Energy connection to <strong>S1 Sensor</strong>. Receives
+        raw IMU packets over BLE, wraps them into <em>SensorSample[]</em> objects, and emits
+        them to MOD-M1-03 along with <em>SensorConnectionEvent</em> notifications (connected /
+        disconnected / error).
+      </li>
+      <li>
+        <strong>MOD-M1-03 — Session Controller:</strong>
+        The central coordinator of M1. On session start, it forwards a <em>SessionContext</em>
+        (sessionId, userId, sensorJointMapping, payloadStatus) to <strong>S2 Data Acq.</strong>
+        and begins polling <code>s2.data.read()</code> for <em>Format data</em>. It buffers
+        incoming <em>MeasurementBatch</em> objects and raises them to MOD-M1-04 for feedback
+        rendering and to MOD-M1-05 for upload. On session end, it calls
+        <code>PATCH /sessions/:id/end</code> on V2.
+      </li>
+      <li>
+        <strong>MOD-M1-04 — RT Feedback:</strong>
+        Consumes <em>MeasurementBatch</em> data from M1-03 to render <em>real-time visual
+        feedback and haptics</em> for the patient (e.g. angle deviation indicators, vibration alerts).
+        Also receives <em>SensorConnectionEvent</em> updates to display sensor status in the UI.
+      </li>
+      <li>
+        <strong>MOD-M1-05 — Data Sync &amp; Cache Manager:</strong>
+        Uploads buffered measurements to V2 via <code>POST /measurements/batch</code>. Also
+        fetches sessions, active exercise plans, and AI recommendations from V2 using
+        <code>GET /sessions</code>, <code>GET /plans/active</code>, and
+        <code>GET /recommendations/engine/:id</code> to populate the patient's plan view.
+      </li>
+      <li>
+        <strong>MOD-M1-06 — Notification Manager:</strong>
+        Registers the device push token with V2 via <code>POST /push/register</code> and
+        forwards incoming <em>PushPayload</em> messages from the <strong>Push Service</strong>
+        to the patient as on-screen push notification displays.
+      </li>
+    </ul>
+
+    <hr class="article-divider"/>
+
+    <!-- ═══ 7. M2 — Dashboard Group ═══ -->
+    <h2>7. M2 &mdash; Dashboard Group</h2>
+
+    <span class="group-pill">M2 &middot; Dashboard</span>
+
+    <p>
+      M2 is the clinician-facing web dashboard. It serves two user roles — <strong>Doctors</strong>
+      who review patient motion data and manage rehabilitation suggestions, and
+      <strong>Admins</strong> who oversee account registration, roles, system reports, and
+      notifications. All data operations are performed through <strong>V2 DB</strong>.
+    </p>
+
+    <h3>7.1 Architecture Overview</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-m2-arch-overview.png" alt="M2 Dashboard Architecture Overview" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 7.1 — M2 Dashboard: Architecture Overview.</strong>
+      Three internal modules handle identity validation, business operation routing, and motion data
+      formatting. Both Doctor and V2 DB are external actors.
+    </p>
+
+    <p>
+      At the architectural level, M2 has three internal modules interfacing with the Doctor and V2:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>M2-01 — Validate Identity:</strong>
+        Receives <em>Login Credentials</em> from the Doctor, sends an <em>Auth Request</em> to
+        V2, and returns a <em>Session Token</em> upon successful authentication.
+      </li>
+      <li>
+        <strong>M2-02 — Route Business Ops:</strong>
+        Handles the core business logic loop. Issues <em>Business Sync Requests</em> to V2 for
+        patient data. Receives <em>Suggestion Commands</em> and <em>Retrieval Parameters</em>
+        from the Doctor, applies them, and returns <em>Operation Results</em>. Also sends
+        <em>Suggestion Status</em> updates and <em>Raw IMU Data Requests</em> back to V2.
+      </li>
+      <li>
+        <strong>M2-03 — Format Motion Data:</strong>
+        Fetches <em>Raw Sensor Packets</em> from V2, processes them into chart-ready format,
+        and delivers <em>Visualised Chart Data</em> to the Doctor's browser.
+      </li>
+    </ul>
+
+    <h3>7.2 System Architecture</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-m2-system-arch.png" alt="M2 System Architecture Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 7.2 — M2 Dashboard: System Architecture (Doctor-side view).</strong>
+      Web frontend pages delegate to four backend services (Account, Patient Management, Motion Data,
+      Suggestion), each backed by a dedicated database. External services handle email notifications
+      and admin approval workflows.
+    </p>
+
+    <p>
+      The doctor-facing side of M2 is structured in three layers:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>Web Frontend:</strong> A <em>Patient List Page</em> for browsing patients, and a
+        <em>Patient Profile Page</em> that embeds a motion data chart, AI-generated suggestions,
+        and a manual suggestion editor for the doctor.
+      </li>
+      <li>
+        <strong>Backend Services:</strong> <em>Account Service</em> manages authentication;
+        <em>Patient Management Service</em> handles patient records; <em>Motion Data Service</em>
+        processes and queries sensor data; <em>Suggestion Service</em> manages AI and manual suggestions.
+        <em>External Services</em> include an Email Service and an Admin Approval Workflow for
+        doctor registration.
+      </li>
+      <li>
+        <strong>Database:</strong> Four separate stores — <em>User DB</em>, <em>Patient DB</em>,
+        <em>Motion Data DB</em>, and <em>Suggestion DB</em> — all hosted within V2.
+      </li>
+    </ul>
+
+    <h3>7.3 Doctor Workflow</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-m2-doctor-flow.png" alt="M2 Doctor Workflow Flowchart" style="max-width:420px;" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 7.3 — M2 Dashboard: Doctor Workflow Flowchart.</strong>
+      Full lifecycle from first-time registration through admin approval, login, patient selection,
+      motion data filtering, and suggestion management.
+    </p>
+
+    <p>
+      The doctor's interaction with M2 follows this flow:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>First-time registration:</strong> Doctor registers an account, uploads a medical
+        licence, and submits for admin approval. If the account is not approved, the doctor is
+        notified to update credentials. Once approved, the doctor can log in.
+      </li>
+      <li>
+        <strong>Patient management:</strong> After login, the doctor lands on the
+        <em>Home Page: Patient List</em>, searches or filters patients, and selects a patient
+        to enter their profile.
+      </li>
+      <li>
+        <strong>Suggestion management:</strong> Inside the patient profile, the doctor can manage
+        suggestions (edit, delete, view history). Two parallel actions are available:
+        (1) <em>Filter Motion Data</em> — select a date range and left/right leg;
+        (2) <em>Edit / Add Suggestion</em> — modify preset exercises or add free-text notes.
+        Both paths conclude with <em>Submit Suggestion</em>.
+      </li>
+    </ul>
+
+    <h3>7.4 Doctor Sequence</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-m2-doctor-seq.png" alt="M2 Doctor Sequence Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 7.4 — M2 Dashboard: Doctor Sequence Diagram.</strong>
+      Message flow across Doctor, Web Frontend, Account Service, Patient Management Service,
+      Motion Data Service, Suggestion Service, and all database components for a complete
+      login-to-submit-suggestion session.
+    </p>
+
+    <p>
+      The sequence diagram shows the full interaction for a doctor session:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>Authentication:</strong> Doctor enters credentials → Web Frontend calls Account Service
+        → credentials verified against User DB → auth result returned → dashboard (Patient List) displayed.
+      </li>
+      <li>
+        <strong>Patient selection:</strong> Doctor selects a patient → Web Frontend calls Patient Management
+        Service → patient info fetched from Patient DB → patient profile returned to the frontend.
+      </li>
+      <li>
+        <strong>Motion data display:</strong> Frontend fetches motion data (default date, both legs) →
+        Motion Data Service queries Motion Data DB → returns processed chart data → chart and AI suggestions
+        displayed.
+      </li>
+      <li>
+        <strong>Suggestion submission:</strong> Doctor modifies preset exercises or adds free-text →
+        Frontend submits suggestion to Suggestion Service → stored in Suggestion DB → success confirmation
+        returned → frontend confirms to doctor.
+      </li>
+      <li>
+        <strong>Motion data filtering:</strong> Doctor selects a date range or specific leg →
+        Frontend fetches updated data → Motion Data Service queries and returns updated records →
+        chart refreshed.
+      </li>
+    </ul>
+
+    <h3>7.5 Admin Workflow</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-m2-admin-flow.png" alt="M2 Admin Workflow Flowchart" style="max-width:540px;" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 7.5 — M2 Dashboard: Admin Workflow Flowchart.</strong>
+      Admin login leads to a multi-branch task selection covering doctor registration review,
+      account/role management, health data reports, and feedback/content/notification management.
+    </p>
+
+    <p>
+      The administrator workflow is organised around four task branches:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>Review Registration:</strong> View pending doctor applications → open doctor profile
+        and review licence → approve or reject → update status and notify the doctor.
+      </li>
+      <li>
+        <strong>Manage Accounts / Roles:</strong> Search doctor/patient/user list → inspect account
+        details and data summary → enable, disable, or delete account → assign role and update
+        permissions.
+      </li>
+      <li>
+        <strong>Reports / Audit:</strong> Open health data reports dashboard → view charts, system
+        statistics, and usage metrics → query audit logs when needed.
+      </li>
+      <li>
+        <strong>Feedback / Content / Notification:</strong> Read feedback and respond/resolve →
+        create, edit, publish, or delete content → send manual notifications to target users.
+      </li>
+    </ul>
+
+    <p>
+      After each action, changes are persisted to V2 and an admin action audit log entry is written.
+      The admin then decides to continue managing or log out.
+    </p>
+
+    <h3>7.6 Admin Sequence</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-m2-admin-seq.png" alt="M2 Admin Sequence Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 7.6 — M2 Dashboard: Admin Sequence Diagram.</strong>
+      Three scenario groups — Admin Login/Logout, Review Doctor Registration, and
+      Account/Role/Reports/Feedback/Content/Notification management — shown across
+      System Administrator, Web Frontend, Auth Service, Admin Management Service,
+      and all relevant database components.
+    </p>
+
+    <p>
+      The admin sequence diagram covers three scenario groups:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>Admin Login / Logout:</strong> Admin enters credentials → <code>POST /admin/login</code>
+        sent to Auth Service → credentials verified against Admin/User DB → session created → admin
+        dashboard displayed.
+      </li>
+      <li>
+        <strong>Review Doctor Registration:</strong> Admin opens pending applications → Auth Service
+        fetches pending doctor records → queries Doctor DB for applications and licences → profile and
+        licence displayed → admin approves or rejects → approval result persisted → doctor notified via
+        Notification Service.
+      </li>
+      <li>
+        <strong>Account / Role / Reports / Feedback / Notification:</strong> Admin searches users and
+        selects role or operation → Admin Management Service reads/updates Admin/User DB, Patient DB,
+        Feedback/Content DB, or Notification Service as appropriate → updated records/charts/status
+        returned → result rendered to admin → admin action log written to Audit Log DB.
+      </li>
+    </ul>
+
+    <h3>7.7 Full System Architecture</h3>
+
+    <div class="fig-wrap">
+      <img src="../img/total-system-design/sd-m2-full-arch.jpg" alt="M2 Full System Architecture Diagram" />
+    </div>
+    <p class="fig-caption">
+      <strong>Figure 7.7 — M2 Dashboard: Full System Architecture.</strong>
+      Complete view of the M2 web frontend, all backend services, external services, and the full
+      database layer (hosted in V2). Covers both doctor-facing and admin-facing subsystems.
+    </p>
+
+    <p>
+      The full M2 architecture spans three tiers:
+    </p>
+
+    <ul class="proc-list">
+      <li>
+        <strong>Web Frontend (6 pages):</strong> Admin Login/Logout Page; Admin Dashboard Reports &amp;
+        Statistics; Doctor Registration Review Page; Doctor/Patient Account Management Page;
+        Feedback/Content/Notification Management Page; Role &amp; Permission / Audit Log Page.
+      </li>
+      <li>
+        <strong>Backend Services — M2 (6 services):</strong> <em>Auth Service</em>;
+        <em>Notification &amp; Audit Service</em>; <em>Admin Management Service</em> (session /
+        dashboard routing); <em>Doctor Review &amp; Account Service</em>;
+        <em>Patient Account Management Service</em>; <em>Report &amp; Feedback Service</em>;
+        <em>Content, Role &amp; Permission Service</em>. An <em>Email / Message Service</em>
+        is the sole external dependency.
+      </li>
+      <li>
+        <strong>Database — V2 (8+ stores):</strong> Admin/User DB; Doctor DB (Applications/Licences);
+        Patient DB; Health Data/Report DB; Feedback DB; Content/Role/Permission DB; Notification DB;
+        Audit Log DB.
+      </li>
+    </ul>
+
+    <hr class="article-divider"/>
+    <p style="font-size:13px;color:var(--text-3);">
+      Posted by Team S2 &middot; DSD 2025&ndash;2026 &middot; UTAD &times; Jilin University
+    </p>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-wrap">
+    <div>
+      <strong>DSD2026 &middot; Team S2</strong>
+      <p>Data Acquisition &amp; Mock Generator &middot; UTAD &times; Jilin University</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../progress.html">Progress</a>
+      <a href="../news.html">News</a>
+      <a href="../member.html">Member</a>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-btn" aria-label="Back to top">
+  <svg viewBox="0 0 44 44" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" class="sbg"/>
+    <circle cx="22" cy="22" r="19" class="strack"/>
+    <circle cx="22" cy="22" r="19" class="sring" id="sring"/>
+    <polyline points="15,25 22,17 29,25" class="sarrow"/>
+  </svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>
