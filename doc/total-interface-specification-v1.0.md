@@ -12,15 +12,6 @@ Author: Zhiqi ZHANG
 
 This document is the consolidated, post-negotiation interface specification for all cross-team data exchanges in the system. All conflicts identified during the integration phase have been resolved (see Total SD Conflicts and Solutions for details).
 
-Source documents:
-- **S1:** S1 confirmed to follow S2's design (file sent by Zhihang YU)
-- **S2:** S2 Interface Specification v0.1
-- **V1:** V1 confirmed no conflicts with V2 (file sent by Yanbo QIAO)
-- **V2:** V2 Backend Integration Guide (file sent by Sergio Moniz)
-- **M1:** M1 Interface Specification (https://diogopinhel.github.io/DSD2026_TeamM1/2026/04/26/M1_Interface_Specification.html)
-- **M2:** M2 Web Backend API Specification (file sent by Yihang LI)
-- **Conflict resolution:** Total SD Conflicts and Solutions
-
 | | S1 | S2 | V1 | V2 | M1 | M2 |
 |---|---|---|---|---|---|---|
 | Internal System Design | Zhihang YU (done) | Zhiqi ZHANG (done) | Yanbo QIAO (done) | Moniz Sergio (done) | Diogo Pinhel (done) | Shu WANG (done) |
