@@ -281,9 +281,532 @@ Output data structure of S2.
 
 All interfaces in this section go through V2's HTTP REST API.
 
-> *V1, V2, and M2 have not yet submitted their second-round interface documents.
-> This section will be updated once their submissions are received.
-> For the current version, refer to [Total Interface Specification v1.0](total-interface-spec.html).*
+**API to Interface Mapping:**
+
+| API | IF-M1-V2 | IF-V2-M1 | IF-V1-V2 | IF-V2-V1 | IF-M2-V2 | IF-V2-M2 |
+|-----|----------|----------|----------|----------|----------|----------|
+| `POST /auth/register` | ✓ | | | | ✓ | |
+| `POST /auth/login` | ✓ | | | | ✓ | |
+| `GET /auth/me` | | ✓ | | | | ✓ |
+| `GET /users/:id` | | ✓ | | | | ✓ |
+| `POST /sessions` | ✓ | | | | | |
+| `GET /sessions/:id` | | ✓ | | | | ✓ |
+| `PATCH /sessions/:id/end` | ✓ | | | | | |
+| `DELETE /sessions/:id` | | | | | ✓ | |
+| `POST /measurements/raw` | ✓ | | | | | |
+| `POST /measurements` | ✓ | | | | | |
+| `POST /measurements/batch` | ✓ | | | | | |
+| `GET /measurements/:sessionId` | | ✓ | | ✓ | | ✓ |
+| `POST /recommendations` | | | ✓ | | | |
+| `GET /recommendations/session/:sessionId` | | ✓ | | | | ✓ |
+| `GET /recommendations/engine/:userId` | | ✓ | | | | ✓ |
+| `PATCH /recommendations/:id` | | | | | ✓ | |
+| `POST /schedule` | | | | | ✓ | |
+| `GET /schedule/:userId` | | ✓ | | | | ✓ |
+| `PATCH /schedule/:id` | ✓ | | | | ✓ | |
+| `DELETE /schedule/:id` | | | | | ✓ | |
+| `POST /push/register` | ✓ | | | | | |
+| `GET /push/tokens/:userId` | | | | | | ✓ |
+
+**Base URL:** `http://113.44.220.94:3000`
+
+**General rules:**
+- All request bodies are JSON (`Content-Type: application/json`), unless otherwise specified
+- All responses are JSON
+- Request field naming: **camelCase**
+- Response field naming: **snake_case**
+- Timestamps: **ISO 8601** (e.g. `"2026-05-02T13:43:38.549Z"`)
+- Authentication: JWT token via `Authorization: Bearer <token>` header (where required)
+
+### 3.1 Authentication
+
+Used by: M1, M2
+
+#### 3.1.1 `POST /auth/register`
+
+Register a new user account.
+
+**Request body:**
+```json
+{
+  "name": "Ana Costa",
+  "email": "ana@utad.pt",
+  "password": "123456",
+  "role": "patient"
+}
+```
+
+`role` must be `"patient"` or `"clinician"` (default: `"patient"`).
+
+**Response (201):**
+```json
+{
+  "token": "jwt-token-string",
+  "user": {
+    "id": 1,
+    "name": "Ana Costa",
+    "email": "ana@utad.pt",
+    "role": "patient",
+    "created_at": "2026-05-02T13:43:28.000Z"
+  }
+}
+```
+
+**Note:** For doctor registration, M2 requires an optional `license` file upload and approval workflow. This is pending V2 implementation (see Total SD Conflicts and Solutions, Chapter 8, Conflicts 2-3).
+
+#### 3.1.2 `POST /auth/login`
+
+Log in with existing credentials.
+
+**Request body:**
+```json
+{
+  "email": "ana@utad.pt",
+  "password": "123456"
+}
+```
+
+**Response (200):**
+```json
+{
+  "token": "jwt-token-string",
+  "user": {
+    "id": 1,
+    "name": "Ana Costa",
+    "email": "ana@utad.pt",
+    "role": "patient",
+    "created_at": "2026-05-02T13:43:28.000Z"
+  }
+}
+```
+
+#### 3.1.3 `GET /auth/me`
+
+Get current authenticated user info. Requires `Authorization: Bearer <token>` header.
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "name": "Ana Costa",
+  "email": "ana@utad.pt",
+  "role": "patient",
+  "created_at": "2026-05-02T13:43:28.000Z"
+}
+```
+
+---
+
+### 3.2 Users
+
+Used by: M1, M2
+
+#### 3.2.1 `GET /users/:id`
+
+Get user by ID.
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "name": "Ana Costa",
+  "email": "ana@utad.pt",
+  "role": "patient",
+  "created_at": "2026-05-02T13:43:28.000Z",
+  "session_count": 3
+}
+```
+
+**Note:** `POST /users` is a legacy endpoint (no password, no JWT). Use `POST /auth/register` instead.
+
+**Note:** M2 requires `GET /patients` (list all users with role=patient) and `GET /patients/:id` endpoints, with an `age` field in patient data. These are pending V2 implementation (see Total SD Conflicts and Solutions, Chapter 8, Conflict 7).
+
+---
+
+### 3.3 Sessions
+
+Used by: M1, M2
+
+#### 3.3.1 `POST /sessions`
+
+Create a new rehabilitation session.
+
+**Request body:**
+```json
+{
+  "userId": 1
+}
+```
+
+**Response (201):**
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "user_name": "Ana Costa",
+  "started_at": "2026-05-02T13:43:35.000Z",
+  "ended_at": null
+}
+```
+
+#### 3.3.2 `GET /sessions/:id`
+
+Get session details with all measurements inline.
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "user_name": "Ana Costa",
+  "user_email": "ana@utad.pt",
+  "started_at": "2026-05-02T13:43:35.000Z",
+  "ended_at": null,
+  "measurements": [
+    {
+      "id": 1,
+      "session_id": 1,
+      "target_angles": [
+        {"timestamp": "2026-05-02T13:43:38.549Z", "angle_id": "knee", "angle": 45.2}
+      ],
+      "errors": [],
+      "sensor_data": []
+    }
+  ]
+}
+```
+
+#### 3.3.3 `PATCH /sessions/:id/end`
+
+End an active session. No request body required; server sets `ended_at` automatically.
+
+**Response (200):**
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "started_at": "2026-05-02T13:43:35.000Z",
+  "ended_at": "2026-05-02T13:43:52.000Z"
+}
+```
+
+#### 3.3.4 `DELETE /sessions/:id`
+
+Delete a session.
+
+**Response:** 204 No Content
+
+---
+
+### 3.4 Measurements
+
+Used by: M1 (upload), M2 (read), V1 (read)
+
+Per the IF-S2-V2 Conflict 4 resolution, V2 added a new endpoint `POST /measurements/raw` to accept the negotiated S2 format (targetAngles + sensorData + errors). The original `POST /measurements` and `POST /measurements/batch` endpoints remain unchanged for backward compatibility.
+
+#### 3.4.1 `POST /measurements/raw`
+
+Upload S2-format sensor data to an active session. Requires authentication (login first to obtain JWT token). This is the primary endpoint for M1 to upload FormatData received from S2.
+
+**Request body:**
+```json
+{
+  "sessionId": 1,
+  "targetAngles": [
+    {"timestamp": "2026-05-02T13:43:38.549Z", "angleID": "knee", "angle": 45.2},
+    {"timestamp": "2026-05-02T13:43:38.580Z", "angleID": "hip", "angle": 30.1}
+  ],
+  "errors": [],
+  "sensorData": [
+    {
+      "timestamp": "2026-05-02T13:43:38.549Z",
+      "sensorId": "1IYwPyBcytYa9htYB0LOJQ==",
+      "accX": 0.2266, "accY": 0.2915, "accZ": 0.9668,
+      "gyroX": 0.0, "gyroY": 3.11, "gyroZ": -0.73,
+      "roll": 15.57, "pitch": -13.78, "yaw": -144.01
+    }
+  ]
+}
+```
+
+`errors` and `sensorData` are optional fields.
+
+**Response (201):** Stored measurement object.
+
+**Error responses:**
+- 409 Conflict: Session is closed
+
+#### 3.4.2 `POST /measurements`
+
+Add a single measurement using V2's original format. Requires authentication.
+
+**Request body:**
+```json
+{
+  "sessionId": 1,
+  "jointAngles": {"knee": 45.2, "hip": 30.1},
+  "isCorrect": true
+}
+```
+
+**Response (201):**
+```json
+{
+  "id": 1,
+  "session_id": 1,
+  "joint_angles": {"knee": 45.2, "hip": 30.1},
+  "is_correct": true,
+  "timestamp": "2026-05-02T13:43:38.549Z"
+}
+```
+
+**Error responses:**
+- 409 Conflict: Session is closed
+
+#### 3.4.3 `POST /measurements/batch`
+
+Add multiple measurements at once using V2's original format. Requires authentication.
+
+**Request body:**
+```json
+{
+  "sessionId": 1,
+  "measurements": [
+    {"jointAngles": {"knee": 45.2}, "isCorrect": true},
+    {"jointAngles": {"knee": 38.0}, "isCorrect": false}
+  ]
+}
+```
+
+**Response (201):**
+```json
+{
+  "inserted": 2,
+  "sessionId": 1
+}
+```
+
+#### 3.4.4 `GET /measurements/:sessionId`
+
+Get all measurements for a session.
+
+**Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "session_id": 1,
+    "target_angles": [
+      {"timestamp": "2026-05-02T13:43:38.549Z", "angle_id": "knee", "angle": 45.2}
+    ],
+    "errors": [],
+    "sensor_data": [],
+    "timestamp": "2026-05-02T13:43:38.549Z"
+  }
+]
+```
+
+**Note:** Response uses snake_case per V2 convention. M2 requires date range filtering (e.g. `?startDate=...&endDate=...`). This is pending V2 implementation (see Total SD Conflicts and Solutions, Chapter 8, Conflict 8).
+
+---
+
+### 3.5 Recommendations
+
+Used by: V1 (create), M1 (read), M2 (read, update)
+
+#### 3.5.1 `POST /recommendations`
+
+Create a recommendation.
+
+**Request body:**
+```json
+{
+  "sessionId": 1,
+  "movement": "knee flexion",
+  "confidence": 0.87,
+  "status": "pending"
+}
+```
+
+`confidence` is a float between 0.0 and 1.0. `status` must be "pending", "accepted", or "rejected" (default: "pending").
+
+**Note:** M2 requests an optional `notes` field for doctor comments. This is pending V2 implementation (see Total SD Conflicts and Solutions, Chapter 8, Conflict 5).
+
+**Response (201):**
+```json
+{
+  "id": 1,
+  "session_id": 1,
+  "movement": "knee flexion",
+  "confidence": 0.87,
+  "status": "pending",
+  "created_at": "2026-05-02T13:43:41.000Z"
+}
+```
+
+#### 3.5.2 `GET /recommendations/session/:sessionId`
+
+Get recommendations for a specific session.
+
+**Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "session_id": 1,
+    "movement": "knee flexion",
+    "confidence": 0.87,
+    "status": "pending",
+    "created_at": "2026-05-02T13:43:41.000Z"
+  }
+]
+```
+
+#### 3.5.3 `GET /recommendations/engine/:userId`
+
+Auto-analysis across last 10 sessions of a user.
+
+**Response (200):**
+```json
+{
+  "userId": 1,
+  "sessions_analysed": 5,
+  "generated_at": "2026-05-02T13:43:44.670Z",
+  "suggestions": [
+    {
+      "joint": "knee",
+      "accuracy_percent": 42,
+      "total_measurements": 50,
+      "priority": "high",
+      "suggestion": "Needs improvement (42% correct)"
+    }
+  ]
+}
+```
+
+`priority` is "high" if accuracy < 50%, "medium" if < 70%, "low" otherwise.
+
+**Known bug:** `userId` is returned as string instead of int in V2's current implementation.
+
+#### 3.5.4 `PATCH /recommendations/:id`
+
+Update status of a recommendation.
+
+**Request body:**
+```json
+{
+  "status": "accepted"
+}
+```
+
+**Response (200):** Updated recommendation object.
+
+---
+
+### 3.6 Schedule
+
+Used by: M1 (read), M2 (manage)
+
+#### 3.6.1 `POST /schedule`
+
+Create a rehabilitation schedule entry.
+
+**Request body:**
+```json
+{
+  "userId": 1,
+  "exercise": "squat",
+  "date": "2026-05-03T21:43:43.000Z",
+  "duration": 30,
+  "notes": "Test schedule"
+}
+```
+
+**Response (201):**
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "exercise": "squat",
+  "date": "2026-05-03T21:43:43.000Z",
+  "duration": 30,
+  "notes": "Test schedule",
+  "status": "pending",
+  "created_at": "2026-05-02T13:43:46.000Z"
+}
+```
+
+#### 3.6.2 `GET /schedule/:userId`
+
+Get all schedule entries for a user.
+
+**Response (200):** Array of schedule objects.
+
+#### 3.6.3 `PATCH /schedule/:id`
+
+Update schedule status.
+
+**Request body:**
+```json
+{
+  "status": "completed"
+}
+```
+
+**Response (200):** Updated schedule object.
+
+#### 3.6.4 `DELETE /schedule/:id`
+
+Delete a schedule entry.
+
+**Response:** 204 No Content
+
+---
+
+### 3.7 Push Notifications
+
+Used by: M1 (register), M2 (query)
+
+#### 3.7.1 `POST /push/register`
+
+Register a device push token.
+
+**Request body:**
+```json
+{
+  "userId": 1,
+  "token": "device_token_string",
+  "platform": "ios"
+}
+```
+
+**Response (201):**
+```json
+{
+  "message": "Push token registered",
+  "userId": 1,
+  "token": "device_token_string"
+}
+```
+
+**Known bug:** Response uses `userId` (camelCase) instead of `user_id` (snake_case).
+
+#### 3.7.2 `GET /push/tokens/:userId`
+
+Get all push tokens for a user.
+
+**Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "token": "device_token_string",
+    "platform": "ios",
+    "created_at": "2026-05-02T13:43:50.000Z"
+  }
+]
+```
 
 ---
 
